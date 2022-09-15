@@ -25,7 +25,7 @@ public class LoginActivity extends BaseActivity<ActivityLoginBinding,LoginViewMo
         super.onCreate(savedInstanceState);
         com.jiva.mandi.databinding.ActivityLoginBinding mActivityLoginBinding = getViewDataBinding();
         mViewModel.setNavigator(this);
-        mViewModel.insertVillages();
+        mViewModel.checkAndInsertVillages();
 
         mActivityLoginBinding.login.setOnClickListener(v -> {
             mViewModel.login();

@@ -18,4 +18,6 @@ public interface DbHelper {
 
     Observable<List<Village>> getAllVillages();
 
+    Observable<Integer> isVillageEmpty();
+
 }

@@ -78,4 +78,9 @@ public class AppDataManager implements DataManager {
     public Observable<List<Village>> getAllVillages() {
         return mDbHelper.getAllVillages();
     }
+
+    @Override
+    public Observable<Integer> isVillageEmpty() {
+        return mDbHelper.isVillageEmpty();
+    }
 }

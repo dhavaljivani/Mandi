@@ -50,8 +50,24 @@ public class LoginViewModel extends BaseViewModel<LoginNavigator> {
         return true;
     }
 
-    public void insertVillages() {
 
+    public void checkAndInsertVillages() {
+        getCompositeDisposable().add(
+                getDataManager().isVillageEmpty()
+                        .subscribeOn(Schedulers.io())
+                        .observeOn(AndroidSchedulers.mainThread())
+                        .subscribe(response -> {
+                            if (response == null || response == 0) {
+                                insertVillages();
+                            }
+
+                        }, throwable -> {
+                            setIsLoading(false);
+                            getNavigator().handleError(throwable);
+                        }));
+    }
+
+    private void insertVillages() {
         ArrayList<Village> villages = new ArrayList<>();
         villages.add(new Village("Ramgarh", 120.08));
         villages.add(new Village("Champaner", 125.08));
@@ -76,8 +92,8 @@ public class LoginViewModel extends BaseViewModel<LoginNavigator> {
     public void login() {
 
         setIsLoading(true);
-        getCompositeDisposable().add(getDataManager().insertUser(new User("Dhaval Jivani", "S100",
-                        "9638083903", 1, "Test@123"))
+        getCompositeDisposable().add(getDataManager().insertUser(new User("Dhaval Jivani", "S101",
+                        "9638083902", 2, "Test@123"))
                 .subscribeOn(Schedulers.io())
                 .observeOn(AndroidSchedulers.mainThread())
                 .subscribe(response -> {

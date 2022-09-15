@@ -35,4 +35,6 @@ public interface DataManager extends DbHelper, PreferencesHelper {
 
     Observable<List<Village>> getAllVillages();
 
+    Observable<Integer> isVillageEmpty();
+
 }

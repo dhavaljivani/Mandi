@@ -55,4 +55,9 @@ public class AppDbHelper implements DbHelper {
     public Observable<List<Village>> getAllVillages() {
         return mAppDatabase.villageDao().loadAll().toObservable();
     }
+
+    @Override
+    public Observable<Integer> isVillageEmpty() {
+        return mAppDatabase.villageDao().isVillageIsEmpty().toObservable();
+    }
 }

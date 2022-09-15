@@ -30,7 +30,7 @@ public class User {
         this.password = password;
     }
 
-    @PrimaryKey
+    @PrimaryKey(autoGenerate = true)
     public int id;
 
     public String name;

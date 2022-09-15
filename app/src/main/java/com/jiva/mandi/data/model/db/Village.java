@@ -27,7 +27,8 @@ import androidx.room.PrimaryKey;
  * Village database table entity class.
  * All villages with their selling price per kilogram will be stored on this table.
  */
-@Entity(tableName = "villages")
+@Entity(tableName = "villages", indices = {@Index(value = {"name"},
+        unique = true)})
 public class Village {
 
     public Village() {
@@ -39,7 +40,7 @@ public class Village {
         this.sellingPrice = sellingPrice;
     }
 
-    @PrimaryKey
+    @PrimaryKey(autoGenerate = true)
     public int id;
 
     public String name;
