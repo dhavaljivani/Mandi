@@ -14,7 +14,7 @@
  *  limitations under the License
  */
 
-package com.jiva.mandi.ui.login;
+package com.jiva.mandi.ui.register;
 
 import android.text.TextUtils;
 
@@ -30,11 +30,11 @@ import java.util.ArrayList;
 import io.reactivex.android.schedulers.AndroidSchedulers;
 import io.reactivex.schedulers.Schedulers;
 
-public class LoginViewModel extends BaseViewModel<LoginNavigator> {
+public class RegisterViewModel extends BaseViewModel<RegisterNavigator> {
 
     private LoginRequest loginRequest;
 
-    public LoginViewModel(DataManager dataManager) {
+    public RegisterViewModel(DataManager dataManager) {
         super(dataManager);
         loginRequest  = new LoginRequest("","");
     }

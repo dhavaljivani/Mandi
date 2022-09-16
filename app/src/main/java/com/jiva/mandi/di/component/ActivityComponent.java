@@ -3,6 +3,7 @@ package com.jiva.mandi.di.component;
 import com.jiva.mandi.di.module.ActivityModule;
 import com.jiva.mandi.di.scope.ActivityScope;
 import com.jiva.mandi.ui.login.LoginActivity;
+import com.jiva.mandi.ui.register.RegisterActivity;
 
 import dagger.Component;
 
@@ -11,4 +12,5 @@ import dagger.Component;
 public interface ActivityComponent {
 
     void inject (LoginActivity loginActivity);
+    void inject (RegisterActivity registerActivity);
 }

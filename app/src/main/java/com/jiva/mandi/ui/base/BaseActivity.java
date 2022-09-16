@@ -1,8 +1,10 @@
 package com.jiva.mandi.ui.base;
 
 import android.annotation.TargetApi;
+import android.app.Activity;
 import android.app.ProgressDialog;
 import android.content.Context;
+import android.content.Intent;
 import android.content.pm.PackageManager;
 import android.os.Build;
 import android.os.Bundle;
@@ -23,7 +25,6 @@ import com.jiva.mandi.utils.AppUtils;
 import com.jiva.mandi.utils.NetworkUtils;
 
 import javax.inject.Inject;
-
 
 
 public abstract class BaseActivity<T extends ViewDataBinding, V extends BaseViewModel> extends AppCompatActivity
@@ -102,10 +103,9 @@ public abstract class BaseActivity<T extends ViewDataBinding, V extends BaseView
     }
 
 
-
     private ActivityComponent getBuildComponent() {
         return DaggerActivityComponent.builder()
-                .appComponent(((MandiApp)getApplication()).appComponent)
+                .appComponent(((MandiApp) getApplication()).appComponent)
                 .activityModule(new ActivityModule(this))
                 .build();
     }
@@ -122,6 +122,52 @@ public abstract class BaseActivity<T extends ViewDataBinding, V extends BaseView
         mViewDataBinding = DataBindingUtil.setContentView(this, getLayoutId());
         mViewDataBinding.setVariable(getBindingVariable(), mViewModel);
         mViewDataBinding.executePendingBindings();
+    }
+
+
+    /**
+     * @param context          context
+     * @param destinationClass Destination navigation class
+     * @param finish           Boolean to finish the current activity
+     * @param clearStack       Clear the activity stack
+     * @param bundle           Bundle data
+     */
+    public void moveActivity(Context context, Class<?> destinationClass, boolean finish, boolean clearStack,
+                             Bundle bundle) {
+        Intent intent = new Intent(context, destinationClass);
+
+        if (bundle != null) {
+            intent.putExtras(bundle);
+        }
+
+        if (clearStack) {
+            intent = intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK | Intent.FLAG_ACTIVITY_CLEAR_TASK);
+        }
+        context.startActivity(intent);
+        Activity activity = (Activity) context;
+        if (finish) {
+            ((Activity) context).finish();
+        }
+    }
+
+    /**
+     * @param context          context
+     * @param destinationClass Destination navigation class
+     * @param finish           Boolean to finish the current activity
+     */
+    public void moveActivity(Context context, Class<?> destinationClass, boolean finish) {
+        moveActivity(context, destinationClass, finish, false, null);
+    }
+
+    /**
+     * @param context          context
+     * @param destinationClass Destination navigation class
+     * @param finish           Boolean to finish the current activity
+     * @param clearStack       Clear the activity stack
+     */
+    public void moveActivity(Context context, Class<?> destinationClass, boolean finish,
+                             boolean clearStack) {
+        moveActivity(context, destinationClass, finish, clearStack, null);
     }
 }
 

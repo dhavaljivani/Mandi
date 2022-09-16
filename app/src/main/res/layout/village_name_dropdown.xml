@@ -1,0 +1,14 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.appcompat.widget.AppCompatTextView xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:id="@+id/tv_title"
+    style="@style/EditTextStyle"
+    android:background="@drawable/custom_spinner"
+    android:drawableStart="@drawable/ic_baseline_location_on_24"
+    android:drawableEnd="@drawable/ic_baseline_keyboard_arrow_down_24"
+    android:padding="@dimen/size_14dp"
+    android:textColor="@color/colorEditTextStroke"
+    app:layout_constraintRight_toRightOf="parent"
+    app:layout_constraintTop_toTopOf="parent"
+    tools:ignore="ContentDescription" />
