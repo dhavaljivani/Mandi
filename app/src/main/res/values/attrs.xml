@@ -3,21 +3,22 @@
     <attr name="disable_edittext_background" format="color" />
     <attr name="disable_edittext_borderColor" format="color" />
     <attr name="disable_edittext_hintColor" format="color" />
-    <attr name="tvSubtitle" format="color"/>
-    <attr name="background2" format="color"/>
-    <attr name="tvNoDataFound" format="color"/>
-    <attr name="headerColor" format="color"/>
-    <attr name="profileCard" format="color"/>
-    <attr name="profileCardWithShimmer" format="color"/>
-    <attr name="leaveBalanceCard" format="color"/>
-    <attr name="primaryButtonColor" format="color"/>
-    <attr name="floatingButton" format="color"/>
-    <attr name="cardHeader" format="color"/>
-    <attr name="cardBottomHeader" format="color"/>
-    <attr name="reject" format="color"/>
-    <attr name="approve" format="color"/>
-    <attr name="searchDisable" format="color"/>
-    <attr name="secondaryButtonBG" format="color"/>
+    <attr name="tvSubtitle" format="color" />
+    <attr name="background2" format="color" />
+    <attr name="tvNoDataFound" format="color" />
+    <attr name="headerColor" format="color" />
+    <attr name="profileCard" format="color" />
+    <attr name="profileCardWithShimmer" format="color" />
+    <attr name="leaveBalanceCard" format="color" />
+    <attr name="primaryButtonColor" format="color" />
+    <attr name="floatingButton" format="color" />
+    <attr name="cardHeader" format="color" />
+    <attr name="cardBottomHeader" format="color" />
+    <attr name="reject" format="color" />
+    <attr name="approve" format="color" />
+    <attr name="searchDisable" format="color" />
+    <attr name="secondaryButtonBG" format="color" />
+    <attr name="cardColor" format="color" />
 </resources>
 
 

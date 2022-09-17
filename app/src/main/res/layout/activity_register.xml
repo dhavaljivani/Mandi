@@ -55,7 +55,7 @@
                 style="@style/TextInputEditTextStyle"
                 android:contentDescription="@string/loginUsername"
                 android:drawableStart="@drawable/ic_baseline_person_24"
-                android:inputType="phone"
+                android:inputType="text"
                 android:textColor="?attr/editTextColor" />
         </com.google.android.material.textfield.TextInputLayout>
 

@@ -12,6 +12,7 @@ import com.jiva.mandi.databinding.ActivityLoginBinding;
 import com.jiva.mandi.databinding.ActivityRegisterBinding;
 import com.jiva.mandi.di.component.ActivityComponent;
 import com.jiva.mandi.ui.base.BaseActivity;
+import com.jiva.mandi.ui.productsell.ProductSellActivity;
 
 public class RegisterActivity extends BaseActivity<ActivityRegisterBinding, RegisterViewModel> implements View.OnClickListener {
 
@@ -51,7 +52,7 @@ public class RegisterActivity extends BaseActivity<ActivityRegisterBinding, Regi
         if (v.getId() == R.id.ivBack) {
             finish();
         } else if (v.getId() == R.id.btnSignUp) {
-            moveActivity(this, RegisterActivity.class, false);
+            moveActivity(this, ProductSellActivity.class,true);
         }
     }
 }

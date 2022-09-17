@@ -14,10 +14,12 @@ import android.view.inputmethod.InputMethodManager;
 import androidx.annotation.LayoutRes;
 import androidx.annotation.Nullable;
 import androidx.appcompat.app.AppCompatActivity;
+import androidx.appcompat.widget.Toolbar;
 import androidx.databinding.DataBindingUtil;
 import androidx.databinding.ViewDataBinding;
 
 import com.jiva.mandi.MandiApp;
+import com.jiva.mandi.R;
 import com.jiva.mandi.di.component.ActivityComponent;
 import com.jiva.mandi.di.component.DaggerActivityComponent;
 import com.jiva.mandi.di.module.ActivityModule;
@@ -168,6 +170,27 @@ public abstract class BaseActivity<T extends ViewDataBinding, V extends BaseView
     public void moveActivity(Context context, Class<?> destinationClass, boolean finish,
                              boolean clearStack) {
         moveActivity(context, destinationClass, finish, clearStack, null);
+    }
+
+
+    /**
+     * @param isShowBack Using this boolean param the custom navigation back button can
+     *                   show/hide in toolbar.
+     */
+    public void setupToolbar(boolean isShowBack, String title) {
+        Toolbar toolbar = findViewById(R.id.toolbar);
+        if (toolbar != null) {
+            setSupportActionBar(toolbar);
+            if (getSupportActionBar() != null) {
+                getSupportActionBar().setDisplayShowTitleEnabled(true);
+                getSupportActionBar().setTitle(title);
+            }
+
+            if (isShowBack) {
+                toolbar.setNavigationIcon(R.drawable.ic_arrow_white);
+                toolbar.setNavigationOnClickListener(v -> onBackPressed());
+            }
+        }
     }
 }
 

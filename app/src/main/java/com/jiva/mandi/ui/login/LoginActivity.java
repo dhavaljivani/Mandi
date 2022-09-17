@@ -8,6 +8,7 @@ import com.jiva.mandi.R;
 import com.jiva.mandi.databinding.ActivityLoginBinding;
 import com.jiva.mandi.di.component.ActivityComponent;
 import com.jiva.mandi.ui.base.BaseActivity;
+import com.jiva.mandi.ui.productsell.ProductSellActivity;
 import com.jiva.mandi.ui.register.RegisterActivity;
 
 public class LoginActivity extends BaseActivity<ActivityLoginBinding, LoginViewModel> implements LoginNavigator, View.OnClickListener {
@@ -60,11 +61,11 @@ public class LoginActivity extends BaseActivity<ActivityLoginBinding, LoginViewM
     @Override
     public void onClick(View v) {
         if (v.getId() == R.id.btnLogin) {
-            // Sign In.
+            moveActivity(this, ProductSellActivity.class,true);
         } else if (v.getId() == R.id.tvRegister) {
             moveActivity(this, RegisterActivity.class, false);
         } else if (v.getId() == R.id.tvSkip) {
-            // Move to selling activity.
+            moveActivity(this, ProductSellActivity.class,true);
         }
     }
 }

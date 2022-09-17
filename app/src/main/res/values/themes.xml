@@ -17,5 +17,7 @@
         <item name="background">@color/white</item>
         <item name="editTextColor">@color/black</item>
         <item name="disable_edittext_hintColor">@color/colorGrey</item>
+        <item name="background2">@color/colorLightGrey</item>
+        <item name="cardColor">@color/white</item>
     </style>
 </resources>

@@ -1,5 +1,5 @@
 <resources>
-    <string name="app_name">MandiApp</string>
+    <string name="app_name">Mandi</string>
     <!-- Strings related to login -->
     <string name="prompt_email">Email</string>
     <string name="prompt_password">Password</string>
@@ -31,7 +31,6 @@
     <string name="forgot_password">Forgot Password?</string>
     <string name="register">Register</string>
     <string name="skip">Skip</string>
-
     <!-- END LOGIN SCREEN -->
 
     <!-- SIGN UP -->
@@ -46,4 +45,26 @@
         <item>Rajkot</item>
     </string-array>
     <!-- END SIGN UP -->
+
+    <!-- Product Sell -->
+    <string name="product_sell_title">Product Sell</string>
+    <string name="seller_name">Seller Name</string>
+    <string name="card_id">Loyalty Card Id</string>
+    <string name="weight">Gross Weight</string>
+    <string name="gross_price">Gross Price</string>
+    <string name="sell_my_product">Sell My Product</string>
+    <string name="applied_loyalty_index">Applied loyalty index: 1.12</string>
+    <!-- END Product Sell -->
+
+    <!-- Product Sold -->
+    <string name="product_sold_title">Product Sold Details</string>
+    <string name="product_sold_msg">Thank you Dhaval Jivani for selling your quality product.</string>
+    <string name="product_sold_price_msg">Please ensure you received 20003.25 INR for 23 tonnes of your product.</string>
+    <string name="btn_sell_more">Sell More</string>
+    <!-- TODO: Remove or change this placeholder text -->
+    <string name="hello_blank_fragment">Hello blank fragment</string>
+    <!-- END Product Sold -->
+
+    <!-- Dashboard -->
+
 </resources>

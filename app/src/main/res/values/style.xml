@@ -216,5 +216,17 @@
         <item name="android:clickable">true</item>
     </style>
 
+    <style name="topCornerView" parent="@style/Widget.MaterialComponents.CardView">
+        <item name="shapeAppearanceOverlay">@style/ShapeAppearanceOverlay_card_custom_corners_top</item>
+    </style>
+
+    <style name="ShapeAppearanceOverlay_card_custom_corners_top">
+        <item name="cornerFamily">rounded</item>
+        <item name="cornerSizeTopLeft">@dimen/size_30dp</item>
+        <item name="cornerSizeTopRight">@dimen/size_30dp</item>
+        <item name="cornerSizeBottomLeft">@dimen/size_0dp</item>
+        <item name="cornerSizeBottomRight">@dimen/size_0dp</item>
+    </style>
+
 
 </resources>

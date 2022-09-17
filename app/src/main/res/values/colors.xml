@@ -13,6 +13,7 @@
 
     <color name="colorEditTextStroke">#9C9898</color>
     <color name="colorGrayIconTint">#C7C8D3</color>
-
+    <color name="colorLightGrey">#EAEBEC</color>
+    <color name="cardBackground">#383838</color>
 
 </resources>
