@@ -8,6 +8,7 @@ import com.jiva.mandi.data.datamagager.DataManager;
 import com.jiva.mandi.ui.base.BaseActivity;
 import com.jiva.mandi.ui.base.ViewModelProviderFactory;
 import com.jiva.mandi.ui.login.LoginViewModel;
+import com.jiva.mandi.ui.main.MainViewModel;
 import com.jiva.mandi.ui.productsell.ProductSellViewModel;
 import com.jiva.mandi.ui.productsold.ProductSoldViewModel;
 import com.jiva.mandi.ui.register.RegisterViewModel;
@@ -17,10 +18,18 @@ import dagger.Provides;
 
 @Module
 public class ActivityModule {
-    private BaseActivity<?, ?> activity;
+    private final BaseActivity<?, ?> activity;
 
     public ActivityModule(BaseActivity<?, ?> activity) {
         this.activity = activity;
+    }
+
+
+    @Provides
+    MainViewModel provideMainViewModel(DataManager dataManager) {
+        Supplier<MainViewModel> supplier = () -> new MainViewModel(dataManager);
+        ViewModelProviderFactory<MainViewModel> factory = new ViewModelProviderFactory<>(MainViewModel.class, supplier);
+        return new ViewModelProvider(activity, (ViewModelProvider.Factory) factory).get(MainViewModel.class);
     }
 
 

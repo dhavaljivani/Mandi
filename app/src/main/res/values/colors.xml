@@ -15,5 +15,6 @@
     <color name="colorGrayIconTint">#C7C8D3</color>
     <color name="colorLightGrey">#EAEBEC</color>
     <color name="cardBackground">#383838</color>
+    <color name="errorColor">#b01b0b</color>
 
 </resources>

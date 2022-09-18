@@ -7,7 +7,8 @@
     <string name="action_sign_in_short">Sign in</string>
     <string name="invalid_username">Not a valid username</string>
     <string name="invalid_password">Password must be >5 characters</string>
-    <string name="login_failed">"Login failed"</string>
+    <string name="login_success">Sign in successfully.</string>
+    <string name="login_failed">There is no user with the given credentials. Please enter a valid credentials.</string>
 
 
     <!-- LOGIN SCREEN -->
@@ -16,7 +17,9 @@
     <string name="login_welcome_msg">Sign In To Your Account</string>
     <string name="mobile_number">Mobile Number</string>
     <string name="password">Password</string>
-    <string name="error_username">Please enter mobile number!</string>
+    <string name="error_name">Please enter your name!</string>
+    <string name="error_mobile">Please enter mobile number!</string>
+    <string name="error_mobile_valid">The mobile number must be 10 digits long!</string>
     <string name="error_password">Please enter password!</string>
     <string name="msg_login_success">Logged in successfully</string>
     <string name="msg_already_login">Already logged In</string>
@@ -36,6 +39,10 @@
     <!-- SIGN UP -->
     <string name="sign_up">Sign Up</string>
     <string name="name">Name</string>
+    <string name="select_village">Select Village</string>
+    <string name="user_exist_msg">The user has already registered with a mobile number.</string>
+    <string name="user_registered_msg">The user has successfully registered.</string>
+    <string name="error_village">Please select village.</string>
     <string-array name="villageArray">
         <item>Select Village</item>
         <item>Ramgarh</item>

@@ -13,7 +13,7 @@ import androidx.room.PrimaryKey;
  */
 @Entity(tableName = "users",
         foreignKeys = {@ForeignKey(entity = Village.class, parentColumns = "id", childColumns = "village_id")},
-        indices = {@Index(value = {"name"},
+        indices = {@Index(value = {"name","mobile_number"},
                 unique = true)}
 )
 public class User {
@@ -46,4 +46,56 @@ public class User {
 
     public String password;
 
+    @Ignore
+    public String plainPassword;
+
+    @Ignore
+    public String getName() {
+        return name;
+    }
+
+    @Ignore
+    public void setName(String name) {
+        this.name = name;
+    }
+
+    @Ignore
+    public String getLoyaltyCardId() {
+        return loyaltyCardId;
+    }
+
+    @Ignore
+    public void setLoyaltyCardId(String loyaltyCardId) {
+        this.loyaltyCardId = loyaltyCardId;
+    }
+
+    @Ignore
+    public String getMobileNumber() {
+        return mobileNumber;
+    }
+
+    @Ignore
+    public void setMobileNumber(String mobileNumber) {
+        this.mobileNumber = mobileNumber;
+    }
+
+    @Ignore
+    public int getVillageId() {
+        return villageId;
+    }
+
+    @Ignore
+    public void setVillageId(int villageId) {
+        this.villageId = villageId;
+    }
+
+    @Ignore
+    public String getPassword() {
+        return password;
+    }
+
+    @Ignore
+    public void setPassword(String password) {
+        this.password = password;
+    }
 }

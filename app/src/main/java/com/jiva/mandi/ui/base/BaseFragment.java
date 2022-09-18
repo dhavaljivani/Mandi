@@ -1,19 +1,3 @@
-/*
- *  Copyright (C) 2017 MINDORKS NEXTGEN PRIVATE LIMITED
- *
- *  Licensed under the Apache License, Version 2.0 (the "License");
- *  you may not use this file except in compliance with the License.
- *  You may obtain a copy of the License at
- *
- *      https://mindorks.com/license/apache-v2
- *
- *  Unless required by applicable law or agreed to in writing, software
- *  distributed under the License is distributed on an "AS IS" BASIS,
- *  WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
- *  See the License for the specific language governing permissions and
- *  limitations under the License
- */
-
 package com.jiva.mandi.ui.base;
 
 import android.content.Context;
@@ -28,6 +12,7 @@ import androidx.annotation.Nullable;
 import androidx.databinding.DataBindingUtil;
 import androidx.databinding.ViewDataBinding;
 import androidx.fragment.app.Fragment;
+import androidx.navigation.NavController;
 
 import com.jiva.mandi.MandiApp;
 import com.jiva.mandi.di.component.DaggerFragmentComponent;
@@ -36,17 +21,12 @@ import com.jiva.mandi.di.module.FragmentModule;
 
 import javax.inject.Inject;
 
-
-/**
- * Created by amitshekhar on 09/07/17.
- */
-
 public abstract class BaseFragment<T extends ViewDataBinding, V extends BaseViewModel> extends Fragment {
 
     private BaseActivity mActivity;
     private View mRootView;
     private T mViewDataBinding;
-
+    private NavController navController;
 
     @Inject
     protected V mViewModel;
@@ -67,7 +47,7 @@ public abstract class BaseFragment<T extends ViewDataBinding, V extends BaseView
 
 
     @Override
-    public void onAttach(Context context) {
+    public void onAttach(@NonNull Context context) {
         super.onAttach(context);
         if (context instanceof BaseActivity) {
             BaseActivity activity = (BaseActivity) context;
@@ -86,8 +66,7 @@ public abstract class BaseFragment<T extends ViewDataBinding, V extends BaseView
     @Override
     public View onCreateView(@NonNull LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
         mViewDataBinding = DataBindingUtil.inflate(inflater, getLayoutId(), container, false);
-        mRootView = mViewDataBinding.getRoot();
-        return mRootView;
+        return mViewDataBinding.getRoot();
     }
 
     @Override
@@ -112,16 +91,6 @@ public abstract class BaseFragment<T extends ViewDataBinding, V extends BaseView
         return mViewDataBinding;
     }
 
-    public void hideKeyboard() {
-        if (mActivity != null) {
-            mActivity.hideKeyboard();
-        }
-    }
-
-    public boolean isNetworkConnected() {
-        return mActivity != null && mActivity.isNetworkConnected();
-    }
-
     public abstract void performDependencyInjection(FragmentComponent buildComponent);
 
 
@@ -134,8 +103,10 @@ public abstract class BaseFragment<T extends ViewDataBinding, V extends BaseView
 
     public interface Callback {
 
+        @SuppressWarnings("EmptyMethod")
         void onFragmentAttached();
 
+        @SuppressWarnings("EmptyMethod")
         void onFragmentDetached(String tag);
     }
 }

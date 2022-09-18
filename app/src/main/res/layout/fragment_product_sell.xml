@@ -16,10 +16,6 @@
         android:background="?attr/background2"
         tools:context=".ui.productsell.ProductSellActivity">
 
-        <include
-            android:id="@+id/toolbarView"
-            layout="@layout/toolbar_main" />
-
 
         <com.google.android.material.card.MaterialCardView
             android:id="@+id/sellerDetailCard"
@@ -31,13 +27,12 @@
             app:cardUseCompatPadding="true"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@+id/toolbarView">
+            app:layout_constraintTop_toTopOf="parent">
 
             <androidx.constraintlayout.widget.ConstraintLayout
                 style="@style/parentViewMediumPadding"
                 android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                >
+                android:layout_height="wrap_content">
 
                 <androidx.appcompat.widget.AppCompatTextView
                     android:id="@+id/tvTitle"

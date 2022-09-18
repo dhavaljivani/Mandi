@@ -12,6 +12,7 @@ import java.util.List;
 
 public class DataConverter implements Serializable {
 
+    @SuppressWarnings("unused")
     @TypeConverter // note this annotation
     public String fromOptionValuesList(List<Village> optionValues) {
         if (optionValues == null) {
@@ -23,6 +24,7 @@ public class DataConverter implements Serializable {
         return gson.toJson(optionValues, type);
     }
 
+    @SuppressWarnings("unused")
     @TypeConverter // note this annotation
     public List<Village> toOptionValuesList(String optionValuesString) {
         if (optionValuesString == null) {

@@ -16,14 +16,6 @@
         android:background="?attr/background2"
         tools:context=".ui.productsold.ProductSoldActivity">
 
-        <include
-            android:id="@+id/toolbarView"
-            layout="@layout/toolbar_main"
-            app:layout_constraintBottom_toBottomOf="@+id/sellerDetailCard"
-            app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toTopOf="parent" />
-
         <com.google.android.material.card.MaterialCardView
             android:id="@+id/sellerDetailCard"
             android:layout_width="match_parent"
@@ -34,7 +26,7 @@
             app:cardUseCompatPadding="true"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@+id/toolbarView">
+            app:layout_constraintTop_toTopOf="parent">
 
             <androidx.constraintlayout.widget.ConstraintLayout
                 android:layout_width="match_parent"
@@ -98,7 +90,7 @@
                 android:padding="@dimen/size_5dp">
 
                 <com.google.android.material.button.MaterialButton
-                    android:id="@+id/btnSell"
+                    android:id="@+id/btnSellMore"
                     style="@style/primaryButtonStyle"
                     android:text="@string/btn_sell_more"
                     app:cornerRadius="@dimen/size_7dp"

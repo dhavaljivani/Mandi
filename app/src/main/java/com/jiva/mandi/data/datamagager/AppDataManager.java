@@ -1,27 +1,16 @@
-/*
- *  Copyright (C) 2017 MINDORKS NEXTGEN PRIVATE LIMITED
- *
- *  Licensed under the Apache License, Version 2.0 (the "License");
- *  you may not use this file except in compliance with the License.
- *  You may obtain a copy of the License at
- *
- *      https://mindorks.com/license/apache-v2
- *
- *  Unless required by applicable law or agreed to in writing, software
- *  distributed under the License is distributed on an "AS IS" BASIS,
- *  WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
- *  See the License for the specific language governing permissions and
- *  limitations under the License
- */
-
 package com.jiva.mandi.data.datamagager;
 
 import android.content.Context;
 
+import com.google.gson.Gson;
 import com.jiva.mandi.data.db.DbHelper;
+import com.jiva.mandi.data.model.LoginResponse;
+import com.jiva.mandi.data.model.VillagesList;
 import com.jiva.mandi.data.model.db.User;
 import com.jiva.mandi.data.model.db.Village;
 import com.jiva.mandi.data.preference.PreferencesHelper;
+import com.jiva.mandi.utils.AppConstants;
+import com.jiva.mandi.utils.AppUtils;
 
 import java.util.List;
 
@@ -29,17 +18,13 @@ import javax.inject.Inject;
 import javax.inject.Singleton;
 
 import io.reactivex.Observable;
+import io.reactivex.ObservableSource;
+import io.reactivex.functions.Function;
 
 @Singleton
 public class AppDataManager implements DataManager {
-
-    private static final String TAG = "AppDataManager";
-
-
-    private final Context mContext;
-
     private final DbHelper mDbHelper;
-
+    private final Context mContext;
     private final PreferencesHelper mPreferencesHelper;
 
     @Inject
@@ -60,18 +45,23 @@ public class AppDataManager implements DataManager {
     }
 
     @Override
+    public Observable<LoginResponse> findUser(String mobileNumber, String password) {
+        return mDbHelper.findUser(mobileNumber, password);
+    }
+
+    @Override
     public Observable<Boolean> insertUser(User user) {
         return mDbHelper.insertUser(user);
     }
 
     @Override
-    public Observable<User> getUserByName(String name) {
-        return mDbHelper.getUserByName(name);
+    public Observable<Boolean> isUserExist(String phoneNumber) {
+        return mDbHelper.isUserExist(phoneNumber);
     }
 
     @Override
-    public Observable<Boolean> insertVillages(List<Village> villages) {
-        return mDbHelper.insertVillages(villages);
+    public Observable<Boolean> insertVillages(List<Village> villageList) {
+        return mDbHelper.insertVillages(villageList);
     }
 
     @Override
@@ -83,4 +73,18 @@ public class AppDataManager implements DataManager {
     public Observable<Integer> isVillageEmpty() {
         return mDbHelper.isVillageEmpty();
     }
+
+    @Override
+    public Observable<String> getLastInsertedUser() {
+        return mDbHelper.getLastInsertedUser();
+    }
+
+    @Override
+    public Observable<Boolean> getVillagesFromJson() {
+        Gson mGson = new Gson();
+        VillagesList villagesList = mGson.fromJson(AppUtils.loadJSONFromAsset(mContext, AppConstants.VILLAGE_LIST), VillagesList.class);
+        return insertVillages(villagesList.getVillages());
+    }
+
+
 }

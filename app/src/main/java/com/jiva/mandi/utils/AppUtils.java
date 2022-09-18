@@ -1,19 +1,3 @@
-/*
- *  Copyright (C) 2017 MINDORKS NEXTGEN PRIVATE LIMITED
- *
- *  Licensed under the Apache License, Version 2.0 (the "License");
- *  you may not use this file except in compliance with the License.
- *  You may obtain a copy of the License at
- *
- *      https://mindorks.com/license/apache-v2
- *
- *  Unless required by applicable law or agreed to in writing, software
- *  distributed under the License is distributed on an "AS IS" BASIS,
- *  WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
- *  See the License for the specific language governing permissions and
- *  limitations under the License
- */
-
 package com.jiva.mandi.utils;
 
 import android.annotation.SuppressLint;
@@ -23,7 +7,10 @@ import android.content.res.AssetManager;
 import android.graphics.Color;
 import android.graphics.drawable.ColorDrawable;
 import android.provider.Settings;
+import android.text.TextUtils;
+import android.util.Log;
 import android.util.Patterns;
+import android.widget.Toast;
 
 import com.jiva.mandi.R;
 
@@ -35,46 +22,55 @@ import java.util.Locale;
 
 
 public final class AppUtils {
+    private static String TAG = "AppUtils";
 
     private AppUtils() {
         // This utility class is not publicly instantiable
     }
 
-    @SuppressLint("all")
-    public static String getDeviceId(Context context) {
-        return Settings.Secure.getString(context.getContentResolver(), Settings.Secure.ANDROID_ID);
+    /**
+     * @param e exception that will be recorded in crash analytics
+     */
+    public static void handleException(Throwable e) {
+        Log.e(TAG, e.getMessage());
+        //FirebaseCrashlytics.getInstance().recordException(e);
     }
 
-    public static String getTimestamp() {
-        return new SimpleDateFormat(AppConstants.TIMESTAMP_FORMAT, Locale.US).format(new Date());
-    }
+    public static String loadJSONFromAsset(Context context, String jsonFileName) {
+        try {
+            AssetManager manager = context.getAssets();
+            InputStream is = manager.open(jsonFileName);
 
-    public static boolean isEmailValid(String email) {
-        return Patterns.EMAIL_ADDRESS.matcher(email).matches();
-    }
+            int size = is.available();
+            byte[] buffer = new byte[size];
+            is.read(buffer);
+            is.close();
 
-    public static String loadJSONFromAsset(Context context, String jsonFileName) throws IOException {
-        AssetManager manager = context.getAssets();
-        InputStream is = manager.open(jsonFileName);
-
-        int size = is.available();
-        byte[] buffer = new byte[size];
-        is.read(buffer);
-        is.close();
-
-        return new String(buffer, "UTF-8");
-    }
-
-    public static ProgressDialog showLoadingDialog(Context context) {
-        ProgressDialog progressDialog = new ProgressDialog(context);
-        progressDialog.show();
-        if (progressDialog.getWindow() != null) {
-            progressDialog.getWindow().setBackgroundDrawable(new ColorDrawable(Color.TRANSPARENT));
+            return new String(buffer, "UTF-8");
+        } catch (IOException exception) {
+            Log.e(TAG, "loadJSONFromAsset: " + exception.getMessage());
         }
-        progressDialog.setContentView(R.layout.progress_dialog);
-        progressDialog.setIndeterminate(true);
-        progressDialog.setCancelable(false);
-        progressDialog.setCanceledOnTouchOutside(false);
-        return progressDialog;
+        return "";
+
+    }
+
+    /**
+     * @param context View context
+     * @param message error message to show as toast
+     */
+    public static void showToast(final Context context, final String message) {
+        Toast.makeText(context, message, Toast.LENGTH_LONG).show();
+    }
+
+    public static String getNewLoyaltyId(String loyaltyId) {
+        String newLoyaltyId = "S100";
+        if (!TextUtils.isEmpty(loyaltyId)) {
+            String indexNumber = loyaltyId.substring(1);
+            if (TextUtils.isDigitsOnly(indexNumber)) {
+                int newIndexNumber = Integer.parseInt(indexNumber) + 1;
+                newLoyaltyId = "S" + newIndexNumber;
+            }
+        }
+        return newLoyaltyId;
     }
 }
