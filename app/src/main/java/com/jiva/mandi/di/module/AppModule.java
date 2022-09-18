@@ -5,6 +5,8 @@ import android.content.Context;
 
 import androidx.room.Room;
 
+import com.google.gson.Gson;
+import com.google.gson.GsonBuilder;
 import com.jiva.mandi.data.datamagager.AppDataManager;
 import com.jiva.mandi.data.datamagager.DataManager;
 import com.jiva.mandi.data.db.AppDatabase;
@@ -69,6 +71,12 @@ public class AppModule {
     @Singleton
     PreferencesHelper providePreferencesHelper(AppPreferencesHelper appPreferencesHelper) {
         return appPreferencesHelper;
+    }
+
+    @Provides
+    @Singleton
+    Gson provideGson() {
+        return new GsonBuilder().create();
     }
 
 }

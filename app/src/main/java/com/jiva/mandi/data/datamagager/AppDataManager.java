@@ -1,10 +1,12 @@
 package com.jiva.mandi.data.datamagager;
 
 import android.content.Context;
+import android.text.TextUtils;
 
 import com.google.gson.Gson;
 import com.jiva.mandi.data.db.DbHelper;
 import com.jiva.mandi.data.model.LoginResponse;
+import com.jiva.mandi.data.model.UserResponse;
 import com.jiva.mandi.data.model.VillagesList;
 import com.jiva.mandi.data.model.db.User;
 import com.jiva.mandi.data.model.db.Village;
@@ -26,23 +28,26 @@ public class AppDataManager implements DataManager {
     private final DbHelper mDbHelper;
     private final Context mContext;
     private final PreferencesHelper mPreferencesHelper;
+    private final Gson mGson;
 
     @Inject
-    public AppDataManager(Context context, DbHelper dbHelper, PreferencesHelper preferencesHelper) {
+    public AppDataManager(Context context, DbHelper dbHelper, PreferencesHelper preferencesHelper, Gson gson) {
         mContext = context;
         mDbHelper = dbHelper;
         mPreferencesHelper = preferencesHelper;
+        mGson = gson;
     }
 
     @Override
-    public String getAccessToken() {
-        return mPreferencesHelper.getAccessToken();
+    public String getLoggedInUser() {
+        return mPreferencesHelper.getLoggedInUser();
     }
 
     @Override
-    public void setAccessToken(String accessToken) {
-        mPreferencesHelper.setAccessToken(accessToken);
+    public void setLoggedInUser(String loginResponse) {
+        mPreferencesHelper.setLoggedInUser(loginResponse);
     }
+
 
     @Override
     public Observable<LoginResponse> findUser(String mobileNumber, String password) {
@@ -50,7 +55,17 @@ public class AppDataManager implements DataManager {
     }
 
     @Override
-    public Observable<Boolean> insertUser(User user) {
+    public Observable<List<UserResponse>> getAllUser() {
+        return mDbHelper.getAllUser();
+    }
+
+    @Override
+    public Observable<LoginResponse> findUserById(int userId) {
+        return mDbHelper.findUserById(userId);
+    }
+
+    @Override
+    public Observable<Long> insertUser(User user) {
         return mDbHelper.insertUser(user);
     }
 
@@ -81,10 +96,17 @@ public class AppDataManager implements DataManager {
 
     @Override
     public Observable<Boolean> getVillagesFromJson() {
-        Gson mGson = new Gson();
         VillagesList villagesList = mGson.fromJson(AppUtils.loadJSONFromAsset(mContext, AppConstants.VILLAGE_LIST), VillagesList.class);
         return insertVillages(villagesList.getVillages());
     }
 
-
+    @Override
+    public Observable<LoginResponse> getLoggedInUserData() {
+        String jsonString = getLoggedInUser();
+        if (!TextUtils.isEmpty(jsonString)) {
+            LoginResponse loginResponse = mGson.fromJson(jsonString, LoginResponse.class);
+            return Observable.just(loginResponse);
+        }
+        return Observable.just(new LoginResponse());
+    }
 }

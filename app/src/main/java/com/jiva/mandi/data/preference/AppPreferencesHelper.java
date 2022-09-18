@@ -3,6 +3,7 @@ package com.jiva.mandi.data.preference;
 import android.content.Context;
 import android.content.SharedPreferences;
 
+import com.jiva.mandi.data.model.LoginResponse;
 import com.jiva.mandi.di.PreferenceInfo;
 
 import javax.inject.Inject;
@@ -10,7 +11,7 @@ import javax.inject.Inject;
 
 public class AppPreferencesHelper implements PreferencesHelper {
 
-    private static final String PREF_KEY_ACCESS_TOKEN = "PREF_KEY_ACCESS_TOKEN";
+    private static final String PREF_KEY_USER_DETAIL = "PREF_KEY_USER_DETAIL";
 
     private final SharedPreferences mPrefs;
 
@@ -20,12 +21,12 @@ public class AppPreferencesHelper implements PreferencesHelper {
     }
 
     @Override
-    public String getAccessToken() {
-        return mPrefs.getString(PREF_KEY_ACCESS_TOKEN, null);
+    public String getLoggedInUser() {
+        return  mPrefs.getString(PREF_KEY_USER_DETAIL, "");
     }
 
     @Override
-    public void setAccessToken(String accessToken) {
-        mPrefs.edit().putString(PREF_KEY_ACCESS_TOKEN, accessToken).apply();
+    public void setLoggedInUser(String loginResponseJson) {
+        mPrefs.edit().putString(PREF_KEY_USER_DETAIL, loginResponseJson).apply();
     }
 }

@@ -109,7 +109,6 @@ public class RegisterFragment extends BaseFragment<FragmentRegisterBinding, Regi
                 }
             });
         }
-
     }
 
     @Override

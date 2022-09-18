@@ -1,6 +1,7 @@
 package com.jiva.mandi.data.db;
 
 import com.jiva.mandi.data.model.LoginResponse;
+import com.jiva.mandi.data.model.UserResponse;
 import com.jiva.mandi.data.model.db.User;
 import com.jiva.mandi.data.model.db.Village;
 
@@ -11,7 +12,7 @@ import io.reactivex.Observable;
 @SuppressWarnings("ALL")
 public interface DbHelper {
 
-    Observable<Boolean> insertUser(final User user);
+    Observable<Long> insertUser(final User user);
 
     Observable<Boolean> isUserExist(final String phoneNumber);
 
@@ -24,5 +25,9 @@ public interface DbHelper {
     Observable<String> getLastInsertedUser();
 
     Observable<LoginResponse> findUser(String mobileNumber, String password);
+
+    Observable<LoginResponse> findUserById(int userId);
+
+    Observable<List<UserResponse>> getAllUser();
 
 }

@@ -3,8 +3,10 @@ package com.jiva.mandi.ui.login;
 import android.telephony.PhoneNumberUtils;
 import android.text.TextUtils;
 
+import com.google.gson.Gson;
 import com.jiva.mandi.data.datamagager.DataManager;
 import com.jiva.mandi.data.model.LoginRequest;
+import com.jiva.mandi.data.model.LoginResponse;
 import com.jiva.mandi.ui.base.BaseViewModel;
 
 import io.reactivex.android.schedulers.AndroidSchedulers;
@@ -14,12 +16,13 @@ import io.reactivex.schedulers.Schedulers;
 public class LoginViewModel extends BaseViewModel<LoginNavigator> {
 
     private LoginRequest loginRequest;
+    private final Gson mGson;
 
-    public LoginViewModel(DataManager dataManager) {
+    public LoginViewModel(DataManager dataManager, Gson gson) {
         super(dataManager);
+        mGson = gson;
         loginRequest = new LoginRequest("", "");
     }
-
 
 
     public void login() {
@@ -29,6 +32,8 @@ public class LoginViewModel extends BaseViewModel<LoginNavigator> {
                 .observeOn(AndroidSchedulers.mainThread())
                 .subscribe(user -> {
                     if (user.getUserId() != 0) {
+                        String json = mGson.toJson(user, LoginResponse.class);
+                        getDataManager().setLoggedInUser(json);
                         getNavigator().onLoginSuccess();
                     }
                     setIsLoading(false);
@@ -42,33 +47,7 @@ public class LoginViewModel extends BaseViewModel<LoginNavigator> {
     }
 
 
-    public void checkAndInsertVillages() {
-        setIsLoading(true);
-        getCompositeDisposable().add(
-                getDataManager().isVillageEmpty()
-                        .subscribeOn(Schedulers.io())
-                        .observeOn(AndroidSchedulers.mainThread())
-                        .subscribe(response -> {
-                            if (response == null || response == 0) {
-                                insertVillages();
-                            }
-                        }, throwable -> {
-                            setIsLoading(false);
-                            getNavigator().handleError(throwable);
-                        }));
-    }
 
-    private void insertVillages() {
-        getCompositeDisposable().add(
-                getDataManager().getVillagesFromJson()
-                        .subscribeOn(Schedulers.io())
-                        .observeOn(AndroidSchedulers.mainThread())
-                        .subscribe(response -> {
-                            setIsLoading(false);
-                        }, throwable -> {
-                            getNavigator().handleError(throwable);
-                        }));
-    }
 
     public LoginRequest getLoginRequest() {
         return loginRequest;

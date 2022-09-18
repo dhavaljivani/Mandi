@@ -14,6 +14,7 @@ import androidx.databinding.ViewDataBinding;
 import androidx.fragment.app.Fragment;
 import androidx.navigation.NavController;
 
+import com.google.gson.Gson;
 import com.jiva.mandi.MandiApp;
 import com.jiva.mandi.di.component.DaggerFragmentComponent;
 import com.jiva.mandi.di.component.FragmentComponent;
@@ -30,6 +31,9 @@ public abstract class BaseFragment<T extends ViewDataBinding, V extends BaseView
 
     @Inject
     protected V mViewModel;
+
+    @Inject
+    protected Gson mGson;
 
     /**
      * Override for set binding variable

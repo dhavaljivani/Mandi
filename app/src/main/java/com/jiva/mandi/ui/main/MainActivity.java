@@ -5,6 +5,7 @@ import android.os.Bundle;
 
 import androidx.annotation.Nullable;
 import androidx.navigation.NavController;
+import androidx.navigation.NavGraph;
 import androidx.navigation.fragment.NavHostFragment;
 import androidx.navigation.ui.AppBarConfiguration;
 import androidx.navigation.ui.NavigationUI;
@@ -13,6 +14,7 @@ import com.jiva.mandi.R;
 import com.jiva.mandi.databinding.ActivityMainBinding;
 import com.jiva.mandi.di.component.ActivityComponent;
 import com.jiva.mandi.ui.base.BaseActivity;
+import com.jiva.mandi.utils.AppConstants;
 
 public class MainActivity extends BaseActivity<ActivityMainBinding, MainViewModel> {
 
@@ -39,22 +41,34 @@ public class MainActivity extends BaseActivity<ActivityMainBinding, MainViewMode
         super.onCreate(savedInstanceState);
         AppBarConfiguration appBarConfiguration = new AppBarConfiguration.Builder().build();
 
+        boolean isUserLoggedIn = getIntent()
+                .getBooleanExtra(AppConstants.IntentKey.IS_USER_LOGGED_IN, false);
+
         NavHostFragment navHostFragment =
                 (NavHostFragment) getSupportFragmentManager().findFragmentById(R.id.nav_host_fragment);
-        if(navHostFragment != null){
+
+        if (navHostFragment != null) {
             mNavController = navHostFragment.getNavController();
+            NavGraph navGraph = mNavController.getNavInflater().inflate(R.navigation.nav_graph);
+            if (isUserLoggedIn) {
+                navGraph.setStartDestination(R.id.productSellFragment);
+            } else {
+                navGraph.setStartDestination(R.id.loginFragment);
+            }
+            mNavController.setGraph(navGraph);
+
         }
         NavigationUI.setupActionBarWithNavController(this, mNavController, appBarConfiguration);
 
         mNavController.addOnDestinationChangedListener((navController, navDestination, bundle) -> {
-            if(getSupportActionBar() != null){
+            if (getSupportActionBar() != null) {
                 getSupportActionBar().setShowHideAnimationEnabled(false);
             }
             if (navDestination.getId() == R.id.loginFragment || navDestination.getId() == R.id.registerFragment) {
                 if (getSupportActionBar() != null) {
                     getSupportActionBar().hide();
                 }
-            }else{
+            } else {
                 if (getSupportActionBar() != null) {
                     getSupportActionBar().show();
                 }

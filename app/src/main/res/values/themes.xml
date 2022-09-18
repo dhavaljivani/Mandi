@@ -11,7 +11,7 @@
         <item name="colorSecondaryVariant">@color/colorPrimaryDark</item>
         <item name="colorOnSecondary">@color/black</item>
         <!-- Status bar color. -->
-        <item name="android:statusBarColor" >?attr/colorPrimaryVariant</item>
+        <item name="android:statusBarColor">?attr/colorPrimaryVariant</item>
         <!-- Customize your theme here. -->
 
         <item name="background">@color/white</item>
@@ -19,5 +19,16 @@
         <item name="disable_edittext_hintColor">@color/colorGrey</item>
         <item name="background2">@color/colorLightGrey</item>
         <item name="cardColor">@color/white</item>
+    </style>
+
+    <style name="Theme.MandiApp.Fullscreen" parent="Theme.MandiApp">
+        <item name="android:actionBarStyle">@style/Widget.Theme.MandiApp.ActionBar.Fullscreen</item>
+        <item name="android:windowActionBarOverlay">true</item>
+        <item name="android:windowBackground">@null</item>
+    </style>
+
+    <style name="ThemeOverlay.MandiApp.FullscreenContainer" parent="">
+        <item name="fullscreenBackgroundColor">@color/light_blue_600</item>
+        <item name="fullscreenTextColor">@color/light_blue_A200</item>
     </style>
 </resources>

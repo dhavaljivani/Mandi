@@ -12,6 +12,7 @@ import com.jiva.mandi.ui.main.MainViewModel;
 import com.jiva.mandi.ui.productsell.ProductSellViewModel;
 import com.jiva.mandi.ui.productsold.ProductSoldViewModel;
 import com.jiva.mandi.ui.register.RegisterViewModel;
+import com.jiva.mandi.ui.splash.SplashViewModel;
 
 import dagger.Module;
 import dagger.Provides;
@@ -32,34 +33,10 @@ public class ActivityModule {
         return new ViewModelProvider(activity, (ViewModelProvider.Factory) factory).get(MainViewModel.class);
     }
 
-
     @Provides
-    LoginViewModel provideLoginViewModel(DataManager dataManager) {
-        Supplier<LoginViewModel> supplier = () -> new LoginViewModel(dataManager);
-        ViewModelProviderFactory<LoginViewModel> factory = new ViewModelProviderFactory<>(LoginViewModel.class, supplier);
-        return new ViewModelProvider(activity, (ViewModelProvider.Factory) factory).get(LoginViewModel.class);
+    SplashViewModel provideSplashViewModel(DataManager dataManager) {
+        Supplier<SplashViewModel> supplier = () -> new SplashViewModel(dataManager);
+        ViewModelProviderFactory<SplashViewModel> factory = new ViewModelProviderFactory<>(SplashViewModel.class, supplier);
+        return new ViewModelProvider(activity, (ViewModelProvider.Factory) factory).get(SplashViewModel.class);
     }
-
-    @Provides
-    RegisterViewModel provideRegisterViewModel(DataManager dataManager) {
-        Supplier<RegisterViewModel> supplier = () -> new RegisterViewModel(dataManager);
-        ViewModelProviderFactory<RegisterViewModel> factory = new ViewModelProviderFactory<>(RegisterViewModel.class, supplier);
-        return new ViewModelProvider(activity, (ViewModelProvider.Factory) factory).get(RegisterViewModel.class);
-    }
-
-    @Provides
-    ProductSellViewModel provideProductSellViewModel(DataManager dataManager) {
-        Supplier<ProductSellViewModel> supplier = () -> new ProductSellViewModel(dataManager);
-        ViewModelProviderFactory<ProductSellViewModel> factory = new ViewModelProviderFactory<>(ProductSellViewModel.class, supplier);
-        return new ViewModelProvider(activity, (ViewModelProvider.Factory) factory).get(ProductSellViewModel.class);
-    }
-
-    @Provides
-    ProductSoldViewModel provideProductSoldViewModel(DataManager dataManager) {
-        Supplier<ProductSoldViewModel> supplier = () -> new ProductSoldViewModel(dataManager);
-        ViewModelProviderFactory<ProductSoldViewModel> factory = new ViewModelProviderFactory<>(ProductSoldViewModel.class, supplier);
-        return new ViewModelProvider(activity, (ViewModelProvider.Factory) factory).get(ProductSoldViewModel.class);
-    }
-
-
 }

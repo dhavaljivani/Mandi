@@ -1,4 +1,4 @@
-<resources >
+<resources>
     <!-- Base application theme. -->
     <style name="Theme.MandiApp" parent="Theme.MaterialComponents.DayNight.DarkActionBar">
         <!-- Primary brand color. -->
@@ -19,5 +19,10 @@
         <item name="disable_edittext_hintColor">@color/lightGrey</item>
         <item name="background2">?attr/background</item>
         <item name="cardColor">@color/cardBackground</item>
+    </style>
+
+    <style name="ThemeOverlay.MandiApp.FullscreenContainer" parent="">
+        <item name="fullscreenBackgroundColor">@color/light_blue_900</item>
+        <item name="fullscreenTextColor">@color/light_blue_A400</item>
     </style>
 </resources>

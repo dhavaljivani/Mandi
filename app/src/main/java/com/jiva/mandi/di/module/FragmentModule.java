@@ -4,6 +4,8 @@ import androidx.core.util.Supplier;
 import androidx.lifecycle.ViewModelProvider;
 import androidx.recyclerview.widget.LinearLayoutManager;
 
+import com.google.gson.Gson;
+import com.google.gson.GsonBuilder;
 import com.jiva.mandi.data.datamagager.DataManager;
 import com.jiva.mandi.ui.base.BaseFragment;
 import com.jiva.mandi.ui.base.ViewModelProviderFactory;
@@ -31,15 +33,20 @@ public class FragmentModule {
     }
 
     @Provides
-    LoginViewModel provideLoginViewModel(DataManager dataManager) {
-        Supplier<LoginViewModel> supplier = () -> new LoginViewModel(dataManager);
+    Gson provideGson() {
+        return new GsonBuilder().create();
+    }
+
+    @Provides
+    LoginViewModel provideLoginViewModel(DataManager dataManager, Gson gson) {
+        Supplier<LoginViewModel> supplier = () -> new LoginViewModel(dataManager, gson);
         ViewModelProviderFactory<LoginViewModel> factory = new ViewModelProviderFactory<>(LoginViewModel.class, supplier);
         return new ViewModelProvider(fragment, (ViewModelProvider.Factory) factory).get(LoginViewModel.class);
     }
 
     @Provides
-    RegisterViewModel provideRegisterViewModel(DataManager dataManager) {
-        Supplier<RegisterViewModel> supplier = () -> new RegisterViewModel(dataManager);
+    RegisterViewModel provideRegisterViewModel(DataManager dataManager,Gson gson) {
+        Supplier<RegisterViewModel> supplier = () -> new RegisterViewModel(dataManager,gson);
         ViewModelProviderFactory<RegisterViewModel> factory = new ViewModelProviderFactory<>(RegisterViewModel.class, supplier);
         return new ViewModelProvider(fragment, (ViewModelProvider.Factory) factory).get(RegisterViewModel.class);
     }

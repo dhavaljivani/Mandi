@@ -12,12 +12,16 @@ import android.text.Editable;
 import android.text.TextWatcher;
 import android.view.View;
 
+import com.google.gson.Gson;
 import com.jiva.mandi.R;
+import com.jiva.mandi.data.model.LoginResponse;
 import com.jiva.mandi.databinding.FragmentLoginBinding;
 import com.jiva.mandi.di.component.FragmentComponent;
 import com.jiva.mandi.ui.base.BaseFragment;
 import com.jiva.mandi.utils.AppUtils;
 import com.jiva.mandi.utils.ValidationUtil;
+
+import javax.inject.Inject;
 
 public class LoginFragment extends BaseFragment<FragmentLoginBinding, LoginViewModel> implements View.OnClickListener,
         LoginNavigator, View.OnFocusChangeListener {
@@ -43,8 +47,6 @@ public class LoginFragment extends BaseFragment<FragmentLoginBinding, LoginViewM
         super.onViewCreated(view, savedInstanceState);
         mFragmentLoginBinding = getViewDataBinding();
         mViewModel.setNavigator(this);
-
-        mViewModel.checkAndInsertVillages();
         setup();
     }
 

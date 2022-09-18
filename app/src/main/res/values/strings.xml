@@ -60,7 +60,8 @@
     <string name="weight">Gross Weight</string>
     <string name="gross_price">Gross Price</string>
     <string name="sell_my_product">Sell My Product</string>
-    <string name="applied_loyalty_index">Applied loyalty index: 1.12</string>
+    <string name="final_price_value">%s INR</string>
+    <string name="applied_loyalty_index">Applied loyalty index: %.2f</string>
     <!-- END Product Sell -->
 
     <!-- Product Sold -->
@@ -70,6 +71,9 @@
     <string name="btn_sell_more">Sell More</string>
     <!-- TODO: Remove or change this placeholder text -->
     <string name="hello_blank_fragment">Hello blank fragment</string>
+    <string name="title_activity_splash">SplashActivity</string>
+    <string name="dummy_button">Dummy Button</string>
+    <string name="dummy_content">DUMMY\nCONTENT</string>
     <!-- END Product Sold -->
 
     <!-- Dashboard -->

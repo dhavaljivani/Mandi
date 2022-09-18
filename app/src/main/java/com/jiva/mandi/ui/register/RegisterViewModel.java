@@ -1,49 +1,31 @@
 package com.jiva.mandi.ui.register;
 
-import android.text.TextUtils;
-
-import androidx.lifecycle.MutableLiveData;
 import androidx.room.EmptyResultSetException;
 
+import com.google.gson.Gson;
 import com.jiva.mandi.data.datamagager.DataManager;
+import com.jiva.mandi.data.model.LoginResponse;
 import com.jiva.mandi.data.model.db.User;
-import com.jiva.mandi.data.model.db.Village;
 import com.jiva.mandi.ui.base.BaseViewModel;
 import com.jiva.mandi.utils.AppUtils;
 
-import java.util.List;
-
-import io.reactivex.Observable;
 import io.reactivex.android.schedulers.AndroidSchedulers;
 import io.reactivex.disposables.Disposable;
-import io.reactivex.internal.operators.flowable.FlowableCache;
 import io.reactivex.schedulers.Schedulers;
 
 public class RegisterViewModel extends BaseViewModel<RegisterNavigator> {
 
-    private MutableLiveData<List<Village>> villageList;
-    private User user;
 
-    public RegisterViewModel(DataManager dataManager) {
+    private User user;
+    private final Gson mGson;
+
+    public RegisterViewModel(DataManager dataManager, Gson gson) {
         super(dataManager);
+        mGson = gson;
         user = new User();
     }
 
-    public void getAllVillages() {
-        setIsLoading(true);
-        getCompositeDisposable().add(
-                getDataManager().getAllVillages()
-                        .subscribeOn(Schedulers.io())
-                        .observeOn(AndroidSchedulers.mainThread())
-                        .subscribe(response -> {
-                            villageList.setValue(response);
-                            setIsLoading(false);
 
-                        }, throwable -> {
-                            setIsLoading(false);
-                            getNavigator().handleError(throwable);
-                        }));
-    }
 
     public void isUserExist() {
         Disposable disposable = getDataManager().isUserExist(user.mobileNumber)
@@ -87,9 +69,9 @@ public class RegisterViewModel extends BaseViewModel<RegisterNavigator> {
         Disposable disposable = getDataManager().insertUser(user)
                 .subscribeOn(Schedulers.io())
                 .observeOn(AndroidSchedulers.mainThread())
-                .subscribe(response -> {
-                    getNavigator().SignUpSuccess();
-                    setIsLoading(false);
+                .subscribe(userId -> {
+                    int id = Math.toIntExact(userId);
+                    getUserDetailById(id);
                 }, throwable -> {
                     setIsLoading(false);
                     getNavigator().handleError(throwable);
@@ -98,12 +80,22 @@ public class RegisterViewModel extends BaseViewModel<RegisterNavigator> {
         getCompositeDisposable().add(disposable);
     }
 
-    public MutableLiveData<List<Village>> getVillageList() {
-        if (villageList == null) {
-            villageList = new MutableLiveData<>();
-        }
-        return villageList;
+    private void getUserDetailById(int userId) {
+        Disposable disposable = getDataManager().findUserById(userId)
+                .subscribeOn(Schedulers.io())
+                .observeOn(AndroidSchedulers.mainThread())
+                .subscribe(loginResponse -> {
+                    String json = mGson.toJson(loginResponse, LoginResponse.class);
+                    getDataManager().setLoggedInUser(json);
+                    getNavigator().SignUpSuccess();
+                }, throwable -> {
+                    getNavigator().handleError(throwable);
+                });
+
+        getCompositeDisposable().add(disposable);
     }
+
+
 
     public User getUser() {
         return user;

@@ -1,13 +1,19 @@
 package com.jiva.mandi.ui.base;
 
 import androidx.databinding.ObservableBoolean;
+import androidx.lifecycle.MutableLiveData;
 import androidx.lifecycle.ViewModel;
 
 import com.jiva.mandi.data.datamagager.DataManager;
+import com.jiva.mandi.data.model.db.Village;
 
 import java.lang.ref.WeakReference;
+import java.util.List;
 
+import io.reactivex.android.schedulers.AndroidSchedulers;
 import io.reactivex.disposables.CompositeDisposable;
+import io.reactivex.disposables.Disposable;
+import io.reactivex.schedulers.Schedulers;
 
 public abstract class BaseViewModel<N> extends ViewModel {
 
@@ -19,6 +25,8 @@ public abstract class BaseViewModel<N> extends ViewModel {
     private final CompositeDisposable mCompositeDisposable;
 
     private WeakReference<N> mNavigator;
+
+    private MutableLiveData<List<Village>> villageList;
 
 
     public BaseViewModel(DataManager dataManager) {
@@ -51,6 +59,27 @@ public abstract class BaseViewModel<N> extends ViewModel {
 
     public void setNavigator(N navigator) {
         this.mNavigator = new WeakReference<>(navigator);
+    }
+
+    public void getAllVillages() {
+        Disposable disposable = getDataManager().getAllVillages()
+                .subscribeOn(Schedulers.io())
+                .observeOn(AndroidSchedulers.mainThread())
+                .subscribe(response -> {
+                    villageList.setValue(response);
+                    setIsLoading(false);
+
+                }, throwable -> {
+                    //getNavigator().handleError(throwable);
+                });
+        getCompositeDisposable().add(disposable);
+    }
+
+    public MutableLiveData<List<Village>> getVillageList() {
+        if (villageList == null) {
+            villageList = new MutableLiveData<>();
+        }
+        return villageList;
     }
 
 }

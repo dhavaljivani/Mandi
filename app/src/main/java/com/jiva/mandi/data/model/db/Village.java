@@ -31,4 +31,28 @@ public class Village {
     @ColumnInfo(name = "selling_price")
     public double sellingPrice;
 
+    @Ignore
+    public int getId() {
+        return id;
+    }
+    @Ignore
+    public void setId(int id) {
+        this.id = id;
+    }
+    @Ignore
+    public String getName() {
+        return name;
+    }
+    @Ignore
+    public void setName(String name) {
+        this.name = name;
+    }
+    @Ignore
+    public double getSellingPrice() {
+        return sellingPrice;
+    }
+    @Ignore
+    public void setSellingPrice(double sellingPrice) {
+        this.sellingPrice = sellingPrice;
+    }
 }

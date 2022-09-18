@@ -1,8 +1,10 @@
 package com.jiva.mandi.ui.base;
 
 import android.annotation.TargetApi;
+import android.app.Activity;
 import android.app.ProgressDialog;
 import android.content.Context;
+import android.content.Intent;
 import android.content.pm.PackageManager;
 import android.os.Build;
 import android.os.Bundle;
@@ -16,6 +18,7 @@ import androidx.databinding.DataBindingUtil;
 import androidx.databinding.ViewDataBinding;
 
 import com.jiva.mandi.MandiApp;
+import com.jiva.mandi.R;
 import com.jiva.mandi.di.component.ActivityComponent;
 import com.jiva.mandi.di.component.DaggerActivityComponent;
 import com.jiva.mandi.di.module.ActivityModule;
@@ -76,6 +79,17 @@ public abstract class BaseActivity<T extends ViewDataBinding, V extends BaseView
         return mViewDataBinding;
     }
 
+    public void hideActionBar() {
+        if (getSupportActionBar() != null) {
+            getSupportActionBar().hide();
+        }
+    }
+
+    public void showActionBar() {
+        if (getSupportActionBar() != null) {
+            getSupportActionBar().show();
+        }
+    }
 
     public void hideKeyboard() {
         View view = this.getCurrentFocus();
@@ -111,6 +125,33 @@ public abstract class BaseActivity<T extends ViewDataBinding, V extends BaseView
         mViewDataBinding = DataBindingUtil.setContentView(this, getLayoutId());
         mViewDataBinding.setVariable(getBindingVariable(), mViewModel);
         mViewDataBinding.executePendingBindings();
+    }
+
+
+    /**
+     * @param context          activity or fragment context
+     * @param destinationClass Destination navigation class
+     * @param finish           Boolean to finish the current activity
+     * @param clearStack       Clear the activity stack
+     * @param bundle           Bundle data
+     */
+    public void moveActivity(Context context, Class<?> destinationClass, boolean finish, boolean clearStack,
+                             Bundle bundle) {
+        Intent intent = new Intent(context, destinationClass);
+
+        if (bundle != null) {
+            intent.putExtras(bundle);
+        }
+
+        if (clearStack) {
+            intent = intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK | Intent.FLAG_ACTIVITY_CLEAR_TASK);
+        }
+        context.startActivity(intent);
+        Activity activity = (Activity) context;
+        activity.overridePendingTransition(R.anim.slide_in_right, R.anim.slide_out_left);
+        if (finish) {
+            ((Activity) context).finish();
+        }
     }
 
 }
