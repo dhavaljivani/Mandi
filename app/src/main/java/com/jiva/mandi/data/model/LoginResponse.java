@@ -5,6 +5,7 @@ public class LoginResponse {
     private int userId;
     private String name;
     private String loyaltyCardId;
+    private int villageId;
     private String villageName;
     private String sellingPrice;
 
@@ -47,5 +48,13 @@ public class LoginResponse {
 
     public void setSellingPrice(String sellingPrice) {
         this.sellingPrice = sellingPrice;
+    }
+
+    public int getVillageId() {
+        return villageId;
+    }
+
+    public void setVillageId(int villageId) {
+        this.villageId = villageId;
     }
 }

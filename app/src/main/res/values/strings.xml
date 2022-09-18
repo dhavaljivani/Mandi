@@ -62,6 +62,9 @@
     <string name="sell_my_product">Sell My Product</string>
     <string name="final_price_value">%s INR</string>
     <string name="applied_loyalty_index">Applied loyalty index: %.2f</string>
+    <string name="error_seller_name">Please enter seller name!</string>
+    <string name="error_card_id">Please enter loyalty card id!</string>
+    <string name="error_weight">Please enter weight!</string>
     <!-- END Product Sell -->
 
     <!-- Product Sold -->

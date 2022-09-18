@@ -18,12 +18,12 @@ public interface UserDao {
 
 
     @Query("SELECT users.id as userId,users.name,users.loyalty_card_id as loyaltyCardId,villages.name as villageName," +
-            "villages.selling_price as sellingPrice FROM users LEFT JOIN villages ON villages.id = users.village_id " +
+            "villages.id as villageId,villages.selling_price as sellingPrice FROM users LEFT JOIN villages ON villages.id = users.village_id " +
             "WHERE mobile_number LIKE :number and password LIKE :password LIMIT 1")
     Single<LoginResponse> findUser(String number, String password);
 
     @Query("SELECT users.id as userId,users.name,users.loyalty_card_id as loyaltyCardId,villages.name as villageName," +
-            "villages.selling_price as sellingPrice FROM users LEFT JOIN villages ON villages.id = users.village_id " +
+            "villages.id as villageId,villages.selling_price as sellingPrice FROM users LEFT JOIN villages ON villages.id = users.village_id " +
             "WHERE users.id = :id LIMIT 1")
     Single<LoginResponse> findUserById(int id);
 

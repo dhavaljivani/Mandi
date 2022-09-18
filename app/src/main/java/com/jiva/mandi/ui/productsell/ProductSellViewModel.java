@@ -57,6 +57,8 @@ public class ProductSellViewModel extends BaseViewModel<ProductSellNavigator> {
                         productSellRequest.setSellerName(user.getName());
                         productSellRequest.setLoyaltyCardId(user.getLoyaltyCardId());
                         productSellRequest.setVillageName(user.getVillageName());
+                        productSellRequest.setVillageId(user.getVillageId());
+                        productSellRequest.setSellingPrice(Double.parseDouble(user.getSellingPrice()));
                         getNavigator().refreshView();
                     }
                 }, throwable -> {

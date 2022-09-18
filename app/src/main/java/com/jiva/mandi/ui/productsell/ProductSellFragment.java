@@ -13,15 +13,20 @@ import androidx.annotation.Nullable;
 import androidx.databinding.library.baseAdapters.BR;
 import androidx.navigation.Navigation;
 
+import com.google.android.material.textfield.MaterialAutoCompleteTextView;
+import com.google.android.material.textfield.TextInputEditText;
+import com.google.android.material.textfield.TextInputLayout;
 import com.jiva.mandi.R;
 import com.jiva.mandi.data.model.UserResponse;
 import com.jiva.mandi.data.model.db.Village;
 import com.jiva.mandi.databinding.FragmentProductSellBinding;
 import com.jiva.mandi.di.component.FragmentComponent;
 import com.jiva.mandi.ui.base.BaseFragment;
+import com.jiva.mandi.ui.register.RegisterFragment;
 import com.jiva.mandi.ui.register.VillageSpinnerAdapter;
 import com.jiva.mandi.utils.AppUtils;
 import com.jiva.mandi.utils.CollectionUtils;
+import com.jiva.mandi.utils.ValidationUtil;
 
 import java.util.ArrayList;
 import java.util.Arrays;
@@ -56,8 +61,11 @@ public class ProductSellFragment extends BaseFragment<FragmentProductSellBinding
         mFragmentProductSellBinding = getViewDataBinding();
         mViewModel.setNavigator(this);
         //Set on click listener on clickable view.
-        mFragmentProductSellBinding.btnSell.setOnClickListener(v -> Navigation.findNavController(v).
-                navigate(R.id.action_productSellFragment_to_productSoldFragment));
+        mFragmentProductSellBinding.btnSell.setOnClickListener(v -> {
+            if (isFormValid()) {
+                Navigation.findNavController(v).navigate(R.id.action_productSellFragment_to_productSoldFragment);
+            }
+        });
 
         mViewModel.getVillageList().observe(getViewLifecycleOwner(), this::setUpVillageSpinner);
         mViewModel.getUserList().observe(getViewLifecycleOwner(), responseList -> {
@@ -65,7 +73,13 @@ public class ProductSellFragment extends BaseFragment<FragmentProductSellBinding
             setUpAutocompleteTextView();
         });
 
-        mFragmentProductSellBinding.edtWeight.addTextChangedListener(new TextFieldValidation(mFragmentProductSellBinding.edtWeight));
+        mFragmentProductSellBinding.edtWeight.addTextChangedListener(
+                new TextFieldValidation(mFragmentProductSellBinding.edtWeight));
+        mFragmentProductSellBinding.edtSellerName.addTextChangedListener(
+                new TextFieldValidation(mFragmentProductSellBinding.edtSellerName));
+        mFragmentProductSellBinding.edtCardId.addTextChangedListener(
+                new TextFieldValidation(mFragmentProductSellBinding.edtCardId));
+
 
     }
 
@@ -113,14 +127,51 @@ public class ProductSellFragment extends BaseFragment<FragmentProductSellBinding
                     villageName, R.layout.villag_dropdown_text,
                     R.layout.village_name_dropdown);
             mFragmentProductSellBinding.spVillage.setAdapter(villageSpinnerAdapter);
+            mFragmentProductSellBinding.spVillage.setOnItemSelectedListener(this);
         }
 
         mViewModel.getLoggedInUserDetails();
     }
 
+    private boolean isFormValid() {
+        boolean isNameValid = ValidationUtil.isNameIsValid(mViewModel.getProductSellRequest().getSellerName());
+        boolean isCardIdValid = ValidationUtil.isNameIsValid(mViewModel.getProductSellRequest().getLoyaltyCardId());
+        boolean isWightValid = ValidationUtil.isNameIsValid(mViewModel.getProductSellRequest().getWeight());
+        boolean isVillageId = mViewModel.getProductSellRequest().getVillageId() != 0;
+        boolean isValid = true;
+        if (!isNameValid) {
+            ValidationUtil.setErrorIntoInputTextLayout(mFragmentProductSellBinding.edtSellerName,
+                    mFragmentProductSellBinding.sellerNameTextField,
+                    getString(R.string.error_seller_name));
+            isValid = false;
+        }
+
+        if (!isCardIdValid) {
+            ValidationUtil.setErrorIntoInputTextLayout(mFragmentProductSellBinding.edtCardId,
+                    mFragmentProductSellBinding.cardIdTextField,
+                    getString(R.string.error_card_id));
+            isValid = false;
+        }
+
+
+        if (!isWightValid) {
+            ValidationUtil.setErrorIntoInputTextLayout(mFragmentProductSellBinding.edtWeight,
+                    mFragmentProductSellBinding.weightTextField,
+                    getString(R.string.error_weight));
+            isValid = false;
+        }
+
+        if (!isVillageId) {
+            mFragmentProductSellBinding.tvSelectVillageError.setVisibility(View.VISIBLE);
+            isValid = false;
+        }
+
+        return isValid;
+    }
+
     @Override
     public void handleError(Throwable throwable) {
-
+        AppUtils.handleException(throwable);
     }
 
     @Override
@@ -137,7 +188,7 @@ public class ProductSellFragment extends BaseFragment<FragmentProductSellBinding
         int selectedVillageId = villageId[position];
         mViewModel.getProductSellRequest().setVillageId(selectedVillageId);
         if (selectedVillageId != 0) {
-            //mFragmentProductSellBinding.tvSelectVillageError.setVisibility(View.GONE);
+            mFragmentProductSellBinding.tvSelectVillageError.setVisibility(View.GONE);
         }
         if (selectedVillageId != 0) {
             List<Village> filteredVillageList = CollectionsKt.filter(villageList, village -> (village.getId()) == selectedVillageId);
@@ -184,6 +235,11 @@ public class ProductSellFragment extends BaseFragment<FragmentProductSellBinding
         public void onTextChanged(CharSequence charSequence, int i, int i1, int i2) {
             try {
                 if (view.getId() == R.id.edtWeight) {
+                    validateField(mViewModel.getProductSellRequest().getWeight(),
+                            mFragmentProductSellBinding.weightTextField,
+                            null,
+                            mFragmentProductSellBinding.edtWeight,
+                            getString(R.string.error_weight));
                     if (!TextUtils.isEmpty(charSequence.toString())) {
                         String finalPrice = calculateFinalPrice(Double.parseDouble(charSequence.toString()),
                                 mViewModel.getProductSellRequest().getSellingPrice(),
@@ -193,7 +249,20 @@ public class ProductSellFragment extends BaseFragment<FragmentProductSellBinding
                         mViewModel.getProductSellRequest().setFinalPrice("0");
                     }
                     executeBinding();
-
+                } else if (view.getId() == R.id.edtSellerName) {
+                    validateField(mViewModel.getProductSellRequest().getSellerName(),
+                            mFragmentProductSellBinding.sellerNameTextField,
+                            mFragmentProductSellBinding.edtSellerName,
+                            null,
+                            getString(R.string.error_seller_name)
+                    );
+                } else if (view.getId() == R.id.edtCardId) {
+                    validateField(mViewModel.getProductSellRequest().getLoyaltyCardId(),
+                            mFragmentProductSellBinding.cardIdTextField,
+                            mFragmentProductSellBinding.edtCardId,
+                            null,
+                            getString(R.string.error_card_id)
+                    );
                 }
             } catch (Exception e) {
                 AppUtils.handleException(e);
@@ -220,5 +289,27 @@ public class ProductSellFragment extends BaseFragment<FragmentProductSellBinding
     private void executeBinding() {
         mFragmentProductSellBinding.setProductSellViewModel(mViewModel);
         mFragmentProductSellBinding.executePendingBindings();
+    }
+
+    private void validateField(String inputString, TextInputLayout textInputLayout,
+                               MaterialAutoCompleteTextView textView,
+                               TextInputEditText inputEditText,
+                               String message) {
+        View view;
+        if (textView == null) {
+            view = inputEditText;
+        } else {
+            view = textView;
+        }
+
+        boolean isValid = ValidationUtil
+                .isNameIsValid(inputString);
+        if (isValid) {
+            ValidationUtil.removeErrorFromTextLayout(textInputLayout);
+        } else {
+            ValidationUtil.setErrorIntoInputTextLayout(view,
+                    textInputLayout,
+                    message);
+        }
     }
 }
