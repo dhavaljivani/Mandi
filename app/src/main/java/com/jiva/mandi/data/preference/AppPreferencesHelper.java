@@ -22,11 +22,16 @@ public class AppPreferencesHelper implements PreferencesHelper {
 
     @Override
     public String getLoggedInUser() {
-        return  mPrefs.getString(PREF_KEY_USER_DETAIL, "");
+        return mPrefs.getString(PREF_KEY_USER_DETAIL, "");
     }
 
     @Override
     public void setLoggedInUser(String loginResponseJson) {
         mPrefs.edit().putString(PREF_KEY_USER_DETAIL, loginResponseJson).apply();
+    }
+
+    @Override
+    public void clearPreferences() {
+        mPrefs.edit().clear().apply();
     }
 }

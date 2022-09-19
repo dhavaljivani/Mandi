@@ -15,6 +15,7 @@ public class ValidationUtil {
     public static void setErrorIntoInputTextLayout(View viewEditText, View viewInputTextLout, String message) {
         if (!TextUtils.isEmpty(message)) {
             ((TextInputLayout) viewInputTextLout).setError(message);
+            ((TextInputLayout) viewInputTextLout).setErrorIconDrawable(0);
             (viewEditText).requestFocus();
         }
     }
@@ -47,13 +48,12 @@ public class ValidationUtil {
      * @return boolean to specify the mobile number length is valid or not
      */
     public static boolean isMobileNumberLengthValid(String mobileNumber) {
-        if(isMobileNumberIsValid(mobileNumber)){
+        if (isMobileNumberIsValid(mobileNumber)) {
             return mobileNumber.trim().length() == 10;
 
         }
         return false;
     }
-
 
 
     /**

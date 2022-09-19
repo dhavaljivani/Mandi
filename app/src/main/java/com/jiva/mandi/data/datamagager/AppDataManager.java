@@ -109,4 +109,9 @@ public class AppDataManager implements DataManager {
         }
         return Observable.just(new LoginResponse());
     }
+
+    @Override
+    public void clearPreferences() {
+        mPreferencesHelper.clearPreferences();
+    }
 }

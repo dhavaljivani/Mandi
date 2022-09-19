@@ -1,5 +1,10 @@
 <resources>
     <string name="app_name">Mandi</string>
+    <string name="ok">Okay</string>
+    <string name="yes">Yes</string>
+    <string name="no">No</string>
+    <string name="logout_confirmation">Are you sure do you want to logout?</string>
+
     <!-- Strings related to login -->
     <string name="prompt_email">Email</string>
     <string name="prompt_password">Password</string>
@@ -43,14 +48,6 @@
     <string name="user_exist_msg">The user has already registered with a mobile number.</string>
     <string name="user_registered_msg">The user has successfully registered.</string>
     <string name="error_village">Please select village.</string>
-    <string-array name="villageArray">
-        <item>Select Village</item>
-        <item>Ramgarh</item>
-        <item>Champaner</item>
-        <item>Pune</item>
-        <item>Ahmedabad</item>
-        <item>Rajkot</item>
-    </string-array>
     <!-- END SIGN UP -->
 
     <!-- Product Sell -->
@@ -66,12 +63,18 @@
     <string name="error_card_id">Please enter loyalty card id!</string>
     <string name="error_weight">Please enter weight!</string>
     <string name="action_logout">Logout</string>
+    <string name="action_login">Login</string>
+    <string name="arg_seller_name">seller_name</string>
+    <string name="arg_total_weight">total_weight</string>
+    <string name="arg_total_amount">total_amount</string>
+    <string name="label_tonnes">Tonnes</string>
+    <string name="sell_confirmation">Are you sure do you want to sell your product?</string>
     <!-- END Product Sell -->
 
     <!-- Product Sold -->
     <string name="product_sold_title">Product Sold Details</string>
-    <string name="product_sold_msg">Thank you Dhaval Jivani for selling your quality product.</string>
-    <string name="product_sold_price_msg">Please ensure you received 20003.25 INR for 23 tonnes of your product.</string>
+    <string name="product_sold_msg">Thank you %s for selling your quality product.</string>
+    <string name="product_sold_price_msg">Please ensure you received %s INR for %s tonnes of your product.</string>
     <string name="btn_sell_more">Sell More</string>
     <!-- TODO: Remove or change this placeholder text -->
     <string name="hello_blank_fragment">Hello blank fragment</string>

@@ -29,11 +29,25 @@ public class ProductSoldFragment extends BaseFragment<FragmentProductSoldBinding
     }
 
     @Override
+    public void onCreate(@Nullable Bundle savedInstanceState) {
+        super.onCreate(savedInstanceState);
+        if (getArguments() != null) {
+            String sellerName = getArguments().getString(getString(R.string.arg_seller_name), "");
+            String finalPrice = getArguments().getString(getString(R.string.arg_total_amount), "");
+            String totalWeight = getArguments().getString(getString(R.string.arg_total_weight), "");
+            mViewModel.setSellerName(sellerName);
+            mViewModel.setTotalWeight(totalWeight);
+            mViewModel.setFinalPrice(finalPrice);
+        }
+    }
+
+    @Override
     public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
         mFragmentProductSoldBinding = getViewDataBinding();
         //Set on click listener on clickable view.
         mFragmentProductSoldBinding.btnSellMore.setOnClickListener(v -> Navigation.findNavController(v).popBackStack());
+
     }
 
     @Override

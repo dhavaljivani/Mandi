@@ -31,6 +31,7 @@ import com.jiva.mandi.di.component.FragmentComponent;
 import com.jiva.mandi.ui.base.BaseFragment;
 import com.jiva.mandi.ui.register.RegisterFragment;
 import com.jiva.mandi.ui.register.VillageSpinnerAdapter;
+import com.jiva.mandi.utils.AlertDialogHelper;
 import com.jiva.mandi.utils.AppUtils;
 import com.jiva.mandi.utils.CollectionUtils;
 import com.jiva.mandi.utils.ValidationUtil;
@@ -44,7 +45,7 @@ import kotlin.collections.CollectionsKt;
 
 
 public class ProductSellFragment extends BaseFragment<FragmentProductSellBinding, ProductSellViewModel>
-        implements ProductSellNavigator, AdapterView.OnItemSelectedListener {
+        implements ProductSellNavigator, AdapterView.OnItemSelectedListener, AlertDialogHelper.DialogButtonClickListener {
 
     FragmentProductSellBinding mFragmentProductSellBinding;
     private int[] villageId;
@@ -71,12 +72,15 @@ public class ProductSellFragment extends BaseFragment<FragmentProductSellBinding
         //Set on click listener on clickable view.
         mFragmentProductSellBinding.btnSell.setOnClickListener(v -> {
             if (isFormValid()) {
-                Navigation.findNavController(v).navigate(R.id.action_productSellFragment_to_productSoldFragment);
+                AlertDialogHelper.showDialog(getContext(), null, getString(R.string.sell_confirmation)
+                        , getString(R.string.yes), getString(R.string.no), false,
+                        ProductSellFragment.this, AlertDialogHelper.DialogIdentifier.SELL_DIALOG);
             }
         });
 
         mViewModel.getVillageList().observe(getViewLifecycleOwner(), this::setUpVillageSpinner);
         mViewModel.getUserList().observe(getViewLifecycleOwner(), responseList -> {
+            userResponseList.clear();
             userResponseList.addAll(responseList);
             setUpAutocompleteTextView();
         });
@@ -93,16 +97,20 @@ public class ProductSellFragment extends BaseFragment<FragmentProductSellBinding
     }
 
     private void setUpAutocompleteTextView() {
-        String[] nameList = new String[userResponseList.size()];
-        String[] cardIdList = new String[userResponseList.size()];
-        for (int i = 0; i < userResponseList.size(); i++) {
-            nameList[i] = userResponseList.get(i).getName();
-            cardIdList[i] = userResponseList.get(i).getLoyaltyCardId();
+        ArrayList<String> nameList = new ArrayList<>();
+        ArrayList<String> cardIdList = new ArrayList<>();
+        for (UserResponse userResponse : userResponseList) {
+            nameList.add(userResponse.getName());
+            cardIdList.add(userResponse.getLoyaltyCardId());
         }
-        ArrayAdapter<String> sellerNameAdapter = new ArrayAdapter<>(getContext(),
-                android.R.layout.simple_list_item_1, nameList);
-        ArrayAdapter<String> cardIdAdapter = new ArrayAdapter<>(getContext(),
-                android.R.layout.simple_list_item_1, cardIdList);
+
+        AutoCompleteAdapter sellerNameAdapter = new AutoCompleteAdapter(getContext());
+        sellerNameAdapter.addAllData(nameList);
+        sellerNameAdapter.notifyDataSetChanged();
+        AutoCompleteAdapter cardIdAdapter = new AutoCompleteAdapter(getContext());
+        cardIdAdapter.addAllData(cardIdList);
+        cardIdAdapter.notifyDataSetChanged();
+
         mFragmentProductSellBinding.edtSellerName.setAdapter(sellerNameAdapter);
         mFragmentProductSellBinding.edtCardId.setAdapter(cardIdAdapter);
         mFragmentProductSellBinding.edtSellerName.setOnItemClickListener((parent, view, position, id) -> {
@@ -123,6 +131,7 @@ public class ProductSellFragment extends BaseFragment<FragmentProductSellBinding
 
     private void setUpVillageSpinner(List<Village> villageList) {
         if (CollectionUtils.isNotEmpty(villageList)) {
+            this.villageList.clear();
             this.villageList.addAll(villageList);
             villageName = new String[villageList.size() + 1];
             villageId = new int[villageList.size() + 1];
@@ -221,6 +230,7 @@ public class ProductSellFragment extends BaseFragment<FragmentProductSellBinding
     public void onNothingSelected(AdapterView<?> parent) {
 
     }
+
 
     /**
      * TextWatcher for all the textInputField
@@ -323,25 +333,56 @@ public class ProductSellFragment extends BaseFragment<FragmentProductSellBinding
     }
 
     private void setUpMenu(View view) {
-        if (!TextUtils.isEmpty(mViewModel.getLoggedInUserData())) {
-            MenuHost menuHost = requireActivity();
-            menuHost.addMenuProvider(new MenuProvider() {
-                @Override
-                public void onCreateMenu(@NonNull Menu menu, @NonNull MenuInflater menuInflater) {
-                    menuInflater.inflate(R.menu.menu_main, menu);
-                }
+        MenuHost menuHost = requireActivity();
+        menuHost.addMenuProvider(new MenuProvider() {
+            @Override
+            public void onCreateMenu(@NonNull Menu menu, @NonNull MenuInflater menuInflater) {
 
-                @Override
-                public boolean onMenuItemSelected(@NonNull MenuItem menuItem) {
-                    if (menuItem.getItemId() == R.id.action_log_out) {
-                        Navigation.findNavController(view).popBackStack(R.id.loginFragment, true);
-                        Navigation.findNavController(view).navigate(R.id.loginFragment);
-                        return true;
-                    }
-                    return false;
+                menuInflater.inflate(R.menu.menu_main, menu);
+                MenuItem log_in_item = menu.findItem(R.id.action_login);
+                MenuItem log_out_item = menu.findItem(R.id.action_log_out);
+                log_out_item.setVisible(!TextUtils.isEmpty(mViewModel.getLoggedInUserData()));
+                log_in_item.setVisible(TextUtils.isEmpty(mViewModel.getLoggedInUserData()));
+            }
+
+            @Override
+            public boolean onMenuItemSelected(@NonNull MenuItem menuItem) {
+                if (menuItem.getItemId() == R.id.action_log_out) {
+                    AlertDialogHelper.showDialog(getContext(), null, getString(R.string.logout_confirmation)
+                            , getString(R.string.yes), getString(R.string.no), false,
+                            ProductSellFragment.this, AlertDialogHelper.DialogIdentifier.LOGOUT_DIALOG);
+
+                } else {
+                    Navigation.findNavController(view).popBackStack(R.id.productSellFragment, true);
+                    Navigation.findNavController(view).navigate(R.id.loginFragment);
                 }
-            }, getViewLifecycleOwner(), Lifecycle.State.RESUMED);
+                return true;
+            }
+        }, getViewLifecycleOwner(), Lifecycle.State.RESUMED);
+    }
+
+    @Override
+    public void onPositiveButtonClicked(int dialogIdentifier) {
+        if (dialogIdentifier == AlertDialogHelper.DialogIdentifier.LOGOUT_DIALOG) {
+            if (getView() != null) {
+                mViewModel.getDataManager().clearPreferences();
+                Navigation.findNavController(getView()).popBackStack(R.id.productSellFragment, true);
+                Navigation.findNavController(getView()).navigate(R.id.loginFragment);
+            }
+        } else if (dialogIdentifier == AlertDialogHelper.DialogIdentifier.SELL_DIALOG) {
+            Bundle bundle = new Bundle();
+            bundle.putString(getString(R.string.arg_seller_name), mViewModel.getProductSellRequest().getSellerName());
+            bundle.putString(getString(R.string.arg_total_weight), mViewModel.getProductSellRequest().getWeight());
+            bundle.putString(getString(R.string.arg_total_amount), mViewModel.getProductSellRequest().getFinalPrice());
+            if (getView() != null) {
+                Navigation.findNavController(getView()).navigate(R.id.action_productSellFragment_to_productSoldFragment, bundle);
+            }
         }
+    }
+
+    @Override
+    public void onNegativeButtonClicked(int dialogIdentifier) {
 
     }
+
 }

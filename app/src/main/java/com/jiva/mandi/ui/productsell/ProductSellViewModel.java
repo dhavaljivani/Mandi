@@ -24,6 +24,7 @@ public class ProductSellViewModel extends BaseViewModel<ProductSellNavigator> {
     private MutableLiveData<List<UserResponse>> userList;
     private String loggedInUserData;
 
+
     public ProductSellViewModel(DataManager dataManager) {
         super(dataManager);
         productSellRequest = new ProductSellRequest();
@@ -91,4 +92,10 @@ public class ProductSellViewModel extends BaseViewModel<ProductSellNavigator> {
     public void setLoggedInUserData(String loggedInUserData) {
         this.loggedInUserData = loggedInUserData;
     }
+
+    public void setUserList(MutableLiveData<List<UserResponse>> userList) {
+        this.userList = userList;
+    }
+
+
 }

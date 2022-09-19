@@ -26,8 +26,7 @@
             app:cardUseCompatPadding="true"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toTopOf="parent"
-            >
+            app:layout_constraintTop_toTopOf="parent">
 
             <androidx.constraintlayout.widget.ConstraintLayout
                 style="@style/parentViewMediumPadding"
@@ -71,9 +70,9 @@
                         android:id="@+id/edtSellerName"
                         style="@style/TextInputEditTextStyle"
                         android:drawableStart="@drawable/ic_baseline_person_24"
-                        android:text="@={productSellViewModel.productSellRequest.sellerName}"
                         android:inputType="text"
                         android:maxLines="1"
+                        android:text="@={productSellViewModel.productSellRequest.sellerName}"
                         android:textColor="?attr/editTextColor" />
 
                 </com.google.android.material.textfield.TextInputLayout>
@@ -112,34 +111,58 @@
                     android:id="@+id/tvSelectVillageError"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
+                    android:layout_marginStart="@dimen/size_15dp"
+                    android:layout_marginTop="@dimen/size_2dp"
                     android:text="@string/error_village"
-                    android:textColor="@color/errorColor"
+                    android:textColor="@color/design_error"
                     android:textSize="@dimen/text_size_12sp"
                     android:visibility="gone"
-                    app:layout_constraintLeft_toLeftOf="parent"
                     app:layout_constraintRight_toRightOf="parent"
                     app:layout_constraintTop_toBottomOf="@id/spVillage" />
 
-                <com.google.android.material.textfield.TextInputLayout
-                    android:id="@+id/weightTextField"
-                    style="@style/TextInputLayoutStyle"
+                <androidx.constraintlayout.widget.ConstraintLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
                     android:layout_marginTop="@dimen/size_20dp"
-                    android:hint="@string/weight"
-                    android:textColorHint="@color/enable_text_layout_color_selector"
-                    app:boxStrokeColor="@color/enable_text_layout_color_selector"
                     app:layout_constraintLeft_toLeftOf="parent"
                     app:layout_constraintRight_toRightOf="parent"
-                    app:layout_constraintTop_toBottomOf="@id/spVillage">
+                    app:layout_constraintTop_toBottomOf="@id/tvSelectVillageError">
 
-                    <com.google.android.material.textfield.TextInputEditText
-                        android:id="@+id/edtWeight"
-                        style="@style/TextInputEditTextStyle"
-                        android:contentDescription="@string/loginUsername"
-                        android:drawableStart="@drawable/ic_baseline_balance_24"
-                        android:inputType="numberDecimal"
-                        android:text="@={productSellViewModel.productSellRequest.weight}"
-                        android:textColor="?attr/editTextColor" />
-                </com.google.android.material.textfield.TextInputLayout>
+                    <com.google.android.material.textfield.TextInputLayout
+                        android:id="@+id/weightTextField"
+                        style="@style/TextInputLayoutStyle"
+                        android:hint="@string/weight"
+                        android:textColorHint="@color/enable_text_layout_color_selector"
+                        app:boxStrokeColor="@color/enable_text_layout_color_selector"
+                        app:layout_constraintLeft_toLeftOf="parent"
+                        app:layout_constraintRight_toRightOf="parent"
+                        app:layout_constraintTop_toBottomOf="parent"
+                        app:layout_constraintTop_toTopOf="parent">
+
+                        <com.google.android.material.textfield.TextInputEditText
+                            android:id="@+id/edtWeight"
+                            style="@style/TextInputEditTextStyle"
+                            android:contentDescription="@string/loginUsername"
+                            android:drawableStart="@drawable/ic_baseline_balance_24"
+                            android:inputType="numberDecimal"
+                            android:maxLength="4"
+                            android:maxLines="1"
+                            android:text="@={productSellViewModel.productSellRequest.weight}"
+                            android:textColor="?attr/editTextColor" />
+                    </com.google.android.material.textfield.TextInputLayout>
+
+                    <androidx.appcompat.widget.AppCompatTextView
+                        style="@style/medium_bold_font"
+                        android:layout_alignParentEnd="true"
+                        android:layout_centerVertical="true"
+                        android:layout_marginTop="@dimen/size_20dp"
+                        android:layout_marginEnd="@dimen/size_10dp"
+                        android:text="@string/label_tonnes"
+                        android:textColor="?attr/editTextColor"
+                        app:layout_constraintRight_toRightOf="parent"
+                        app:layout_constraintTop_toTopOf="parent" />
+
+                </androidx.constraintlayout.widget.ConstraintLayout>
 
 
             </androidx.constraintlayout.widget.ConstraintLayout>
