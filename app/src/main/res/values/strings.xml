@@ -65,6 +65,7 @@
     <string name="error_seller_name">Please enter seller name!</string>
     <string name="error_card_id">Please enter loyalty card id!</string>
     <string name="error_weight">Please enter weight!</string>
+    <string name="action_logout">Logout</string>
     <!-- END Product Sell -->
 
     <!-- Product Sold -->

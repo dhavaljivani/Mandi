@@ -62,7 +62,6 @@ public class LoginFragment extends BaseFragment<FragmentLoginBinding, LoginViewM
         mFragmentLoginBinding.edtPassword.addTextChangedListener(
                 new TextFieldValidation(mFragmentLoginBinding.edtPassword));
 
-
     }
 
     @Override
@@ -124,6 +123,7 @@ public class LoginFragment extends BaseFragment<FragmentLoginBinding, LoginViewM
     public void onLoginSuccess() {
         AppUtils.showToast(getContext(), getString(R.string.login_success));
         if (getView() != null) {
+            Navigation.findNavController(getView()).popBackStack(R.id.loginFragment, true);
             Navigation.findNavController(getView()).navigate(R.id.action_loginFragment_to_productSellFragment);
         }
     }

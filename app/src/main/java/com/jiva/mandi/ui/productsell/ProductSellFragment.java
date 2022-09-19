@@ -4,13 +4,20 @@ import android.os.Bundle;
 import android.text.Editable;
 import android.text.TextUtils;
 import android.text.TextWatcher;
+import android.view.Menu;
+import android.view.MenuInflater;
+import android.view.MenuItem;
 import android.view.View;
+import android.view.WindowManager;
 import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
+import androidx.core.view.MenuHost;
+import androidx.core.view.MenuProvider;
 import androidx.databinding.library.baseAdapters.BR;
+import androidx.lifecycle.Lifecycle;
 import androidx.navigation.Navigation;
 
 import com.google.android.material.textfield.MaterialAutoCompleteTextView;
@@ -55,6 +62,7 @@ public class ProductSellFragment extends BaseFragment<FragmentProductSellBinding
         return R.layout.fragment_product_sell;
     }
 
+
     @Override
     public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
@@ -80,6 +88,7 @@ public class ProductSellFragment extends BaseFragment<FragmentProductSellBinding
         mFragmentProductSellBinding.edtCardId.addTextChangedListener(
                 new TextFieldValidation(mFragmentProductSellBinding.edtCardId));
 
+        setUpMenu(view);
 
     }
 
@@ -311,5 +320,28 @@ public class ProductSellFragment extends BaseFragment<FragmentProductSellBinding
                     textInputLayout,
                     message);
         }
+    }
+
+    private void setUpMenu(View view) {
+        if (!TextUtils.isEmpty(mViewModel.getLoggedInUserData())) {
+            MenuHost menuHost = requireActivity();
+            menuHost.addMenuProvider(new MenuProvider() {
+                @Override
+                public void onCreateMenu(@NonNull Menu menu, @NonNull MenuInflater menuInflater) {
+                    menuInflater.inflate(R.menu.menu_main, menu);
+                }
+
+                @Override
+                public boolean onMenuItemSelected(@NonNull MenuItem menuItem) {
+                    if (menuItem.getItemId() == R.id.action_log_out) {
+                        Navigation.findNavController(view).popBackStack(R.id.loginFragment, true);
+                        Navigation.findNavController(view).navigate(R.id.loginFragment);
+                        return true;
+                    }
+                    return false;
+                }
+            }, getViewLifecycleOwner(), Lifecycle.State.RESUMED);
+        }
+
     }
 }

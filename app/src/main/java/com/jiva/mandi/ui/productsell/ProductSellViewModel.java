@@ -22,12 +22,20 @@ public class ProductSellViewModel extends BaseViewModel<ProductSellNavigator> {
 
     private ProductSellRequest productSellRequest;
     private MutableLiveData<List<UserResponse>> userList;
+    private String loggedInUserData;
 
     public ProductSellViewModel(DataManager dataManager) {
         super(dataManager);
         productSellRequest = new ProductSellRequest();
         getAllVillages();
         getAllUsers();
+        String loggedInUserData = getDataManager().getLoggedInUser();
+        setLoggedInUserData(loggedInUserData);
+        if (!TextUtils.isEmpty(loggedInUserData)) {
+            productSellRequest.setLoyaltyIndex(AppConstants.REGISTERED_USER_LOYALTY_INDEX);
+        } else {
+            productSellRequest.setLoyaltyIndex(AppConstants.UNREGISTERED_USER_LOYALTY_INDEX);
+        }
     }
 
     public void getAllUsers() {
@@ -48,12 +56,6 @@ public class ProductSellViewModel extends BaseViewModel<ProductSellNavigator> {
                 .observeOn(AndroidSchedulers.mainThread())
                 .subscribe(user -> {
                     if (user != null && user.getUserId() != 0) {
-                        String json = getDataManager().getLoggedInUser();
-                        if (!TextUtils.isEmpty(json)) {
-                            productSellRequest.setLoyaltyIndex(AppConstants.REGISTERED_USER_LOYALTY_INDEX);
-                        } else {
-                            productSellRequest.setLoyaltyIndex(AppConstants.UNREGISTERED_USER_LOYALTY_INDEX);
-                        }
                         productSellRequest.setSellerName(user.getName());
                         productSellRequest.setLoyaltyCardId(user.getLoyaltyCardId());
                         productSellRequest.setVillageName(user.getVillageName());
@@ -80,5 +82,13 @@ public class ProductSellViewModel extends BaseViewModel<ProductSellNavigator> {
             userList = new MutableLiveData<>();
         }
         return userList;
+    }
+
+    public String getLoggedInUserData() {
+        return loggedInUserData;
+    }
+
+    public void setLoggedInUserData(String loggedInUserData) {
+        this.loggedInUserData = loggedInUserData;
     }
 }
