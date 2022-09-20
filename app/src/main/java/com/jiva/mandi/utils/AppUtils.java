@@ -58,8 +58,8 @@ public final class AppUtils {
      * @param context View context
      * @param message error message to show as toast
      */
-    public static void showToast(final Context context, final String message) {
-        Toast.makeText(context, message, Toast.LENGTH_LONG).show();
+    public static void showShortToast(final Context context, final String message) {
+        Toast.makeText(context, message, Toast.LENGTH_SHORT).show();
     }
 
     public static String getNewLoyaltyId(String loyaltyId) {

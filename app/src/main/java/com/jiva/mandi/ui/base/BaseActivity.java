@@ -28,8 +28,7 @@ import com.jiva.mandi.utils.NetworkUtils;
 import javax.inject.Inject;
 
 
-public abstract class BaseActivity<T extends ViewDataBinding, V extends BaseViewModel> extends AppCompatActivity
-        implements BaseFragment.Callback {
+public abstract class BaseActivity<T extends ViewDataBinding, V extends BaseViewModel> extends AppCompatActivity {
 
     // TODO
     // this can probably depend on isLoading variable of BaseViewModel,
@@ -59,16 +58,6 @@ public abstract class BaseActivity<T extends ViewDataBinding, V extends BaseView
 
 
     @Override
-    public void onFragmentAttached() {
-
-    }
-
-    @Override
-    public void onFragmentDetached(String tag) {
-
-    }
-
-    @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
         performDependencyInjection(getBuildComponent());
         super.onCreate(savedInstanceState);
@@ -83,32 +72,6 @@ public abstract class BaseActivity<T extends ViewDataBinding, V extends BaseView
         if (getSupportActionBar() != null) {
             getSupportActionBar().hide();
         }
-    }
-
-    public void showActionBar() {
-        if (getSupportActionBar() != null) {
-            getSupportActionBar().show();
-        }
-    }
-
-    public void hideKeyboard() {
-        View view = this.getCurrentFocus();
-        if (view != null) {
-            InputMethodManager imm = (InputMethodManager) getSystemService(Context.INPUT_METHOD_SERVICE);
-            if (imm != null) {
-                imm.hideSoftInputFromWindow(view.getWindowToken(), 0);
-            }
-        }
-    }
-
-    public void hideLoading() {
-        if (mProgressDialog != null && mProgressDialog.isShowing()) {
-            mProgressDialog.cancel();
-        }
-    }
-
-    public boolean isNetworkConnected() {
-        return NetworkUtils.isNetworkConnected(getApplicationContext());
     }
 
 

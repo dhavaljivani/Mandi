@@ -12,6 +12,7 @@ import android.text.Editable;
 import android.text.TextWatcher;
 import android.view.View;
 
+import com.google.android.material.snackbar.Snackbar;
 import com.google.gson.Gson;
 import com.jiva.mandi.R;
 import com.jiva.mandi.data.model.LoginResponse;
@@ -19,6 +20,7 @@ import com.jiva.mandi.databinding.FragmentLoginBinding;
 import com.jiva.mandi.di.component.FragmentComponent;
 import com.jiva.mandi.ui.base.BaseFragment;
 import com.jiva.mandi.utils.AppUtils;
+import com.jiva.mandi.utils.SnackBarUtils;
 import com.jiva.mandi.utils.ValidationUtil;
 
 import javax.inject.Inject;
@@ -114,15 +116,16 @@ public class LoginFragment extends BaseFragment<FragmentLoginBinding, LoginViewM
 
     @Override
     public void handleError(Throwable throwable) {
+        AppUtils.handleException(throwable);
         if (throwable instanceof EmptyResultSetException) {
-            AppUtils.showToast(getContext(), getString(R.string.login_failed));
+            SnackBarUtils.showSnackBar(getView(), getString(R.string.login_failed), Snackbar.LENGTH_LONG);
         }
     }
 
     @Override
     public void onLoginSuccess() {
-        AppUtils.showToast(getContext(), getString(R.string.login_success));
         if (getView() != null) {
+            SnackBarUtils.showSnackBar(getView(), getString(R.string.login_success), Snackbar.LENGTH_SHORT);
             Navigation.findNavController(getView()).navigate(R.id.action_loginFragment_to_productSellFragment);
         }
     }
@@ -149,7 +152,8 @@ public class LoginFragment extends BaseFragment<FragmentLoginBinding, LoginViewM
         @Override
         public void onTextChanged(CharSequence charSequence, int i, int i1, int i2) {
             try {
-                if (view.getId() == R.id.edtMobileNumber) {
+                if (view.getId() == R.id.edtMobileNumber
+                        && mFragmentLoginBinding.edtMobileNumber.hasFocus()) {
                     boolean isValid = ValidationUtil.isMobileNumberIsValid(mViewModel.getLoginRequest().getUsername());
                     if (isValid) {
                         ValidationUtil.removeErrorFromTextLayout(mFragmentLoginBinding.mobileNumberTextField);
@@ -158,7 +162,8 @@ public class LoginFragment extends BaseFragment<FragmentLoginBinding, LoginViewM
                                 mFragmentLoginBinding.mobileNumberTextField,
                                 getString(R.string.error_mobile));
                     }
-                } else {
+                } else if (view.getId() == R.id.edtPassword
+                        && mFragmentLoginBinding.edtPassword.hasFocus()) {
                     boolean isValid = ValidationUtil.isPasswordIsValid(mViewModel.getLoginRequest().getPassword());
                     if (isValid) {
                         ValidationUtil.removeErrorFromTextLayout(mFragmentLoginBinding.passwordTextField);

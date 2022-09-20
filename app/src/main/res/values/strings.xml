@@ -13,7 +13,7 @@
     <string name="invalid_username">Not a valid username</string>
     <string name="invalid_password">Password must be >5 characters</string>
     <string name="login_success">Sign in successfully.</string>
-    <string name="login_failed">There is no user with the given credentials. Please enter a valid credentials.</string>
+    <string name="login_failed">There is no user with the entered credentials. Please enter a valid credentials.</string>
 
 
     <!-- LOGIN SCREEN -->
@@ -69,6 +69,7 @@
     <string name="arg_total_amount">total_amount</string>
     <string name="label_tonnes">Tonnes</string>
     <string name="sell_confirmation">Are you sure do you want to sell your product?</string>
+    <string name="exitMessage">Press back again to exit.</string>
     <!-- END Product Sell -->
 
     <!-- Product Sold -->

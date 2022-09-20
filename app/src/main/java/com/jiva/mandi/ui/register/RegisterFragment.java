@@ -13,6 +13,7 @@ import androidx.fragment.app.Fragment;
 import androidx.lifecycle.Observer;
 import androidx.navigation.Navigation;
 
+import com.google.android.material.snackbar.Snackbar;
 import com.jiva.mandi.R;
 import com.jiva.mandi.data.model.db.Village;
 import com.jiva.mandi.databinding.FragmentRegisterBinding;
@@ -21,6 +22,7 @@ import com.jiva.mandi.ui.base.BaseFragment;
 import com.jiva.mandi.ui.login.LoginFragment;
 import com.jiva.mandi.utils.AppUtils;
 import com.jiva.mandi.utils.CollectionUtils;
+import com.jiva.mandi.utils.SnackBarUtils;
 import com.jiva.mandi.utils.ValidationUtil;
 
 import java.util.List;
@@ -160,19 +162,20 @@ public class RegisterFragment extends BaseFragment<FragmentRegisterBinding, Regi
 
     @Override
     public void handleError(Throwable throwable) {
+        AppUtils.handleException(throwable);
     }
 
     @Override
     public void SignUpSuccess() {
-        AppUtils.showToast(getContext(), getString(R.string.user_registered_msg));
         if (getView() != null) {
+            SnackBarUtils.showSnackBar(getView(), getString(R.string.user_registered_msg), Snackbar.LENGTH_SHORT);
             Navigation.findNavController(getView()).navigate(R.id.action_registerFragment_to_productSellFragment);
         }
     }
 
     @Override
     public void UserAlreadyExist() {
-        AppUtils.showToast(getContext(), getString(R.string.user_exist_msg));
+        SnackBarUtils.showSnackBar(getView(), getString(R.string.user_exist_msg), Snackbar.LENGTH_LONG);
     }
 
     @Override

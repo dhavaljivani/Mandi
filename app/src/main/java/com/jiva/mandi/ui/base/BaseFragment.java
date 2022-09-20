@@ -5,6 +5,7 @@ import android.os.Bundle;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.view.inputmethod.InputMethodManager;
 
 import androidx.annotation.LayoutRes;
 import androidx.annotation.NonNull;
@@ -56,7 +57,6 @@ public abstract class BaseFragment<T extends ViewDataBinding, V extends BaseView
         if (context instanceof BaseActivity) {
             BaseActivity activity = (BaseActivity) context;
             this.mActivity = activity;
-            activity.onFragmentAttached();
         }
     }
 
@@ -99,17 +99,19 @@ public abstract class BaseFragment<T extends ViewDataBinding, V extends BaseView
 
     private FragmentComponent getBuildComponent() {
         return DaggerFragmentComponent.builder()
-                .appComponent(((MandiApp)(getContext().getApplicationContext())).appComponent)
+                .appComponent(((MandiApp) (getContext().getApplicationContext())).appComponent)
                 .fragmentModule(new FragmentModule(this))
                 .build();
     }
 
-    public interface Callback {
-
-        @SuppressWarnings("EmptyMethod")
-        void onFragmentAttached();
-
-        @SuppressWarnings("EmptyMethod")
-        void onFragmentDetached(String tag);
+    public void hideKeyboard() {
+        View view = mActivity.getCurrentFocus();
+        if (view != null) {
+            InputMethodManager imm = (InputMethodManager) mActivity.getSystemService(Context.INPUT_METHOD_SERVICE);
+            if (imm != null) {
+                imm.hideSoftInputFromWindow(view.getWindowToken(), 0);
+            }
+        }
     }
+
 }

@@ -8,7 +8,7 @@
     android:drawableStart="@drawable/ic_baseline_location_on_24"
     android:drawableEnd="@drawable/ic_baseline_keyboard_arrow_down_24"
     android:padding="@dimen/size_14dp"
-    android:textColor="@color/colorEditTextStroke"
+    android:textColor="?attr/editTextColor"
     app:layout_constraintRight_toRightOf="parent"
     app:layout_constraintTop_toTopOf="parent"
     tools:ignore="ContentDescription" />

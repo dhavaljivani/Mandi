@@ -32,11 +32,6 @@ public class ProductSellViewModel extends BaseViewModel<ProductSellNavigator> {
         getAllUsers();
         String loggedInUserData = getDataManager().getLoggedInUser();
         setLoggedInUserData(loggedInUserData);
-        if (!TextUtils.isEmpty(loggedInUserData)) {
-            productSellRequest.setLoyaltyIndex(AppConstants.REGISTERED_USER_LOYALTY_INDEX);
-        } else {
-            productSellRequest.setLoyaltyIndex(AppConstants.UNREGISTERED_USER_LOYALTY_INDEX);
-        }
     }
 
     public void getAllUsers() {
@@ -61,9 +56,14 @@ public class ProductSellViewModel extends BaseViewModel<ProductSellNavigator> {
                         productSellRequest.setLoyaltyCardId(user.getLoyaltyCardId());
                         productSellRequest.setVillageName(user.getVillageName());
                         productSellRequest.setVillageId(user.getVillageId());
+                        productSellRequest.setFinalPrice("0");
+                        productSellRequest.setWeight("");
                         productSellRequest.setSellingPrice(Double.parseDouble(user.getSellingPrice()));
-                        getNavigator().refreshView();
+                    } else {
+                        productSellRequest = new ProductSellRequest();
                     }
+                    setLoyaltyIndex();
+                    getNavigator().refreshView();
                 }, throwable -> {
                     getNavigator().handleError(throwable);
                 });
@@ -95,6 +95,14 @@ public class ProductSellViewModel extends BaseViewModel<ProductSellNavigator> {
 
     public void setUserList(MutableLiveData<List<UserResponse>> userList) {
         this.userList = userList;
+    }
+
+    private void setLoyaltyIndex() {
+        if (!TextUtils.isEmpty(getLoggedInUserData())) {
+            productSellRequest.setLoyaltyIndex(AppConstants.REGISTERED_USER_LOYALTY_INDEX);
+        } else {
+            productSellRequest.setLoyaltyIndex(AppConstants.UNREGISTERED_USER_LOYALTY_INDEX);
+        }
     }
 
 

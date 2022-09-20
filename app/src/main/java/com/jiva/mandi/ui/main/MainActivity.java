@@ -74,15 +74,14 @@ public class MainActivity extends BaseActivity<ActivityMainBinding, MainViewMode
                 }
             }
         });
-
     }
 
-    @Override
-    public boolean onSupportNavigateUp() {
-        //
-        if (!(mNavController.navigateUp() || super.onSupportNavigateUp())) {
-            onBackPressed();
-        }
-        return true;
-    }
+    //    @Override
+//    public boolean onSupportNavigateUp() {
+//        //
+//        if (!(mNavController.navigateUp() || super.onSupportNavigateUp())) {
+//            onBackPressed();
+//        }
+//        return true;
+//    }
 }

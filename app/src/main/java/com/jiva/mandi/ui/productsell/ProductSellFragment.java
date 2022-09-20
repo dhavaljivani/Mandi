@@ -10,8 +10,8 @@ import android.view.MenuItem;
 import android.view.View;
 import android.view.WindowManager;
 import android.widget.AdapterView;
-import android.widget.ArrayAdapter;
 
+import androidx.activity.OnBackPressedCallback;
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.core.view.MenuHost;
@@ -20,6 +20,7 @@ import androidx.databinding.library.baseAdapters.BR;
 import androidx.lifecycle.Lifecycle;
 import androidx.navigation.Navigation;
 
+import com.google.android.material.snackbar.Snackbar;
 import com.google.android.material.textfield.MaterialAutoCompleteTextView;
 import com.google.android.material.textfield.TextInputEditText;
 import com.google.android.material.textfield.TextInputLayout;
@@ -29,18 +30,23 @@ import com.jiva.mandi.data.model.db.Village;
 import com.jiva.mandi.databinding.FragmentProductSellBinding;
 import com.jiva.mandi.di.component.FragmentComponent;
 import com.jiva.mandi.ui.base.BaseFragment;
-import com.jiva.mandi.ui.register.RegisterFragment;
 import com.jiva.mandi.ui.register.VillageSpinnerAdapter;
 import com.jiva.mandi.utils.AlertDialogHelper;
 import com.jiva.mandi.utils.AppUtils;
 import com.jiva.mandi.utils.CollectionUtils;
+import com.jiva.mandi.utils.SnackBarUtils;
 import com.jiva.mandi.utils.ValidationUtil;
 
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
 import java.util.Locale;
+import java.util.concurrent.TimeUnit;
 
+import io.reactivex.Completable;
+import io.reactivex.CompletableObserver;
+import io.reactivex.android.schedulers.AndroidSchedulers;
+import io.reactivex.disposables.Disposable;
 import kotlin.collections.CollectionsKt;
 
 
@@ -52,6 +58,7 @@ public class ProductSellFragment extends BaseFragment<FragmentProductSellBinding
     String[] villageName;
     private final List<UserResponse> userResponseList = new ArrayList<>();
     private final List<Village> villageList = new ArrayList<>();
+    private boolean doubleBackToExitPressedOnce = false;
 
     @Override
     public int getBindingVariable() {
@@ -69,15 +76,6 @@ public class ProductSellFragment extends BaseFragment<FragmentProductSellBinding
         super.onViewCreated(view, savedInstanceState);
         mFragmentProductSellBinding = getViewDataBinding();
         mViewModel.setNavigator(this);
-        //Set on click listener on clickable view.
-        mFragmentProductSellBinding.btnSell.setOnClickListener(v -> {
-            if (isFormValid()) {
-                AlertDialogHelper.showDialog(getContext(), null, getString(R.string.sell_confirmation)
-                        , getString(R.string.yes), getString(R.string.no), false,
-                        ProductSellFragment.this, AlertDialogHelper.DialogIdentifier.SELL_DIALOG);
-            }
-        });
-
         mViewModel.getVillageList().observe(getViewLifecycleOwner(), this::setUpVillageSpinner);
         mViewModel.getUserList().observe(getViewLifecycleOwner(), responseList -> {
             userResponseList.clear();
@@ -92,7 +90,35 @@ public class ProductSellFragment extends BaseFragment<FragmentProductSellBinding
         mFragmentProductSellBinding.edtCardId.addTextChangedListener(
                 new TextFieldValidation(mFragmentProductSellBinding.edtCardId));
 
+
         setUpMenu(view);
+
+        //Set on click listener on clickable view.
+        mFragmentProductSellBinding.btnSell.setOnClickListener(v -> {
+            if (isFormValid()) {
+                hideKeyboard();
+                AlertDialogHelper.showDialog(getContext(), null, getString(R.string.sell_confirmation)
+                        , getString(R.string.yes), getString(R.string.no), false,
+                        ProductSellFragment.this, AlertDialogHelper.DialogIdentifier.SELL_DIALOG);
+            }
+        });
+
+        // This callback will only be called when MyFragment is at least Started.
+        OnBackPressedCallback callback = new OnBackPressedCallback(true) {
+            @Override
+            public void handleOnBackPressed() {
+                // Handle the back button event
+                if (doubleBackToExitPressedOnce) {
+                    requireActivity().finish();
+                    return;
+                }
+                doubleBackToExitPressedOnce = true;
+                SnackBarUtils.showSnackBar(view, getString(R.string.exitMessage), Snackbar.LENGTH_SHORT);
+                Completable.timer(2, TimeUnit.SECONDS, AndroidSchedulers.mainThread())
+                        .subscribe(completableObserver());
+            }
+        };
+        requireActivity().getOnBackPressedDispatcher().addCallback(getViewLifecycleOwner(), callback);
 
     }
 
@@ -116,11 +142,13 @@ public class ProductSellFragment extends BaseFragment<FragmentProductSellBinding
         mFragmentProductSellBinding.edtSellerName.setOnItemClickListener((parent, view, position, id) -> {
             String cardId = userResponseList.get(position).getLoyaltyCardId();
             mFragmentProductSellBinding.edtCardId.setText(cardId);
+            ValidationUtil.removeErrorFromTextLayout(mFragmentProductSellBinding.cardIdTextField);
         });
 
         mFragmentProductSellBinding.edtCardId.setOnItemClickListener((parent, view, position, id) -> {
             String name = userResponseList.get(position).getName();
             mFragmentProductSellBinding.edtSellerName.setText(name);
+            ValidationUtil.removeErrorFromTextLayout(mFragmentProductSellBinding.sellerNameTextField);
         });
     }
 
@@ -147,7 +175,6 @@ public class ProductSellFragment extends BaseFragment<FragmentProductSellBinding
             mFragmentProductSellBinding.spVillage.setAdapter(villageSpinnerAdapter);
             mFragmentProductSellBinding.spVillage.setOnItemSelectedListener(this);
         }
-
         mViewModel.getLoggedInUserDetails();
     }
 
@@ -194,11 +221,14 @@ public class ProductSellFragment extends BaseFragment<FragmentProductSellBinding
 
     @Override
     public void refreshView() {
-        int index = Arrays.asList(villageName)
-                .indexOf(mViewModel.getProductSellRequest().getVillageName());
+        int index = 0;
+        if (!TextUtils.isEmpty(mViewModel.getProductSellRequest().getVillageName())) {
+            index = Arrays.asList(villageName)
+                    .indexOf(mViewModel.getProductSellRequest().getVillageName());
+        }
+
         mFragmentProductSellBinding.spVillage.setSelection(index);
         executeBinding();
-
     }
 
     @Override
@@ -253,7 +283,7 @@ public class ProductSellFragment extends BaseFragment<FragmentProductSellBinding
         @Override
         public void onTextChanged(CharSequence charSequence, int i, int i1, int i2) {
             try {
-                if (view.getId() == R.id.edtWeight) {
+                if (view.getId() == R.id.edtWeight && mFragmentProductSellBinding.edtWeight.hasFocus()) {
                     validateField(mViewModel.getProductSellRequest().getWeight(),
                             mFragmentProductSellBinding.weightTextField,
                             null,
@@ -268,14 +298,14 @@ public class ProductSellFragment extends BaseFragment<FragmentProductSellBinding
                         mViewModel.getProductSellRequest().setFinalPrice("0");
                     }
                     executeBinding();
-                } else if (view.getId() == R.id.edtSellerName) {
+                } else if (view.getId() == R.id.edtSellerName && mFragmentProductSellBinding.edtSellerName.hasFocus()) {
                     validateField(mViewModel.getProductSellRequest().getSellerName(),
                             mFragmentProductSellBinding.sellerNameTextField,
                             mFragmentProductSellBinding.edtSellerName,
                             null,
                             getString(R.string.error_seller_name)
                     );
-                } else if (view.getId() == R.id.edtCardId) {
+                } else if (view.getId() == R.id.edtCardId && mFragmentProductSellBinding.edtCardId.hasFocus()) {
                     validateField(mViewModel.getProductSellRequest().getLoyaltyCardId(),
                             mFragmentProductSellBinding.cardIdTextField,
                             mFragmentProductSellBinding.edtCardId,
@@ -384,5 +414,24 @@ public class ProductSellFragment extends BaseFragment<FragmentProductSellBinding
     public void onNegativeButtonClicked(int dialogIdentifier) {
 
     }
+
+    private CompletableObserver completableObserver() {
+        return new CompletableObserver() {
+            @Override
+            public void onSubscribe(Disposable d) {
+            }
+
+            @Override
+            public void onComplete() {
+                doubleBackToExitPressedOnce = false;
+            }
+
+            @Override
+            public void onError(Throwable e) {
+                AppUtils.handleException(e);
+            }
+        };
+    }
+
 
 }

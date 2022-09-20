@@ -15,159 +15,161 @@
         android:background="?attr/background2"
         tools:context=".ui.productsell.ProductSellActivity">
 
-
-        <com.google.android.material.card.MaterialCardView
-            android:id="@+id/sellerDetailCard"
+        <androidx.core.widget.NestedScrollView
             android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            app:cardBackgroundColor="?attr/cardColor"
-            app:cardCornerRadius="10dp"
-            app:cardElevation="8dp"
-            app:cardUseCompatPadding="true"
-            app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintStart_toStartOf="parent"
+            android:layout_height="0dp"
+            app:layout_constraintBottom_toTopOf="@id/buttonPanel"
             app:layout_constraintTop_toTopOf="parent">
 
-            <androidx.constraintlayout.widget.ConstraintLayout
-                style="@style/parentViewMediumPadding"
+
+            <com.google.android.material.card.MaterialCardView
+                android:id="@+id/sellerDetailCard"
                 android:layout_width="match_parent"
-                android:layout_height="wrap_content">
-
-                <androidx.appcompat.widget.AppCompatTextView
-                    android:id="@+id/tvTitle"
-                    style="@style/bold_font"
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:contentDescription="@string/loginTitle"
-                    android:text="@string/app_name"
-                    android:textColor="?attr/editTextColor"
-                    android:textSize="@dimen/text_size_30sp"
-                    android:textStyle="bold"
-                    app:layout_constraintLeft_toLeftOf="parent"
-                    app:layout_constraintRight_toRightOf="parent"
-                    app:layout_constraintTop_toTopOf="parent" />
-
-                <com.google.android.material.textfield.TextInputLayout
-                    android:id="@+id/sellerNameTextField"
-                    style="@style/TextInputLayoutStyle"
-                    android:layout_marginTop="@dimen/size_20dp"
-                    android:hint="@string/seller_name"
-                    android:textColorHint="@color/enable_text_layout_color_selector"
-                    app:boxStrokeColor="@color/enable_text_layout_color_selector"
-                    app:layout_constraintLeft_toLeftOf="parent"
-                    app:layout_constraintRight_toRightOf="parent"
-                    app:layout_constraintTop_toBottomOf="@id/tvTitle">
-
-                    <!--                    <com.google.android.material.textfield.TextInputEditText-->
-                    <!--                        android:id="@+id/edtSellerName"-->
-                    <!--                        style="@style/TextInputEditTextStyle"-->
-                    <!--                        android:drawableStart="@drawable/ic_baseline_person_24"-->
-                    <!--                        android:inputType="text"-->
-                    <!--                        android:text="@={productSellViewModel.productSellRequest.sellerName}"-->
-                    <!--                        android:textColor="?attr/editTextColor" />-->
-
-                    <com.google.android.material.textfield.MaterialAutoCompleteTextView
-                        android:id="@+id/edtSellerName"
-                        style="@style/TextInputEditTextStyle"
-                        android:drawableStart="@drawable/ic_baseline_person_24"
-                        android:inputType="text"
-                        android:maxLines="1"
-                        android:text="@={productSellViewModel.productSellRequest.sellerName}"
-                        android:textColor="?attr/editTextColor" />
-
-                </com.google.android.material.textfield.TextInputLayout>
-
-                <com.google.android.material.textfield.TextInputLayout
-                    android:id="@+id/cardIdTextField"
-                    style="@style/TextInputLayoutStyle"
-                    android:layout_marginTop="@dimen/size_20dp"
-                    android:hint="@string/card_id"
-                    android:textColorHint="@color/enable_text_layout_color_selector"
-                    app:boxStrokeColor="@color/enable_text_layout_color_selector"
-                    app:layout_constraintLeft_toLeftOf="parent"
-                    app:layout_constraintRight_toRightOf="parent"
-                    app:layout_constraintTop_toBottomOf="@id/sellerNameTextField">
-
-                    <com.google.android.material.textfield.MaterialAutoCompleteTextView
-                        android:id="@+id/edtCardId"
-                        style="@style/TextInputEditTextStyle"
-                        android:drawableStart="@drawable/ic_baseline_credit_card_24"
-                        android:inputType="text"
-                        android:text="@={productSellViewModel.productSellRequest.loyaltyCardId}"
-                        android:textColor="?attr/editTextColor" />
-                </com.google.android.material.textfield.TextInputLayout>
-
-                <androidx.appcompat.widget.AppCompatSpinner
-                    android:id="@+id/spVillage"
-                    style="@style/SpinnerStyle"
-                    android:layout_marginTop="@dimen/size_20dp"
-                    android:background="@null"
-                    android:dropDownVerticalOffset="35dp"
-                    app:layout_constraintLeft_toLeftOf="parent"
-                    app:layout_constraintRight_toRightOf="parent"
-                    app:layout_constraintTop_toBottomOf="@id/cardIdTextField" />
-
-                <androidx.appcompat.widget.AppCompatTextView
-                    android:id="@+id/tvSelectVillageError"
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:layout_marginStart="@dimen/size_15dp"
-                    android:layout_marginTop="@dimen/size_2dp"
-                    android:text="@string/error_village"
-                    android:textColor="@color/design_error"
-                    android:textSize="@dimen/text_size_12sp"
-                    android:visibility="gone"
-                    app:layout_constraintRight_toRightOf="parent"
-                    app:layout_constraintTop_toBottomOf="@id/spVillage" />
+                android:layout_height="wrap_content"
+                app:cardBackgroundColor="?attr/cardColor"
+                app:cardCornerRadius="10dp"
+                app:cardElevation="8dp"
+                app:cardUseCompatPadding="true"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toTopOf="parent">
 
                 <androidx.constraintlayout.widget.ConstraintLayout
+                    style="@style/parentViewMediumPadding"
                     android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:layout_marginTop="@dimen/size_20dp"
-                    app:layout_constraintLeft_toLeftOf="parent"
-                    app:layout_constraintRight_toRightOf="parent"
-                    app:layout_constraintTop_toBottomOf="@id/tvSelectVillageError">
+                    android:layout_height="wrap_content">
+
+                    <androidx.appcompat.widget.AppCompatTextView
+                        android:id="@+id/tvTitle"
+                        style="@style/bold_font"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:contentDescription="@string/loginTitle"
+                        android:text="@string/app_name"
+                        android:textColor="?attr/editTextColor"
+                        android:textSize="@dimen/text_size_30sp"
+                        android:textStyle="bold"
+                        app:layout_constraintLeft_toLeftOf="parent"
+                        app:layout_constraintRight_toRightOf="parent"
+                        app:layout_constraintTop_toTopOf="parent" />
 
                     <com.google.android.material.textfield.TextInputLayout
-                        android:id="@+id/weightTextField"
+                        android:id="@+id/sellerNameTextField"
                         style="@style/TextInputLayoutStyle"
-                        android:hint="@string/weight"
+                        android:layout_marginTop="@dimen/size_20dp"
+                        android:hint="@string/seller_name"
                         android:textColorHint="@color/enable_text_layout_color_selector"
                         app:boxStrokeColor="@color/enable_text_layout_color_selector"
                         app:layout_constraintLeft_toLeftOf="parent"
                         app:layout_constraintRight_toRightOf="parent"
-                        app:layout_constraintTop_toBottomOf="parent"
-                        app:layout_constraintTop_toTopOf="parent">
+                        app:layout_constraintTop_toBottomOf="@id/tvTitle">
 
-                        <com.google.android.material.textfield.TextInputEditText
-                            android:id="@+id/edtWeight"
+                        <com.google.android.material.textfield.MaterialAutoCompleteTextView
+                            android:id="@+id/edtSellerName"
                             style="@style/TextInputEditTextStyle"
-                            android:contentDescription="@string/loginUsername"
-                            android:drawableStart="@drawable/ic_baseline_balance_24"
-                            android:inputType="numberDecimal"
-                            android:maxLength="4"
+                            android:drawableStart="@drawable/ic_baseline_person_24"
+                            android:imeOptions="actionNext"
+                            android:inputType="text"
                             android:maxLines="1"
-                            android:text="@={productSellViewModel.productSellRequest.weight}"
+                            android:text="@={productSellViewModel.productSellRequest.sellerName}"
+                            android:textColor="?attr/editTextColor" />
+
+                    </com.google.android.material.textfield.TextInputLayout>
+
+                    <com.google.android.material.textfield.TextInputLayout
+                        android:id="@+id/cardIdTextField"
+                        style="@style/TextInputLayoutStyle"
+                        android:layout_marginTop="@dimen/size_20dp"
+                        android:hint="@string/card_id"
+                        android:textColorHint="@color/enable_text_layout_color_selector"
+                        app:boxStrokeColor="@color/enable_text_layout_color_selector"
+                        app:layout_constraintLeft_toLeftOf="parent"
+                        app:layout_constraintRight_toRightOf="parent"
+                        app:layout_constraintTop_toBottomOf="@id/sellerNameTextField">
+
+                        <com.google.android.material.textfield.MaterialAutoCompleteTextView
+                            android:id="@+id/edtCardId"
+                            style="@style/TextInputEditTextStyle"
+                            android:drawableStart="@drawable/ic_baseline_credit_card_24"
+                            android:imeOptions="actionNext"
+                            android:inputType="text"
+                            android:text="@={productSellViewModel.productSellRequest.loyaltyCardId}"
                             android:textColor="?attr/editTextColor" />
                     </com.google.android.material.textfield.TextInputLayout>
 
-                    <androidx.appcompat.widget.AppCompatTextView
-                        style="@style/medium_bold_font"
-                        android:layout_alignParentEnd="true"
-                        android:layout_centerVertical="true"
+                    <androidx.appcompat.widget.AppCompatSpinner
+                        android:id="@+id/spVillage"
+                        style="@style/SpinnerStyle"
                         android:layout_marginTop="@dimen/size_20dp"
-                        android:layout_marginEnd="@dimen/size_10dp"
-                        android:text="@string/label_tonnes"
-                        android:textColor="?attr/editTextColor"
+                        android:background="@null"
+                        android:dropDownVerticalOffset="35dp"
+                        app:layout_constraintLeft_toLeftOf="parent"
                         app:layout_constraintRight_toRightOf="parent"
-                        app:layout_constraintTop_toTopOf="parent" />
+                        app:layout_constraintTop_toBottomOf="@id/cardIdTextField" />
+
+                    <androidx.appcompat.widget.AppCompatTextView
+                        android:id="@+id/tvSelectVillageError"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:layout_marginStart="@dimen/size_15dp"
+                        android:layout_marginTop="@dimen/size_2dp"
+                        android:text="@string/error_village"
+                        android:textColor="@color/design_error"
+                        android:textSize="@dimen/text_size_12sp"
+                        android:visibility="gone"
+                        app:layout_constraintRight_toRightOf="parent"
+                        app:layout_constraintTop_toBottomOf="@id/spVillage" />
+
+                    <androidx.constraintlayout.widget.ConstraintLayout
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:layout_marginTop="@dimen/size_20dp"
+                        app:layout_constraintLeft_toLeftOf="parent"
+                        app:layout_constraintRight_toRightOf="parent"
+                        app:layout_constraintTop_toBottomOf="@id/tvSelectVillageError">
+
+                        <com.google.android.material.textfield.TextInputLayout
+                            android:id="@+id/weightTextField"
+                            style="@style/TextInputLayoutStyle"
+                            android:hint="@string/weight"
+                            android:textColorHint="@color/enable_text_layout_color_selector"
+                            app:boxStrokeColor="@color/enable_text_layout_color_selector"
+                            app:layout_constraintLeft_toLeftOf="parent"
+                            app:layout_constraintRight_toRightOf="parent"
+                            app:layout_constraintTop_toBottomOf="parent"
+                            app:layout_constraintTop_toTopOf="parent">
+
+                            <com.google.android.material.textfield.TextInputEditText
+                                android:id="@+id/edtWeight"
+                                style="@style/TextInputEditTextStyle"
+                                android:contentDescription="@string/loginUsername"
+                                android:drawableStart="@drawable/ic_baseline_balance_24"
+                                android:inputType="numberDecimal"
+                                android:maxLength="4"
+                                android:maxLines="1"
+                                android:text="@={productSellViewModel.productSellRequest.weight}"
+                                android:textColor="?attr/editTextColor" />
+                        </com.google.android.material.textfield.TextInputLayout>
+
+                        <androidx.appcompat.widget.AppCompatTextView
+                            style="@style/medium_bold_font"
+                            android:layout_alignParentEnd="true"
+                            android:layout_centerVertical="true"
+                            android:layout_marginTop="@dimen/size_20dp"
+                            android:layout_marginEnd="@dimen/size_10dp"
+                            android:text="@string/label_tonnes"
+                            android:textColor="?attr/editTextColor"
+                            app:layout_constraintRight_toRightOf="parent"
+                            app:layout_constraintTop_toTopOf="parent" />
+
+                    </androidx.constraintlayout.widget.ConstraintLayout>
+
 
                 </androidx.constraintlayout.widget.ConstraintLayout>
 
+            </com.google.android.material.card.MaterialCardView>
 
-            </androidx.constraintlayout.widget.ConstraintLayout>
-
-        </com.google.android.material.card.MaterialCardView>
+        </androidx.core.widget.NestedScrollView>
 
 
         <com.google.android.material.card.MaterialCardView
