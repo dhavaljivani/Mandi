@@ -33,6 +33,16 @@ Android 5.0(Lollipop) to the latest android os version
 | 8 | **Androidx Room** | https://developer.android.com/jetpack/androidx/releases/room |
 | 9 | **Gson** | https://github.com/google/gson |
 
+### Project structure:
+
+| **S No.** | **Name**  | **Description**  |
+| :-----: | :- | :- |
+| 1 | **data** | It contains all the database,model,preference related class. |
+| 2 | **di** | Dependency providing classes using Dagger2. |
+| 3 | **ui** | View classes along with their corresponding ViewModel adapter. |
+| 4 | **util** | Utility classes. |
+| 5 | **MandiApp** | It is application class. |
+
 # Start the application in a local environment
 
    ### Android studio setup
@@ -79,12 +89,3 @@ Android 5.0(Lollipop) to the latest android os version
 6. You can still locate the APK file in the following location with your project folder if you missed the notification:
    **app/release**
 
-### Project structure:
-
-| **S No.** | **Name**  | **Description**  |
-| :-----: | :- | :- |
-| 1 | **data** | It contains all the database,model,preference related class. |
-| 2 | **di** | Dependency providing classes using Dagger2. |
-| 3 | **ui** | View classes along with their corresponding ViewModel adapter. |
-| 4 | **util** | Utility classes. |
-| 5 | **MandiApp** | It is application class. |
