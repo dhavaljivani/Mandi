@@ -106,18 +106,22 @@ public final class AlertDialogHelper {
          * @param dialogIdentifier Alert button positive button identifier for multiple dialog in
          *                         single activity
          */
-        @SuppressWarnings({"EmptyMethod"})
+        @SuppressWarnings({"EmptyMethod", "unused"})
         void onPositiveButtonClicked(int dialogIdentifier);
 
         /**
          * @param dialogIdentifier Alert button negative button identifier for multiple dialog in
          *                         single activity
          */
-        @SuppressWarnings({"EmptyMethod"})
+        @SuppressWarnings({"EmptyMethod", "unused"})
         void onNegativeButtonClicked(int dialogIdentifier);
 
     }
 
+    /**
+     * If you have multiple alert dialog in screen the dialog Identifier used for identify the which
+     * dialog button clicked is press .
+     */
     public static final class DialogIdentifier {
         public static final int LOGOUT_DIALOG = 1;
         public static final int SELL_DIALOG = 2;

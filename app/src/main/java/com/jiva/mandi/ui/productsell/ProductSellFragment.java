@@ -8,7 +8,6 @@ import android.view.Menu;
 import android.view.MenuInflater;
 import android.view.MenuItem;
 import android.view.View;
-import android.view.WindowManager;
 import android.widget.AdapterView;
 
 import androidx.activity.OnBackPressedCallback;
@@ -97,7 +96,7 @@ public class ProductSellFragment extends BaseFragment<FragmentProductSellBinding
         mFragmentProductSellBinding.btnSell.setOnClickListener(v -> {
             if (isFormValid()) {
                 hideKeyboard();
-                AlertDialogHelper.showDialog(getContext(), null, getString(R.string.sell_confirmation)
+                AlertDialogHelper.showDialog(getMContext(), null, getString(R.string.sell_confirmation)
                         , getString(R.string.yes), getString(R.string.no), false,
                         ProductSellFragment.this, AlertDialogHelper.DialogIdentifier.SELL_DIALOG);
             }
@@ -130,10 +129,10 @@ public class ProductSellFragment extends BaseFragment<FragmentProductSellBinding
             cardIdList.add(userResponse.getLoyaltyCardId());
         }
 
-        AutoCompleteAdapter sellerNameAdapter = new AutoCompleteAdapter(getContext());
+        AutoCompleteAdapter sellerNameAdapter = new AutoCompleteAdapter(getMContext());
         sellerNameAdapter.addAllData(nameList);
         sellerNameAdapter.notifyDataSetChanged();
-        AutoCompleteAdapter cardIdAdapter = new AutoCompleteAdapter(getContext());
+        AutoCompleteAdapter cardIdAdapter = new AutoCompleteAdapter(getMContext());
         cardIdAdapter.addAllData(cardIdList);
         cardIdAdapter.notifyDataSetChanged();
 
@@ -169,7 +168,7 @@ public class ProductSellFragment extends BaseFragment<FragmentProductSellBinding
                 villageName[i + 1] = villageList.get(i).name;
                 villageId[i + 1] = villageList.get(i).id;
             }
-            VillageSpinnerAdapter villageSpinnerAdapter = new VillageSpinnerAdapter(getBaseActivity(),
+            VillageSpinnerAdapter villageSpinnerAdapter = new VillageSpinnerAdapter(getMContext(),
                     villageName, R.layout.villag_dropdown_text,
                     R.layout.village_name_dropdown);
             mFragmentProductSellBinding.spVillage.setAdapter(villageSpinnerAdapter);
@@ -214,11 +213,13 @@ public class ProductSellFragment extends BaseFragment<FragmentProductSellBinding
         return isValid;
     }
 
+    @SuppressWarnings("ALL")
     @Override
     public void handleError(Throwable throwable) {
         AppUtils.handleException(throwable);
     }
 
+    @SuppressWarnings("ALL")
     @Override
     public void refreshView() {
         int index = 0;
@@ -378,7 +379,7 @@ public class ProductSellFragment extends BaseFragment<FragmentProductSellBinding
             @Override
             public boolean onMenuItemSelected(@NonNull MenuItem menuItem) {
                 if (menuItem.getItemId() == R.id.action_log_out) {
-                    AlertDialogHelper.showDialog(getContext(), null, getString(R.string.logout_confirmation)
+                    AlertDialogHelper.showDialog(getMContext(), null, getString(R.string.logout_confirmation)
                             , getString(R.string.yes), getString(R.string.no), false,
                             ProductSellFragment.this, AlertDialogHelper.DialogIdentifier.LOGOUT_DIALOG);
 
@@ -391,6 +392,7 @@ public class ProductSellFragment extends BaseFragment<FragmentProductSellBinding
         }, getViewLifecycleOwner(), Lifecycle.State.RESUMED);
     }
 
+    @SuppressWarnings("ALL")
     @Override
     public void onPositiveButtonClicked(int dialogIdentifier) {
         if (dialogIdentifier == AlertDialogHelper.DialogIdentifier.LOGOUT_DIALOG) {
@@ -410,6 +412,7 @@ public class ProductSellFragment extends BaseFragment<FragmentProductSellBinding
         }
     }
 
+    @SuppressWarnings("ALL")
     @Override
     public void onNegativeButtonClicked(int dialogIdentifier) {
 

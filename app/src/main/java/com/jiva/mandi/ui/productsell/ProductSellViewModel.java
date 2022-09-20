@@ -7,9 +7,7 @@ import androidx.lifecycle.MutableLiveData;
 import com.jiva.mandi.data.datamagager.DataManager;
 import com.jiva.mandi.data.model.ProductSellRequest;
 import com.jiva.mandi.data.model.UserResponse;
-import com.jiva.mandi.data.model.db.Village;
 import com.jiva.mandi.ui.base.BaseViewModel;
-import com.jiva.mandi.ui.register.RegisterNavigator;
 import com.jiva.mandi.utils.AppConstants;
 
 import java.util.List;
@@ -38,11 +36,8 @@ public class ProductSellViewModel extends BaseViewModel<ProductSellNavigator> {
         Disposable disposable = getDataManager().getAllUser()
                 .subscribeOn(Schedulers.io())
                 .observeOn(AndroidSchedulers.mainThread())
-                .subscribe(userResponseList -> {
-                    userList.setValue(userResponseList);
-                }, throwable -> {
-                    getNavigator().handleError(throwable);
-                });
+                .subscribe(userResponseList -> userList.setValue(userResponseList),
+                        throwable -> getNavigator().handleError(throwable));
         getCompositeDisposable().add(disposable);
     }
 
@@ -64,9 +59,7 @@ public class ProductSellViewModel extends BaseViewModel<ProductSellNavigator> {
                     }
                     setLoyaltyIndex();
                     getNavigator().refreshView();
-                }, throwable -> {
-                    getNavigator().handleError(throwable);
-                });
+                }, throwable -> getNavigator().handleError(throwable));
         getCompositeDisposable().add(disposable);
     }
 
@@ -91,10 +84,6 @@ public class ProductSellViewModel extends BaseViewModel<ProductSellNavigator> {
 
     public void setLoggedInUserData(String loggedInUserData) {
         this.loggedInUserData = loggedInUserData;
-    }
-
-    public void setUserList(MutableLiveData<List<UserResponse>> userList) {
-        this.userList = userList;
     }
 
     private void setLoyaltyIndex() {

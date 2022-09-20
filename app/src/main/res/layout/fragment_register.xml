@@ -57,6 +57,7 @@
                 android:contentDescription="@string/loginUsername"
                 android:drawableStart="@drawable/ic_baseline_person_24"
                 android:inputType="text"
+                android:maxLength="@integer/name_max_length"
                 android:text="@={registerViewModel.user.name}"
                 android:textColor="?attr/editTextColor" />
         </com.google.android.material.textfield.TextInputLayout>
@@ -81,6 +82,7 @@
                 android:drawableStart="@drawable/ic_baseline_call_24"
                 android:imeOptions="actionNext"
                 android:inputType="phone"
+                android:maxLength="@integer/phone_max_length"
                 android:text="@={registerViewModel.user.mobileNumber}"
                 android:textColor="?attr/editTextColor" />
         </com.google.android.material.textfield.TextInputLayout>
@@ -104,6 +106,7 @@
                 android:contentDescription="@string/loginPassword"
                 android:drawableStart="@drawable/ic_password"
                 android:inputType="textPassword"
+                android:maxLength="@integer/pwd_max_length"
                 android:text="@={registerViewModel.user.password}"
                 android:textColor="?attr/editTextColor"
                 app:passwordToggleDrawable="@drawable/password_selector"
@@ -125,8 +128,9 @@
             android:id="@+id/tvSelectVillageError"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
+            android:layout_marginStart="@dimen/size_15dp"
             android:text="@string/error_village"
-            android:textColor="@color/errorColor"
+            android:textColor="@color/design_error"
             android:textSize="@dimen/text_size_12sp"
             android:visibility="gone"
             app:layout_constraintLeft_toLeftOf="parent"

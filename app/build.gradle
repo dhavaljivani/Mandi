@@ -2,6 +2,14 @@ plugins {
     id 'com.android.application'
 }
 
+// Create a variable called keystorePropertiesFile, and initialize it to your
+// keystore.properties file, in the rootProject folder.
+def keystorePropertiesFile = rootProject.file("keystore.properties")
+// Initialize a new Properties() object called keystoreProperties.
+def keystoreProperties = new Properties()
+// Load your keystore.properties file into the keystoreProperties object.
+keystoreProperties.load(new FileInputStream(keystorePropertiesFile))
+
 android {
     compileSdk 32
 
@@ -15,9 +23,30 @@ android {
         testInstrumentationRunner "androidx.test.runner.AndroidJUnitRunner"
     }
 
-    buildTypes {
+    signingConfigs {
         release {
-            minifyEnabled false
+            storeFile file(keystoreProperties['storeFile'])
+            storePassword keystoreProperties['storePassword']
+            keyAlias keystoreProperties['keyAlias']
+            keyPassword keystoreProperties['keyPassword']
+        }
+    }
+
+    buildTypes {
+        all {
+            resValue("string", "RSA_PUB_KEY", keystoreProperties['RSA_PUB_KEY'] ?: "")
+        }
+        release {
+            signingConfig signingConfigs.release
+            debuggable false
+            minifyEnabled true
+            shrinkResources true
+            proguardFiles getDefaultProguardFile('proguard-android-optimize.txt'), 'proguard-rules.pro'
+        }
+        debug {
+            debuggable true
+            minifyEnabled true
+            shrinkResources true
             proguardFiles getDefaultProguardFile('proguard-android-optimize.txt'), 'proguard-rules.pro'
         }
     }
@@ -32,8 +61,6 @@ android {
 }
 
 dependencies {
-
-
     // App dependencies
     def app_compat_version = '1.5.1'
     def material_version = '1.6.1'
@@ -44,7 +71,7 @@ dependencies {
     def junit_version = '4.13.2'
     def dagger_2_version = '2.35.1'
     def data_binding_version = '7.3.0'
-    def rx_android_version='2.1.1'
+    def rx_android_version = '2.1.1'
     def gson_version = '2.9.1'
     def nav_version = "2.5.2"
 
@@ -72,7 +99,6 @@ dependencies {
     // Java language implementation
     implementation "androidx.navigation:navigation-fragment:$nav_version"
     implementation "androidx.navigation:navigation-ui:$nav_version"
-
 
 
     testImplementation "junit:junit:$junit_version"

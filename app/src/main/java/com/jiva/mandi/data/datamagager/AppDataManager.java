@@ -20,9 +20,8 @@ import javax.inject.Inject;
 import javax.inject.Singleton;
 
 import io.reactivex.Observable;
-import io.reactivex.ObservableSource;
-import io.reactivex.functions.Function;
 
+@SuppressWarnings("ALL")
 @Singleton
 public class AppDataManager implements DataManager {
     private final DbHelper mDbHelper;

@@ -35,8 +35,6 @@ public class SplashActivity extends BaseActivity<ActivitySplashBinding, SplashVi
         super.onCreate(savedInstanceState);
         hideActionBar();
         mViewModel.setNavigator(this);
-        mViewModel.checkAndInsertVillages();
-        mViewModel.checkUserLoggedInOrNot();
     }
 
     @Override
@@ -44,11 +42,13 @@ public class SplashActivity extends BaseActivity<ActivitySplashBinding, SplashVi
         buildComponent.inject(this);
     }
 
+    @SuppressWarnings("ALL")
     @Override
     public void handleError(Throwable throwable) {
         AppUtils.handleException(throwable);
     }
 
+    @SuppressWarnings("ALL")
     @Override
     public void openMainActivity(boolean isLoggedIn) {
         Disposable disposable = Completable.timer(2, TimeUnit.SECONDS, AndroidSchedulers.mainThread())
@@ -58,10 +58,5 @@ public class SplashActivity extends BaseActivity<ActivitySplashBinding, SplashVi
                     moveActivity(this, MainActivity.class, true, true, bundle);
                 });
         mViewModel.getCompositeDisposable().add(disposable);
-    }
-
-    @Override
-    protected void onStop() {
-        super.onStop();
     }
 }

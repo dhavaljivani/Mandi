@@ -3,12 +3,11 @@ package com.jiva.mandi.data.preference;
 import android.content.Context;
 import android.content.SharedPreferences;
 
-import com.jiva.mandi.data.model.LoginResponse;
 import com.jiva.mandi.di.PreferenceInfo;
 
 import javax.inject.Inject;
 
-
+@SuppressWarnings("ALL")
 public class AppPreferencesHelper implements PreferencesHelper {
 
     private static final String PREF_KEY_USER_DETAIL = "PREF_KEY_USER_DETAIL";

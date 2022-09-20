@@ -4,6 +4,12 @@
     <string name="yes">Yes</string>
     <string name="no">No</string>
     <string name="logout_confirmation">Are you sure do you want to logout?</string>
+    <integer name="name_max_length">30</integer>
+    <integer name="pwd_max_length">16</integer>
+    <integer name="phone_max_length">10</integer>
+    <integer name="card_id_max_length">10</integer>
+    <integer name="weight_max_length">4</integer>
+
 
     <!-- Strings related to login -->
     <string name="prompt_email">Email</string>

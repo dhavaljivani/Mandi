@@ -1,6 +1,9 @@
 package com.jiva.mandi.ui.login;
 
 import android.os.Bundle;
+import android.text.Editable;
+import android.text.TextWatcher;
+import android.view.View;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
@@ -8,22 +11,14 @@ import androidx.databinding.library.baseAdapters.BR;
 import androidx.navigation.Navigation;
 import androidx.room.EmptyResultSetException;
 
-import android.text.Editable;
-import android.text.TextWatcher;
-import android.view.View;
-
 import com.google.android.material.snackbar.Snackbar;
-import com.google.gson.Gson;
 import com.jiva.mandi.R;
-import com.jiva.mandi.data.model.LoginResponse;
 import com.jiva.mandi.databinding.FragmentLoginBinding;
 import com.jiva.mandi.di.component.FragmentComponent;
 import com.jiva.mandi.ui.base.BaseFragment;
 import com.jiva.mandi.utils.AppUtils;
 import com.jiva.mandi.utils.SnackBarUtils;
 import com.jiva.mandi.utils.ValidationUtil;
-
-import javax.inject.Inject;
 
 public class LoginFragment extends BaseFragment<FragmentLoginBinding, LoginViewModel> implements View.OnClickListener,
         LoginNavigator, View.OnFocusChangeListener {
@@ -52,6 +47,9 @@ public class LoginFragment extends BaseFragment<FragmentLoginBinding, LoginViewM
         setup();
     }
 
+    /**
+     * Basic setup.
+     */
     private void setup() {
         //Set on click listener on clickable view.
         mFragmentLoginBinding.btnLogin.setOnClickListener(this);
@@ -73,31 +71,39 @@ public class LoginFragment extends BaseFragment<FragmentLoginBinding, LoginViewM
 
     @Override
     public void onClick(View v) {
-        if (v.getId() == R.id.btnLogin) {
-            boolean isMobileValid = ValidationUtil.isMobileNumberLengthValid(mViewModel.getLoginRequest().getUsername());
-            boolean isPwdValid = ValidationUtil.isPasswordIsValid(mViewModel.getLoginRequest().getPassword());
-
-            if (!isMobileValid) {
-                ValidationUtil.setErrorIntoInputTextLayout(mFragmentLoginBinding.edtMobileNumber,
-                        mFragmentLoginBinding.mobileNumberTextField,
-                        getString(R.string.error_mobile_valid));
-            }
-
-
-            if (!isPwdValid) {
-                ValidationUtil.setErrorIntoInputTextLayout(mFragmentLoginBinding.edtPassword,
-                        mFragmentLoginBinding.passwordTextField,
-                        getString(R.string.error_password));
-            }
-
-            if (isMobileValid && isPwdValid) {
-                mViewModel.login();
-            }
+        if (v.getId() == R.id.btnLogin && isFormValid()) {
+            mViewModel.login();
         } else if (v.getId() == R.id.tvRegister) {
             Navigation.findNavController(v).navigate(R.id.action_loginFragment_to_registerFragment);
         } else if (v.getId() == R.id.tvSkip) {
             Navigation.findNavController(v).navigate(R.id.action_loginFragment_to_productSellFragment);
         }
+    }
+
+    /**
+     * Check login form validation.
+     *
+     * @return true/false based on input data.
+     */
+    private boolean isFormValid() {
+        boolean isMobileValid = ValidationUtil.isMobileNumberLengthValid(mViewModel.getLoginRequest().getUsername());
+        boolean isPwdValid = ValidationUtil.isPasswordIsValid(mViewModel.getLoginRequest().getPassword());
+        boolean isValid = true;
+        if (!isMobileValid) {
+            ValidationUtil.setErrorIntoInputTextLayout(mFragmentLoginBinding.edtMobileNumber,
+                    mFragmentLoginBinding.mobileNumberTextField,
+                    getString(R.string.error_mobile_valid));
+            isValid = false;
+        }
+
+
+        if (!isPwdValid) {
+            ValidationUtil.setErrorIntoInputTextLayout(mFragmentLoginBinding.edtPassword,
+                    mFragmentLoginBinding.passwordTextField,
+                    getString(R.string.error_password));
+            isValid = false;
+        }
+        return isValid;
     }
 
     @Override
@@ -114,6 +120,7 @@ public class LoginFragment extends BaseFragment<FragmentLoginBinding, LoginViewM
     }
 
 
+    @SuppressWarnings("ALL")
     @Override
     public void handleError(Throwable throwable) {
         AppUtils.handleException(throwable);
@@ -122,6 +129,7 @@ public class LoginFragment extends BaseFragment<FragmentLoginBinding, LoginViewM
         }
     }
 
+    @SuppressWarnings("ALL")
     @Override
     public void onLoginSuccess() {
         if (getView() != null) {

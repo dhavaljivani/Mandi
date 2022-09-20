@@ -1,15 +1,9 @@
 package com.jiva.mandi.ui.base;
 
-import android.annotation.TargetApi;
 import android.app.Activity;
-import android.app.ProgressDialog;
 import android.content.Context;
 import android.content.Intent;
-import android.content.pm.PackageManager;
-import android.os.Build;
 import android.os.Bundle;
-import android.view.View;
-import android.view.inputmethod.InputMethodManager;
 
 import androidx.annotation.LayoutRes;
 import androidx.annotation.Nullable;
@@ -22,18 +16,11 @@ import com.jiva.mandi.R;
 import com.jiva.mandi.di.component.ActivityComponent;
 import com.jiva.mandi.di.component.DaggerActivityComponent;
 import com.jiva.mandi.di.module.ActivityModule;
-import com.jiva.mandi.utils.AppUtils;
-import com.jiva.mandi.utils.NetworkUtils;
 
 import javax.inject.Inject;
 
 
 public abstract class BaseActivity<T extends ViewDataBinding, V extends BaseViewModel> extends AppCompatActivity {
-
-    // TODO
-    // this can probably depend on isLoading variable of BaseViewModel,
-    // since its going to be common for all the activities
-    private ProgressDialog mProgressDialog;
 
     private T mViewDataBinding;
 
@@ -63,18 +50,24 @@ public abstract class BaseActivity<T extends ViewDataBinding, V extends BaseView
         super.onCreate(savedInstanceState);
         performDataBinding();
     }
-
+    @SuppressWarnings("unused")
     public T getViewDataBinding() {
         return mViewDataBinding;
     }
 
+    /**
+     * Hide action bar.
+     */
     public void hideActionBar() {
         if (getSupportActionBar() != null) {
             getSupportActionBar().hide();
         }
     }
 
-
+    /**
+     * Get activity component.
+     * @return ActivityComponent
+     */
     private ActivityComponent getBuildComponent() {
         return DaggerActivityComponent.builder()
                 .appComponent(((MandiApp) getApplication()).appComponent)
@@ -84,6 +77,9 @@ public abstract class BaseActivity<T extends ViewDataBinding, V extends BaseView
 
     public abstract void performDependencyInjection(ActivityComponent buildComponent);
 
+    /**
+     * Perform data binding and execute pending binding.
+     */
     private void performDataBinding() {
         mViewDataBinding = DataBindingUtil.setContentView(this, getLayoutId());
         mViewDataBinding.setVariable(getBindingVariable(), mViewModel);

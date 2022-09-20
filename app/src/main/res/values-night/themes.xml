@@ -20,9 +20,4 @@
         <item name="background2">?attr/background</item>
         <item name="cardColor">@color/cardBackground</item>
     </style>
-
-    <style name="ThemeOverlay.MandiApp.FullscreenContainer" parent="">
-        <item name="fullscreenBackgroundColor">@color/light_blue_900</item>
-        <item name="fullscreenTextColor">@color/light_blue_A400</item>
-    </style>
 </resources>

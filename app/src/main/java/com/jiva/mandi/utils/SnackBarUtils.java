@@ -1,8 +1,5 @@
 package com.jiva.mandi.utils;
 
-import android.app.Activity;
-import android.content.Intent;
-import android.graphics.Color;
 import android.view.View;
 
 import com.google.android.material.snackbar.Snackbar;

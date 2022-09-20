@@ -6,7 +6,6 @@ import com.jiva.mandi.data.model.db.User;
 import com.jiva.mandi.data.model.db.Village;
 
 import java.util.List;
-import java.util.concurrent.Callable;
 
 import javax.inject.Inject;
 import javax.inject.Singleton;
@@ -14,6 +13,7 @@ import javax.inject.Singleton;
 import io.reactivex.Observable;
 
 
+@SuppressWarnings("ALL")
 @Singleton
 public class AppDbHelper implements DbHelper {
 

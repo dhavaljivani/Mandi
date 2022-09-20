@@ -96,7 +96,7 @@
                         android:drawableStart="@drawable/ic_baseline_call_24"
                         android:inputType="phone"
                         android:imeOptions="actionNext"
-                        android:maxLength="10"
+                        android:maxLength="@integer/phone_max_length"
                         android:text="@={loginViewModel.loginRequest.username}"
                         android:textColor="?attr/editTextColor" />
                 </com.google.android.material.textfield.TextInputLayout>
@@ -120,6 +120,7 @@
                         android:contentDescription="@string/loginPassword"
                         android:drawableStart="@drawable/ic_password"
                         android:inputType="textPassword"
+                        android:maxLength="@integer/pwd_max_length"
                         android:text="@={loginViewModel.loginRequest.password}"
                         android:textColor="?attr/editTextColor"
                         app:passwordToggleDrawable="@drawable/password_selector"

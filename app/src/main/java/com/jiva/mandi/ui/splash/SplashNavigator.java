@@ -1,9 +1,12 @@
 package com.jiva.mandi.ui.splash;
 
+import com.jiva.mandi.ui.base.BaseNavigator;
+
 @SuppressWarnings("ALL")
-public interface SplashNavigator {
+public interface SplashNavigator extends BaseNavigator {
 
-    void handleError(Throwable throwable);
-
+    /**
+     * @param isLoggedIn is user is logged in or not
+     */
     void openMainActivity(boolean isLoggedIn);
 }

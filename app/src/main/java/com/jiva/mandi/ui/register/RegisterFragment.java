@@ -9,8 +9,6 @@ import android.widget.AdapterView;
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.databinding.library.baseAdapters.BR;
-import androidx.fragment.app.Fragment;
-import androidx.lifecycle.Observer;
 import androidx.navigation.Navigation;
 
 import com.google.android.material.snackbar.Snackbar;
@@ -19,7 +17,6 @@ import com.jiva.mandi.data.model.db.Village;
 import com.jiva.mandi.databinding.FragmentRegisterBinding;
 import com.jiva.mandi.di.component.FragmentComponent;
 import com.jiva.mandi.ui.base.BaseFragment;
-import com.jiva.mandi.ui.login.LoginFragment;
 import com.jiva.mandi.utils.AppUtils;
 import com.jiva.mandi.utils.CollectionUtils;
 import com.jiva.mandi.utils.SnackBarUtils;
@@ -52,12 +49,13 @@ public class RegisterFragment extends BaseFragment<FragmentRegisterBinding, Regi
         super.onViewCreated(view, savedInstanceState);
         mFragmentRegisterBinding = getViewDataBinding();
         mViewModel.setNavigator(this);
-        setup();
-        mViewModel.getAllVillages();
         mViewModel.getVillageList().observe(getViewLifecycleOwner(), this::setUpVillageSpinner);
-
+        setup();
     }
 
+    /**
+     * Basic setup.
+     */
     private void setup() {
         //Set on click listener on clickable view.
         mFragmentRegisterBinding.btnSignUp.setOnClickListener(this);
@@ -80,6 +78,11 @@ public class RegisterFragment extends BaseFragment<FragmentRegisterBinding, Regi
         buildComponent.inject(this);
     }
 
+    /**
+     * Setup village list in spinner.
+     *
+     * @param villageList list of villages.
+     */
     private void setUpVillageSpinner(List<Village> villageList) {
         if (CollectionUtils.isNotEmpty(villageList)) {
             String[] villageName = new String[villageList.size() + 1];
@@ -90,7 +93,7 @@ public class RegisterFragment extends BaseFragment<FragmentRegisterBinding, Regi
                 villageName[i + 1] = villageList.get(i).name;
                 villageId[i + 1] = villageList.get(i).id;
             }
-            VillageSpinnerAdapter villageSpinnerAdapter = new VillageSpinnerAdapter(getBaseActivity(),
+            VillageSpinnerAdapter villageSpinnerAdapter = new VillageSpinnerAdapter(getMContext(),
                     villageName, R.layout.villag_dropdown_text,
                     R.layout.village_name_dropdown);
             mFragmentRegisterBinding.spVillage.setAdapter(villageSpinnerAdapter);
@@ -124,25 +127,30 @@ public class RegisterFragment extends BaseFragment<FragmentRegisterBinding, Regi
         }
     }
 
+    /**
+     * Check registration form validation.
+     *
+     * @return true/false based on input data.
+     */
     private boolean isFormValid() {
         boolean isNameValid = ValidationUtil.isNameIsValid(mViewModel.getUser().getName());
         boolean isMobileValid = ValidationUtil.isMobileNumberLengthValid(mViewModel
                 .getUser().getMobileNumber());
         boolean isPwdValid = ValidationUtil.isPasswordIsValid(mViewModel.getUser().getPassword());
         boolean isVillageId = mViewModel.getUser().getVillageId() != 0;
-
+        boolean isValid = true;
         if (!isNameValid) {
             ValidationUtil.setErrorIntoInputTextLayout(mFragmentRegisterBinding.edtFullName,
                     mFragmentRegisterBinding.fullNameTextField,
                     getString(R.string.error_name));
-            return false;
+            isValid = false;
         }
 
         if (!isMobileValid) {
             ValidationUtil.setErrorIntoInputTextLayout(mFragmentRegisterBinding.edtMobileNumber,
                     mFragmentRegisterBinding.mobileNumberTextField,
                     getString(R.string.error_mobile_valid));
-            return false;
+            isValid = false;
         }
 
 
@@ -150,21 +158,24 @@ public class RegisterFragment extends BaseFragment<FragmentRegisterBinding, Regi
             ValidationUtil.setErrorIntoInputTextLayout(mFragmentRegisterBinding.edtPassword,
                     mFragmentRegisterBinding.passwordTextField,
                     getString(R.string.error_password));
-            return false;
+            isValid = false;
         }
 
         if (!isVillageId) {
             mFragmentRegisterBinding.tvSelectVillageError.setVisibility(View.VISIBLE);
+            isValid = false;
         }
 
-        return isVillageId;
+        return isValid;
     }
 
+    @SuppressWarnings("ALL")
     @Override
     public void handleError(Throwable throwable) {
         AppUtils.handleException(throwable);
     }
 
+    @SuppressWarnings("ALL")
     @Override
     public void SignUpSuccess() {
         if (getView() != null) {
@@ -173,6 +184,7 @@ public class RegisterFragment extends BaseFragment<FragmentRegisterBinding, Regi
         }
     }
 
+    @SuppressWarnings("ALL")
     @Override
     public void UserAlreadyExist() {
         SnackBarUtils.showSnackBar(getView(), getString(R.string.user_exist_msg), Snackbar.LENGTH_LONG);
@@ -229,6 +241,9 @@ public class RegisterFragment extends BaseFragment<FragmentRegisterBinding, Regi
         }
     }
 
+    /**
+     * Validate seller name and set error in text field.
+     */
     private void validateName() {
         boolean isValid = ValidationUtil
                 .isNameIsValid(mViewModel.getUser().getName());
@@ -241,6 +256,9 @@ public class RegisterFragment extends BaseFragment<FragmentRegisterBinding, Regi
         }
     }
 
+    /**
+     * Validate mobile number and set error in text field.
+     */
     private void validateMobileNumber(boolean onTextChanged) {
         boolean isValid;
         String message;
@@ -261,6 +279,9 @@ public class RegisterFragment extends BaseFragment<FragmentRegisterBinding, Regi
         }
     }
 
+    /**
+     * Validate password and set error in text field.
+     */
     private void validatePassword() {
         boolean isValid = ValidationUtil.isPasswordIsValid(mViewModel.getUser().getPassword());
         if (isValid) {

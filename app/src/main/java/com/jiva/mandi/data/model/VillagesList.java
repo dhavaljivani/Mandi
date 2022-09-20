@@ -4,6 +4,7 @@ import com.jiva.mandi.data.model.db.Village;
 
 import java.util.List;
 
+@SuppressWarnings("ALL")
 public class VillagesList {
     private List<Village> villages;
 

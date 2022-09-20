@@ -11,17 +11,17 @@ public class SplashViewModel extends BaseViewModel<SplashNavigator> {
 
     public SplashViewModel(DataManager dataManager) {
         super(dataManager);
+        checkAndInsertVillages();
+        checkUserLoggedInOrNot();
     }
 
     public void checkUserLoggedInOrNot() {
         Disposable disposable = getDataManager().getLoggedInUserData()
                 .subscribeOn(Schedulers.io())
                 .observeOn(AndroidSchedulers.mainThread())
-                .subscribe(user -> {
-                    getNavigator().openMainActivity(user != null && user.getUserId() != 0);
-                }, throwable -> {
-                    getNavigator().handleError(throwable);
-                });
+                .subscribe(user -> getNavigator().openMainActivity(user != null
+                                && user.getUserId() != 0),
+                        throwable -> getNavigator().handleError(throwable));
         getCompositeDisposable().add(disposable);
 
     }
@@ -46,11 +46,7 @@ public class SplashViewModel extends BaseViewModel<SplashNavigator> {
         Disposable disposable = getDataManager().getVillagesFromJson()
                 .subscribeOn(Schedulers.io())
                 .observeOn(AndroidSchedulers.mainThread())
-                .subscribe(response -> {
-                    setIsLoading(false);
-                }, throwable -> {
-                    getNavigator().handleError(throwable);
-                });
+                .subscribe(response -> setIsLoading(false), throwable -> getNavigator().handleError(throwable));
         getCompositeDisposable().add(disposable);
     }
 }

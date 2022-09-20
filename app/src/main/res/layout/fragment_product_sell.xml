@@ -70,6 +70,7 @@
                             android:drawableStart="@drawable/ic_baseline_person_24"
                             android:imeOptions="actionNext"
                             android:inputType="text"
+                            android:maxLength="@integer/name_max_length"
                             android:maxLines="1"
                             android:text="@={productSellViewModel.productSellRequest.sellerName}"
                             android:textColor="?attr/editTextColor" />
@@ -93,6 +94,7 @@
                             android:drawableStart="@drawable/ic_baseline_credit_card_24"
                             android:imeOptions="actionNext"
                             android:inputType="text"
+                            android:maxLength="@integer/card_id_max_length"
                             android:text="@={productSellViewModel.productSellRequest.loyaltyCardId}"
                             android:textColor="?attr/editTextColor" />
                     </com.google.android.material.textfield.TextInputLayout>
@@ -145,7 +147,7 @@
                                 android:contentDescription="@string/loginUsername"
                                 android:drawableStart="@drawable/ic_baseline_balance_24"
                                 android:inputType="numberDecimal"
-                                android:maxLength="4"
+                                android:maxLength="@integer/weight_max_length"
                                 android:maxLines="1"
                                 android:text="@={productSellViewModel.productSellRequest.weight}"
                                 android:textColor="?attr/editTextColor" />

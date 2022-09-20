@@ -6,14 +6,13 @@ unit, weight, and loyalty index.
 
 ### Features
 
-- This mobile app allows apple sellers to register.
-- This mobile app allows apple sellers to login.
-- Sellers can sell their products without login/registering.
+- This mobile app allows apple sellers to login/registration.
+- Sellers can sell their products without login/registration.
 - After successful register, a unique loyalty card is generated and its auto-fills in the sell product screen.
 - Autofill the loyalty card info, based on the registered seller name in the sell product screen.
 - Autofill the registered seller name if the loyalty card number is entered in the sell product screen. 
 - The registered user will get more prices for their product based on loyalty index.
-- It allows sellers to sell their products through a mobile app.
+- This mobile app also supports the night mode feature.
 
 ### Supported Android OS Version
 
@@ -21,7 +20,7 @@ Android 5.0(Lollipop) to the latest android os version
 
 ### Library reference resources:
 
-| **S No.** | **Name**  | **Refrence Link**  |
+| **S No.** | **Name**  | **Reference Link**  |
 | :-----: | :- | :- |
 | 1 | **Dagger2** | https://github.com/google/dagger |
 | 2 | **RxJava2** | https://github.com/ReactiveX/RxJava |

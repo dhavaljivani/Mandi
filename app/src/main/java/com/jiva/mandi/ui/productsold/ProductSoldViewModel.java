@@ -1,10 +1,10 @@
 package com.jiva.mandi.ui.productsold;
 
 import com.jiva.mandi.data.datamagager.DataManager;
+import com.jiva.mandi.ui.base.BaseNavigator;
 import com.jiva.mandi.ui.base.BaseViewModel;
-import com.jiva.mandi.ui.register.RegisterNavigator;
 
-public class ProductSoldViewModel extends BaseViewModel<RegisterNavigator> {
+public class ProductSoldViewModel extends BaseViewModel<BaseNavigator> {
 
     private String sellerName;
     private String finalPrice;

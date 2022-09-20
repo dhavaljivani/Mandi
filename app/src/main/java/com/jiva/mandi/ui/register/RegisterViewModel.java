@@ -23,8 +23,8 @@ public class RegisterViewModel extends BaseViewModel<RegisterNavigator> {
         super(dataManager);
         mGson = gson;
         user = new User();
+        getAllVillages();
     }
-
 
 
     public void isUserExist() {
@@ -88,13 +88,10 @@ public class RegisterViewModel extends BaseViewModel<RegisterNavigator> {
                     String json = mGson.toJson(loginResponse, LoginResponse.class);
                     getDataManager().setLoggedInUser(json);
                     getNavigator().SignUpSuccess();
-                }, throwable -> {
-                    getNavigator().handleError(throwable);
-                });
+                }, throwable -> getNavigator().handleError(throwable));
 
         getCompositeDisposable().add(disposable);
     }
-
 
 
     public User getUser() {

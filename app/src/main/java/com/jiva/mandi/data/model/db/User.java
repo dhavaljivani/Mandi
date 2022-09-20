@@ -11,6 +11,7 @@ import androidx.room.PrimaryKey;
  * User database table entity class.
  * All seller details will be stored on this table.
  */
+@SuppressWarnings("ALL")
 @Entity(tableName = "users",
         foreignKeys = {@ForeignKey(entity = Village.class, parentColumns = "id", childColumns = "village_id")},
         indices = {@Index(value = {"name","mobile_number"},
@@ -48,6 +49,7 @@ public class User {
 
     @Ignore
     public String plainPassword;
+
 
     @Ignore
     public String getName() {
@@ -98,4 +100,5 @@ public class User {
     public void setPassword(String password) {
         this.password = password;
     }
+
 }

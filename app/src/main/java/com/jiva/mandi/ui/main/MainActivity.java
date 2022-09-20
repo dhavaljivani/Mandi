@@ -2,6 +2,8 @@ package com.jiva.mandi.ui.main;
 
 import android.annotation.SuppressLint;
 import android.os.Bundle;
+import android.os.Handler;
+import android.os.Looper;
 
 import androidx.annotation.Nullable;
 import androidx.navigation.NavController;
@@ -15,6 +17,9 @@ import com.jiva.mandi.databinding.ActivityMainBinding;
 import com.jiva.mandi.di.component.ActivityComponent;
 import com.jiva.mandi.ui.base.BaseActivity;
 import com.jiva.mandi.utils.AppConstants;
+
+import java.util.HashSet;
+import java.util.Set;
 
 public class MainActivity extends BaseActivity<ActivityMainBinding, MainViewModel> {
 
@@ -39,8 +44,37 @@ public class MainActivity extends BaseActivity<ActivityMainBinding, MainViewMode
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        AppBarConfiguration appBarConfiguration = new AppBarConfiguration.Builder().build();
+        setUpStartDestination();
+        Set<Integer> topLevelDestinations = new HashSet<>();
+        topLevelDestinations.add(R.id.productSellFragment);
+        AppBarConfiguration appBarConfiguration =
+                new AppBarConfiguration.Builder(topLevelDestinations).build();
+        NavigationUI.setupActionBarWithNavController(this, mNavController, appBarConfiguration);
+        mNavController.addOnDestinationChangedListener((navController, navDestination, bundle) -> {
+            if (getSupportActionBar() != null) {
+                getSupportActionBar().setShowHideAnimationEnabled(false);
+            }
+            if (navDestination.getId() == R.id.loginFragment || navDestination.getId() == R.id.registerFragment) {
+                if (getSupportActionBar() != null) {
+                    getSupportActionBar().hide();
+                }
+            } else {
+                final Handler handler = new Handler(Looper.getMainLooper());
+                handler.postDelayed(() -> {
+                    if (getSupportActionBar() != null) {
+                        getSupportActionBar().show();
+                    }
+                }, 350);
 
+            }
+        });
+    }
+
+    /**
+     * Setup the start destination based on user logged in or not.
+     */
+    private void setUpStartDestination() {
+        // get data from bundle
         boolean isUserLoggedIn = getIntent()
                 .getBooleanExtra(AppConstants.IntentKey.IS_USER_LOGGED_IN, false);
 
@@ -56,32 +90,11 @@ public class MainActivity extends BaseActivity<ActivityMainBinding, MainViewMode
                 navGraph.setStartDestination(R.id.loginFragment);
             }
             mNavController.setGraph(navGraph);
-
         }
-        NavigationUI.setupActionBarWithNavController(this, mNavController, appBarConfiguration);
-
-        mNavController.addOnDestinationChangedListener((navController, navDestination, bundle) -> {
-            if (getSupportActionBar() != null) {
-                getSupportActionBar().setShowHideAnimationEnabled(false);
-            }
-            if (navDestination.getId() == R.id.loginFragment || navDestination.getId() == R.id.registerFragment) {
-                if (getSupportActionBar() != null) {
-                    getSupportActionBar().hide();
-                }
-            } else {
-                if (getSupportActionBar() != null) {
-                    getSupportActionBar().show();
-                }
-            }
-        });
     }
 
-    //    @Override
-//    public boolean onSupportNavigateUp() {
-//        //
-//        if (!(mNavController.navigateUp() || super.onSupportNavigateUp())) {
-//            onBackPressed();
-//        }
-//        return true;
-//    }
+    @Override
+    public boolean onSupportNavigateUp() {
+        return mNavController.navigateUp() || super.onSupportNavigateUp();
+    }
 }

@@ -1,8 +1,5 @@
 package com.jiva.mandi.ui.login;
 
-import android.telephony.PhoneNumberUtils;
-import android.text.TextUtils;
-
 import com.google.gson.Gson;
 import com.jiva.mandi.data.datamagager.DataManager;
 import com.jiva.mandi.data.model.LoginRequest;
@@ -21,7 +18,7 @@ public class LoginViewModel extends BaseViewModel<LoginNavigator> {
     public LoginViewModel(DataManager dataManager, Gson gson) {
         super(dataManager);
         mGson = gson;
-        loginRequest = new LoginRequest("", "");
+        loginRequest = new LoginRequest();
     }
 
 

@@ -13,7 +13,6 @@ import androidx.annotation.Nullable;
 import androidx.databinding.DataBindingUtil;
 import androidx.databinding.ViewDataBinding;
 import androidx.fragment.app.Fragment;
-import androidx.navigation.NavController;
 
 import com.google.gson.Gson;
 import com.jiva.mandi.MandiApp;
@@ -25,10 +24,9 @@ import javax.inject.Inject;
 
 public abstract class BaseFragment<T extends ViewDataBinding, V extends BaseViewModel> extends Fragment {
 
+    private Context mContext;
     private BaseActivity mActivity;
-    private View mRootView;
     private T mViewDataBinding;
-    private NavController navController;
 
     @Inject
     protected V mViewModel;
@@ -54,9 +52,9 @@ public abstract class BaseFragment<T extends ViewDataBinding, V extends BaseView
     @Override
     public void onAttach(@NonNull Context context) {
         super.onAttach(context);
+        mContext = context;
         if (context instanceof BaseActivity) {
-            BaseActivity activity = (BaseActivity) context;
-            this.mActivity = activity;
+            this.mActivity = (BaseActivity) context;
         }
     }
 
@@ -75,17 +73,21 @@ public abstract class BaseFragment<T extends ViewDataBinding, V extends BaseView
     @Override
     public void onDetach() {
         mActivity = null;
+        mContext = null;
         super.onDetach();
     }
 
     @Override
     public void onViewCreated(@NonNull View view, Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
+        if (mContext == null)
+            mContext = getMContext();
         mViewDataBinding.setVariable(getBindingVariable(), mViewModel);
         mViewDataBinding.setLifecycleOwner(this);
         mViewDataBinding.executePendingBindings();
     }
 
+    @SuppressWarnings("unused")
     public BaseActivity getBaseActivity() {
         return mActivity;
     }
@@ -99,7 +101,7 @@ public abstract class BaseFragment<T extends ViewDataBinding, V extends BaseView
 
     private FragmentComponent getBuildComponent() {
         return DaggerFragmentComponent.builder()
-                .appComponent(((MandiApp) (getContext().getApplicationContext())).appComponent)
+                .appComponent(((MandiApp) (mContext.getApplicationContext())).appComponent)
                 .fragmentModule(new FragmentModule(this))
                 .build();
     }
@@ -112,6 +114,20 @@ public abstract class BaseFragment<T extends ViewDataBinding, V extends BaseView
                 imm.hideSoftInputFromWindow(view.getWindowToken(), 0);
             }
         }
+    }
+
+    public Context getMContext() {
+        if (getContext() != null)
+            return getContext();
+        if (getActivity() != null)
+            return getActivity();
+        if (mContext != null)
+            return mContext;
+        if (getView() != null && getView().getContext() != null)
+            return getView().getContext();
+        if (requireView().getContext() != null)
+            return requireView().getContext();
+        return null;
     }
 
 }

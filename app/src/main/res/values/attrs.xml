@@ -19,10 +19,6 @@
     <attr name="searchDisable" format="color" />
     <attr name="secondaryButtonBG" format="color" />
     <attr name="cardColor" format="color" />
-    <declare-styleable name="FullscreenAttrs">
-        <attr name="fullscreenBackgroundColor" format="color" />
-        <attr name="fullscreenTextColor" format="color" />
-    </declare-styleable>
 </resources>
 
 

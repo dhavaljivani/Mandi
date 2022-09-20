@@ -41,28 +41,28 @@ public class FragmentModule {
     LoginViewModel provideLoginViewModel(DataManager dataManager, Gson gson) {
         Supplier<LoginViewModel> supplier = () -> new LoginViewModel(dataManager, gson);
         ViewModelProviderFactory<LoginViewModel> factory = new ViewModelProviderFactory<>(LoginViewModel.class, supplier);
-        return new ViewModelProvider(fragment, (ViewModelProvider.Factory) factory).get(LoginViewModel.class);
+        return new ViewModelProvider(fragment, factory).get(LoginViewModel.class);
     }
 
     @Provides
-    RegisterViewModel provideRegisterViewModel(DataManager dataManager,Gson gson) {
-        Supplier<RegisterViewModel> supplier = () -> new RegisterViewModel(dataManager,gson);
+    RegisterViewModel provideRegisterViewModel(DataManager dataManager, Gson gson) {
+        Supplier<RegisterViewModel> supplier = () -> new RegisterViewModel(dataManager, gson);
         ViewModelProviderFactory<RegisterViewModel> factory = new ViewModelProviderFactory<>(RegisterViewModel.class, supplier);
-        return new ViewModelProvider(fragment, (ViewModelProvider.Factory) factory).get(RegisterViewModel.class);
+        return new ViewModelProvider(fragment, factory).get(RegisterViewModel.class);
     }
 
     @Provides
     ProductSellViewModel provideProductSellViewModel(DataManager dataManager) {
         Supplier<ProductSellViewModel> supplier = () -> new ProductSellViewModel(dataManager);
         ViewModelProviderFactory<ProductSellViewModel> factory = new ViewModelProviderFactory<>(ProductSellViewModel.class, supplier);
-        return new ViewModelProvider(fragment, (ViewModelProvider.Factory) factory).get(ProductSellViewModel.class);
+        return new ViewModelProvider(fragment, factory).get(ProductSellViewModel.class);
     }
 
     @Provides
     ProductSoldViewModel provideProductSoldViewModel(DataManager dataManager) {
         Supplier<ProductSoldViewModel> supplier = () -> new ProductSoldViewModel(dataManager);
         ViewModelProviderFactory<ProductSoldViewModel> factory = new ViewModelProviderFactory<>(ProductSoldViewModel.class, supplier);
-        return new ViewModelProvider(fragment, (ViewModelProvider.Factory) factory).get(ProductSoldViewModel.class);
+        return new ViewModelProvider(fragment, factory).get(ProductSoldViewModel.class);
     }
 
 }

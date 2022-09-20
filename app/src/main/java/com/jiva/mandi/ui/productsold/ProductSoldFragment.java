@@ -31,6 +31,7 @@ public class ProductSoldFragment extends BaseFragment<FragmentProductSoldBinding
     @Override
     public void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+        // Get data from bundle and set into view model.
         if (getArguments() != null) {
             String sellerName = getArguments().getString(getString(R.string.arg_seller_name), "");
             String finalPrice = getArguments().getString(getString(R.string.arg_total_amount), "");
