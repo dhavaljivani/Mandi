@@ -37,15 +37,11 @@ public class RegisterViewModel extends BaseViewModel<RegisterNavigator> {
                     } else {
                         getNavigator().UserAlreadyExist();
                     }
-                }, throwable -> {
-                    setIsLoading(false);
-                    getNavigator().handleError(throwable);
-                });
+                }, throwable -> getNavigator().handleError(throwable));
         getCompositeDisposable().add(disposable);
     }
 
     public void checkAndCreateUser() {
-        setIsLoading(true);
         Disposable disposable = getDataManager().getLastInsertedUser()
                 .subscribeOn(Schedulers.io())
                 .observeOn(AndroidSchedulers.mainThread())
@@ -72,10 +68,7 @@ public class RegisterViewModel extends BaseViewModel<RegisterNavigator> {
                 .subscribe(userId -> {
                     int id = Math.toIntExact(userId);
                     getUserDetailById(id);
-                }, throwable -> {
-                    setIsLoading(false);
-                    getNavigator().handleError(throwable);
-                });
+                }, throwable -> getNavigator().handleError(throwable));
 
         getCompositeDisposable().add(disposable);
     }

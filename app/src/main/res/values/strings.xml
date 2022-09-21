@@ -8,7 +8,7 @@
     <integer name="pwd_max_length">16</integer>
     <integer name="phone_max_length">10</integer>
     <integer name="card_id_max_length">10</integer>
-    <integer name="weight_max_length">4</integer>
+    <integer name="weight_max_length">7</integer>
 
 
     <!-- Strings related to login -->
@@ -31,6 +31,7 @@
     <string name="error_name">Please enter your name!</string>
     <string name="error_mobile">Please enter mobile number!</string>
     <string name="error_mobile_valid">The mobile number must be 10 digits long!</string>
+    <string name="error_password_length">The password must contain at least six characters!</string>
     <string name="error_password">Please enter password!</string>
     <string name="msg_login_success">Logged in successfully</string>
     <string name="msg_already_login">Already logged In</string>
@@ -68,6 +69,7 @@
     <string name="error_seller_name">Please enter seller name!</string>
     <string name="error_card_id">Please enter loyalty card id!</string>
     <string name="error_weight">Please enter weight!</string>
+    <string name="error_weight_zero">The weight must be greater than zero!</string>
     <string name="action_logout">Logout</string>
     <string name="action_login">Login</string>
     <string name="arg_seller_name">seller_name</string>
@@ -80,14 +82,9 @@
 
     <!-- Product Sold -->
     <string name="product_sold_title">Product Sold Details</string>
-    <string name="product_sold_msg">Thank you %s for selling your quality product.</string>
-    <string name="product_sold_price_msg">Please ensure you received %s INR for %s tonnes of your product.</string>
+    <string name="product_sold_msg"><![CDATA[Thank you <font color="#1BB273"><b>%s</b></font> for selling your quality product.]]></string>
+    <string name="product_sold_price_msg"><![CDATA[Please ensure you received <font color="#1BB273"><b>%s INR</b></font>  for <font color="#1BB273"><b>%s</b></b></font> tonnes of your product.]]></string>
     <string name="btn_sell_more">Sell More</string>
-    <!-- TODO: Remove or change this placeholder text -->
-    <string name="hello_blank_fragment">Hello blank fragment</string>
-    <string name="title_activity_splash">SplashActivity</string>
-    <string name="dummy_button">Dummy Button</string>
-    <string name="dummy_content">DUMMY\nCONTENT</string>
     <!-- END Product Sold -->
 
     <!-- Dashboard -->

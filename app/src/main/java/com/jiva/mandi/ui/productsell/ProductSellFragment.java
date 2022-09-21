@@ -178,9 +178,10 @@ public class ProductSellFragment extends BaseFragment<FragmentProductSellBinding
     }
 
     private boolean isFormValid() {
-        boolean isNameValid = ValidationUtil.isNameIsValid(mViewModel.getProductSellRequest().getSellerName());
-        boolean isCardIdValid = ValidationUtil.isNameIsValid(mViewModel.getProductSellRequest().getLoyaltyCardId());
-        boolean isWightValid = ValidationUtil.isNameIsValid(mViewModel.getProductSellRequest().getWeight());
+        boolean isNameValid = ValidationUtil.isValidInput(mViewModel.getProductSellRequest().getSellerName());
+        boolean isCardIdValid = ValidationUtil.isValidInput(mViewModel.getProductSellRequest().getLoyaltyCardId());
+        boolean isWightFieldValid = ValidationUtil.isValidInput(mViewModel.getProductSellRequest().getWeight());
+        boolean isWightValid = ValidationUtil.isWightIsValid(mViewModel.getProductSellRequest().getWeight());
         boolean isVillageId = mViewModel.getProductSellRequest().getVillageId() != 0;
         boolean isValid = true;
         if (!isNameValid) {
@@ -198,10 +199,15 @@ public class ProductSellFragment extends BaseFragment<FragmentProductSellBinding
         }
 
 
-        if (!isWightValid) {
+        if (!isWightFieldValid) {
             ValidationUtil.setErrorIntoInputTextLayout(mFragmentProductSellBinding.edtWeight,
                     mFragmentProductSellBinding.weightTextField,
                     getString(R.string.error_weight));
+            isValid = false;
+        } else if (!isWightValid) {
+            ValidationUtil.setErrorIntoInputTextLayout(mFragmentProductSellBinding.edtWeight,
+                    mFragmentProductSellBinding.weightTextField,
+                    getString(R.string.error_weight_zero));
             isValid = false;
         }
 
@@ -325,11 +331,10 @@ public class ProductSellFragment extends BaseFragment<FragmentProductSellBinding
         }
     }
 
-    private String calculateFinalPrice(double weight, double sellingPrice, double loyaltyIndex) {
+    public String calculateFinalPrice(double weight, double sellingPrice, double loyaltyIndex) {
         double weightInKg = convertTonesToKg(weight);
         double totalWeight = weightInKg * sellingPrice * loyaltyIndex;
         return String.format(Locale.US, "%,.2f", totalWeight);
-        //return new DecimalFormat("##.##").format(totalWeight);
     }
 
     private double convertTonesToKg(double weight) {
@@ -353,7 +358,7 @@ public class ProductSellFragment extends BaseFragment<FragmentProductSellBinding
         }
 
         boolean isValid = ValidationUtil
-                .isNameIsValid(inputString);
+                .isValidInput(inputString);
         if (isValid) {
             ValidationUtil.removeErrorFromTextLayout(textInputLayout);
         } else {

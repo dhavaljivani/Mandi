@@ -42,7 +42,7 @@ public class AppModule {
 
     @Provides
     @Singleton
-    DataManager provideDataManager(AppDataManager appDataManager) {
+    DataManager provideManager(AppDataManager appDataManager) {
         return appDataManager;
     }
 

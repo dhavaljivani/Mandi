@@ -5,6 +5,7 @@ import android.view.View;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
+import androidx.core.text.HtmlCompat;
 import androidx.databinding.library.baseAdapters.BR;
 import androidx.navigation.Navigation;
 
@@ -48,6 +49,14 @@ public class ProductSoldFragment extends BaseFragment<FragmentProductSoldBinding
         mFragmentProductSoldBinding = getViewDataBinding();
         //Set on click listener on clickable view.
         mFragmentProductSoldBinding.btnSellMore.setOnClickListener(v -> Navigation.findNavController(v).popBackStack());
+
+        mFragmentProductSoldBinding.tvTitle.setText(HtmlCompat
+                .fromHtml(getString(R.string.product_sold_msg, mViewModel.getSellerName())
+                        , HtmlCompat.FROM_HTML_MODE_LEGACY));
+
+        mFragmentProductSoldBinding.tvMessage.setText(HtmlCompat
+                .fromHtml(getString(R.string.product_sold_price_msg, mViewModel.getFinalPrice(), mViewModel.getTotalWeight())
+                        , HtmlCompat.FROM_HTML_MODE_LEGACY));
 
     }
 

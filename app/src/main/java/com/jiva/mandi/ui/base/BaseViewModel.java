@@ -1,6 +1,5 @@
 package com.jiva.mandi.ui.base;
 
-import androidx.databinding.ObservableBoolean;
 import androidx.lifecycle.MutableLiveData;
 import androidx.lifecycle.ViewModel;
 
@@ -18,8 +17,6 @@ import io.reactivex.schedulers.Schedulers;
 public abstract class BaseViewModel<N> extends ViewModel {
 
     private final DataManager mDataManager;
-
-    private final ObservableBoolean mIsLoading = new ObservableBoolean();
 
 
     private final CompositeDisposable mCompositeDisposable;
@@ -48,11 +45,6 @@ public abstract class BaseViewModel<N> extends ViewModel {
         return mDataManager;
     }
 
-
-    public void setIsLoading(boolean isLoading) {
-        mIsLoading.set(isLoading);
-    }
-
     public N getNavigator() {
         return mNavigator.get();
     }
@@ -65,11 +57,7 @@ public abstract class BaseViewModel<N> extends ViewModel {
         Disposable disposable = getDataManager().getAllVillages()
                 .subscribeOn(Schedulers.io())
                 .observeOn(AndroidSchedulers.mainThread())
-                .subscribe(response -> {
-                    villageList.setValue(response);
-                    setIsLoading(false);
-
-                }, throwable -> {
+                .subscribe(response -> villageList.setValue(response), throwable -> {
                     //getNavigator().handleError(throwable);
                 });
         getCompositeDisposable().add(disposable);

@@ -23,7 +23,6 @@ public class LoginViewModel extends BaseViewModel<LoginNavigator> {
 
 
     public void login() {
-        setIsLoading(true);
         Disposable disposable = getDataManager().findUser(loginRequest.getUsername(), loginRequest.getPassword())
                 .subscribeOn(Schedulers.io())
                 .observeOn(AndroidSchedulers.mainThread())
@@ -33,11 +32,7 @@ public class LoginViewModel extends BaseViewModel<LoginNavigator> {
                         getDataManager().setLoggedInUser(json);
                         getNavigator().onLoginSuccess();
                     }
-                    setIsLoading(false);
-                }, throwable -> {
-                    setIsLoading(false);
-                    getNavigator().handleError(throwable);
-                });
+                }, throwable -> getNavigator().handleError(throwable));
 
         getCompositeDisposable().add(disposable);
 

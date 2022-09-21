@@ -39,3 +39,7 @@
 
 # Custom models
 -keep class com.jiva.mandi.data.** { *; }
+
+-dontwarn java.lang.ClassValue
+-dontwarn javax.lang.model.element.Modifier
+-dontwarn org.kxml2.io.KXmlParser,org.kxml2.io.KXmlSerializer

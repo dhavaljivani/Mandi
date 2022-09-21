@@ -21,12 +21,15 @@ public final class AppUtils {
     }
 
     /**
-     *
-     * @param context View context.
+     * @param context      View context.
      * @param jsonFileName json file name.
      * @return Json string from json file which is stored in asset folder.
      */
+    @SuppressWarnings("ResultOfMethodCallIgnored")
     public static String loadJSONFromAsset(Context context, String jsonFileName) {
+        if (context == null) return "";
+        if (TextUtils.isEmpty(jsonFileName)) return "";
+
         try {
             AssetManager manager = context.getAssets();
             InputStream is = manager.open(jsonFileName);
@@ -35,7 +38,6 @@ public final class AppUtils {
             byte[] buffer = new byte[size];
             is.read(buffer);
             is.close();
-
             return new String(buffer, StandardCharsets.UTF_8);
         } catch (IOException exception) {
             Log.e(TAG, "loadJSONFromAsset: " + exception.getMessage());

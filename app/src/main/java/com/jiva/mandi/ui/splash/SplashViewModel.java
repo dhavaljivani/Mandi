@@ -1,5 +1,7 @@
 package com.jiva.mandi.ui.splash;
 
+import android.util.Log;
+
 import com.jiva.mandi.data.datamagager.DataManager;
 import com.jiva.mandi.ui.base.BaseViewModel;
 
@@ -34,10 +36,7 @@ public class SplashViewModel extends BaseViewModel<SplashNavigator> {
                     if (response == null || response == 0) {
                         insertVillages();
                     }
-                }, throwable -> {
-                    setIsLoading(false);
-                    getNavigator().handleError(throwable);
-                });
+                }, throwable -> getNavigator().handleError(throwable));
         getCompositeDisposable().add(disposable);
 
     }
@@ -46,7 +45,7 @@ public class SplashViewModel extends BaseViewModel<SplashNavigator> {
         Disposable disposable = getDataManager().getVillagesFromJson()
                 .subscribeOn(Schedulers.io())
                 .observeOn(AndroidSchedulers.mainThread())
-                .subscribe(response -> setIsLoading(false), throwable -> getNavigator().handleError(throwable));
+                .subscribe(response -> Log.d("Insert Village", "Village Successfully inserted"), throwable -> getNavigator().handleError(throwable));
         getCompositeDisposable().add(disposable);
     }
 }

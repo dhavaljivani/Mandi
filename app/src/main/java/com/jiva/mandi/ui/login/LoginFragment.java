@@ -16,6 +16,7 @@ import com.jiva.mandi.R;
 import com.jiva.mandi.databinding.FragmentLoginBinding;
 import com.jiva.mandi.di.component.FragmentComponent;
 import com.jiva.mandi.ui.base.BaseFragment;
+import com.jiva.mandi.utils.AppConstants;
 import com.jiva.mandi.utils.AppUtils;
 import com.jiva.mandi.utils.SnackBarUtils;
 import com.jiva.mandi.utils.ValidationUtil;
@@ -88,6 +89,8 @@ public class LoginFragment extends BaseFragment<FragmentLoginBinding, LoginViewM
     private boolean isFormValid() {
         boolean isMobileValid = ValidationUtil.isMobileNumberLengthValid(mViewModel.getLoginRequest().getUsername());
         boolean isPwdValid = ValidationUtil.isPasswordIsValid(mViewModel.getLoginRequest().getPassword());
+        boolean isPwdLengthValid = ValidationUtil.checkMinTextValidation(mViewModel.getLoginRequest().getPassword()
+                , AppConstants.MIN_PWD_LENGTH);
         boolean isValid = true;
         if (!isMobileValid) {
             ValidationUtil.setErrorIntoInputTextLayout(mFragmentLoginBinding.edtMobileNumber,
@@ -101,6 +104,11 @@ public class LoginFragment extends BaseFragment<FragmentLoginBinding, LoginViewM
             ValidationUtil.setErrorIntoInputTextLayout(mFragmentLoginBinding.edtPassword,
                     mFragmentLoginBinding.passwordTextField,
                     getString(R.string.error_password));
+            isValid = false;
+        } else if (!isPwdLengthValid) {
+            ValidationUtil.setErrorIntoInputTextLayout(mFragmentLoginBinding.edtPassword,
+                    mFragmentLoginBinding.passwordTextField,
+                    getString(R.string.error_password_length));
             isValid = false;
         }
         return isValid;

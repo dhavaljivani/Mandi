@@ -17,6 +17,7 @@ import com.jiva.mandi.data.model.db.Village;
 import com.jiva.mandi.databinding.FragmentRegisterBinding;
 import com.jiva.mandi.di.component.FragmentComponent;
 import com.jiva.mandi.ui.base.BaseFragment;
+import com.jiva.mandi.utils.AppConstants;
 import com.jiva.mandi.utils.AppUtils;
 import com.jiva.mandi.utils.CollectionUtils;
 import com.jiva.mandi.utils.SnackBarUtils;
@@ -121,6 +122,7 @@ public class RegisterFragment extends BaseFragment<FragmentRegisterBinding, Regi
         if (v.getId() == R.id.ivBack) {
             Navigation.findNavController(v).popBackStack();
         } else if (v.getId() == R.id.btnSignUp) {
+            hideKeyboard();
             if (isFormValid()) {
                 mViewModel.checkAndCreateUser();
             }
@@ -133,10 +135,12 @@ public class RegisterFragment extends BaseFragment<FragmentRegisterBinding, Regi
      * @return true/false based on input data.
      */
     private boolean isFormValid() {
-        boolean isNameValid = ValidationUtil.isNameIsValid(mViewModel.getUser().getName());
+        boolean isNameValid = ValidationUtil.isValidInput(mViewModel.getUser().getName());
         boolean isMobileValid = ValidationUtil.isMobileNumberLengthValid(mViewModel
                 .getUser().getMobileNumber());
         boolean isPwdValid = ValidationUtil.isPasswordIsValid(mViewModel.getUser().getPassword());
+        boolean isPwdLengthValid = ValidationUtil.checkMinTextValidation(mViewModel.getUser().getPassword()
+                , AppConstants.MIN_PWD_LENGTH);
         boolean isVillageId = mViewModel.getUser().getVillageId() != 0;
         boolean isValid = true;
         if (!isNameValid) {
@@ -158,6 +162,11 @@ public class RegisterFragment extends BaseFragment<FragmentRegisterBinding, Regi
             ValidationUtil.setErrorIntoInputTextLayout(mFragmentRegisterBinding.edtPassword,
                     mFragmentRegisterBinding.passwordTextField,
                     getString(R.string.error_password));
+            isValid = false;
+        } else if (!isPwdLengthValid) {
+            ValidationUtil.setErrorIntoInputTextLayout(mFragmentRegisterBinding.edtPassword,
+                    mFragmentRegisterBinding.passwordTextField,
+                    getString(R.string.error_password_length));
             isValid = false;
         }
 
@@ -246,7 +255,7 @@ public class RegisterFragment extends BaseFragment<FragmentRegisterBinding, Regi
      */
     private void validateName() {
         boolean isValid = ValidationUtil
-                .isNameIsValid(mViewModel.getUser().getName());
+                .isValidInput(mViewModel.getUser().getName());
         if (isValid) {
             ValidationUtil.removeErrorFromTextLayout(mFragmentRegisterBinding.fullNameTextField);
         } else {

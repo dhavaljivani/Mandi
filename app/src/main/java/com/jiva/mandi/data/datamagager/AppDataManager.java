@@ -95,7 +95,7 @@ public class AppDataManager implements DataManager {
 
     @Override
     public Observable<Boolean> getVillagesFromJson() {
-        VillagesList villagesList = mGson.fromJson(AppUtils.loadJSONFromAsset(mContext, AppConstants.VILLAGE_LIST), VillagesList.class);
+        VillagesList villagesList = mGson.fromJson(AppUtils.loadJSONFromAsset(mContext, AppConstants.VILLAGE_LIST_JSON_FILE_NAME), VillagesList.class);
         return insertVillages(villagesList.getVillages());
     }
 
