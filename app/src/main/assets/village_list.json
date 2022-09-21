@@ -1,0 +1,24 @@
+{
+  "villages": [
+    {
+      "name": "Ramgarh",
+      "sellingPrice": "120.08"
+    },
+    {
+      "name": "Champaner",
+      "sellingPrice": "125.10"
+    },
+    {
+      "name": "Pune",
+      "sellingPrice": "130.00"
+    },
+    {
+      "name": "Ahmedabad",
+      "sellingPrice": "131.02"
+    },
+    {
+      "name": "Rajkot",
+      "sellingPrice": "135.09"
+    }
+  ]
+}

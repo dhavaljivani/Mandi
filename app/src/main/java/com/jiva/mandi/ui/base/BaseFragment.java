@@ -1,19 +1,3 @@
-/*
- *  Copyright (C) 2017 MINDORKS NEXTGEN PRIVATE LIMITED
- *
- *  Licensed under the Apache License, Version 2.0 (the "License");
- *  you may not use this file except in compliance with the License.
- *  You may obtain a copy of the License at
- *
- *      https://mindorks.com/license/apache-v2
- *
- *  Unless required by applicable law or agreed to in writing, software
- *  distributed under the License is distributed on an "AS IS" BASIS,
- *  WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
- *  See the License for the specific language governing permissions and
- *  limitations under the License
- */
-
 package com.jiva.mandi.ui.base;
 
 import android.content.Context;
@@ -21,6 +5,7 @@ import android.os.Bundle;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.view.inputmethod.InputMethodManager;
 
 import androidx.annotation.LayoutRes;
 import androidx.annotation.NonNull;
@@ -29,6 +14,7 @@ import androidx.databinding.DataBindingUtil;
 import androidx.databinding.ViewDataBinding;
 import androidx.fragment.app.Fragment;
 
+import com.google.gson.Gson;
 import com.jiva.mandi.MandiApp;
 import com.jiva.mandi.di.component.DaggerFragmentComponent;
 import com.jiva.mandi.di.component.FragmentComponent;
@@ -36,20 +22,17 @@ import com.jiva.mandi.di.module.FragmentModule;
 
 import javax.inject.Inject;
 
-
-/**
- * Created by amitshekhar on 09/07/17.
- */
-
 public abstract class BaseFragment<T extends ViewDataBinding, V extends BaseViewModel> extends Fragment {
 
+    private Context mContext;
     private BaseActivity mActivity;
-    private View mRootView;
     private T mViewDataBinding;
-
 
     @Inject
     protected V mViewModel;
+
+    @Inject
+    protected Gson mGson;
 
     /**
      * Override for set binding variable
@@ -67,12 +50,11 @@ public abstract class BaseFragment<T extends ViewDataBinding, V extends BaseView
 
 
     @Override
-    public void onAttach(Context context) {
+    public void onAttach(@NonNull Context context) {
         super.onAttach(context);
+        mContext = context;
         if (context instanceof BaseActivity) {
-            BaseActivity activity = (BaseActivity) context;
-            this.mActivity = activity;
-            activity.onFragmentAttached();
+            this.mActivity = (BaseActivity) context;
         }
     }
 
@@ -80,30 +62,32 @@ public abstract class BaseFragment<T extends ViewDataBinding, V extends BaseView
     public void onCreate(@Nullable Bundle savedInstanceState) {
         performDependencyInjection(getBuildComponent());
         super.onCreate(savedInstanceState);
-        setHasOptionsMenu(false);
     }
 
     @Override
     public View onCreateView(@NonNull LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
         mViewDataBinding = DataBindingUtil.inflate(inflater, getLayoutId(), container, false);
-        mRootView = mViewDataBinding.getRoot();
-        return mRootView;
+        return mViewDataBinding.getRoot();
     }
 
     @Override
     public void onDetach() {
         mActivity = null;
+        mContext = null;
         super.onDetach();
     }
 
     @Override
     public void onViewCreated(@NonNull View view, Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
+        if (mContext == null)
+            mContext = getMContext();
         mViewDataBinding.setVariable(getBindingVariable(), mViewModel);
         mViewDataBinding.setLifecycleOwner(this);
         mViewDataBinding.executePendingBindings();
     }
 
+    @SuppressWarnings("unused")
     public BaseActivity getBaseActivity() {
         return mActivity;
     }
@@ -112,30 +96,38 @@ public abstract class BaseFragment<T extends ViewDataBinding, V extends BaseView
         return mViewDataBinding;
     }
 
-    public void hideKeyboard() {
-        if (mActivity != null) {
-            mActivity.hideKeyboard();
-        }
-    }
-
-    public boolean isNetworkConnected() {
-        return mActivity != null && mActivity.isNetworkConnected();
-    }
-
     public abstract void performDependencyInjection(FragmentComponent buildComponent);
 
 
     private FragmentComponent getBuildComponent() {
         return DaggerFragmentComponent.builder()
-                .appComponent(((MandiApp)(getContext().getApplicationContext())).appComponent)
+                .appComponent(((MandiApp) (mContext.getApplicationContext())).appComponent)
                 .fragmentModule(new FragmentModule(this))
                 .build();
     }
 
-    public interface Callback {
-
-        void onFragmentAttached();
-
-        void onFragmentDetached(String tag);
+    public void hideKeyboard() {
+        View view = mActivity.getCurrentFocus();
+        if (view != null) {
+            InputMethodManager imm = (InputMethodManager) mActivity.getSystemService(Context.INPUT_METHOD_SERVICE);
+            if (imm != null) {
+                imm.hideSoftInputFromWindow(view.getWindowToken(), 0);
+            }
+        }
     }
+
+    public Context getMContext() {
+        if (getContext() != null)
+            return getContext();
+        if (getActivity() != null)
+            return getActivity();
+        if (mContext != null)
+            return mContext;
+        if (getView() != null && getView().getContext() != null)
+            return getView().getContext();
+        if (requireView().getContext() != null)
+            return requireView().getContext();
+        return null;
+    }
+
 }

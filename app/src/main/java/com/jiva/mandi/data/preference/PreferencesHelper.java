@@ -1,8 +1,11 @@
 package com.jiva.mandi.data.preference;
 
+@SuppressWarnings("ALL")
 public interface PreferencesHelper {
 
-    String getAccessToken();
+    String getLoggedInUser();
 
-    void setAccessToken(String accessToken);
+    void setLoggedInUser(String loginResponse);
+
+    void clearPreferences();
 }

@@ -1,5 +1,16 @@
 <resources>
     <string name="app_name">Mandi</string>
+    <string name="ok">Okay</string>
+    <string name="yes">Yes</string>
+    <string name="no">No</string>
+    <string name="logout_confirmation">Are you sure do you want to logout?</string>
+    <integer name="name_max_length">30</integer>
+    <integer name="pwd_max_length">16</integer>
+    <integer name="phone_max_length">10</integer>
+    <integer name="card_id_max_length">10</integer>
+    <integer name="weight_max_length">7</integer>
+
+
     <!-- Strings related to login -->
     <string name="prompt_email">Email</string>
     <string name="prompt_password">Password</string>
@@ -7,7 +18,8 @@
     <string name="action_sign_in_short">Sign in</string>
     <string name="invalid_username">Not a valid username</string>
     <string name="invalid_password">Password must be >5 characters</string>
-    <string name="login_failed">"Login failed"</string>
+    <string name="login_success">Sign in successfully.</string>
+    <string name="login_failed">There is no user with the entered credentials. Please enter a valid credentials.</string>
 
 
     <!-- LOGIN SCREEN -->
@@ -16,7 +28,10 @@
     <string name="login_welcome_msg">Sign In To Your Account</string>
     <string name="mobile_number">Mobile Number</string>
     <string name="password">Password</string>
-    <string name="error_username">Please enter mobile number!</string>
+    <string name="error_name">Please enter your name!</string>
+    <string name="error_mobile">Please enter mobile number!</string>
+    <string name="error_mobile_valid">The mobile number must be 10 digits long!</string>
+    <string name="error_password_length">The password must contain at least six characters!</string>
     <string name="error_password">Please enter password!</string>
     <string name="msg_login_success">Logged in successfully</string>
     <string name="msg_already_login">Already logged In</string>
@@ -36,14 +51,10 @@
     <!-- SIGN UP -->
     <string name="sign_up">Sign Up</string>
     <string name="name">Name</string>
-    <string-array name="villageArray">
-        <item>Select Village</item>
-        <item>Ramgarh</item>
-        <item>Champaner</item>
-        <item>Pune</item>
-        <item>Ahmedabad</item>
-        <item>Rajkot</item>
-    </string-array>
+    <string name="select_village">Select Village</string>
+    <string name="user_exist_msg">The user has already registered with a mobile number.</string>
+    <string name="user_registered_msg">The user has successfully registered.</string>
+    <string name="error_village">Please select village.</string>
     <!-- END SIGN UP -->
 
     <!-- Product Sell -->
@@ -53,16 +64,27 @@
     <string name="weight">Gross Weight</string>
     <string name="gross_price">Gross Price</string>
     <string name="sell_my_product">Sell My Product</string>
-    <string name="applied_loyalty_index">Applied loyalty index: 1.12</string>
+    <string name="final_price_value">%s INR</string>
+    <string name="applied_loyalty_index">Applied loyalty index: %.2f</string>
+    <string name="error_seller_name">Please enter seller name!</string>
+    <string name="error_card_id">Please enter loyalty card id!</string>
+    <string name="error_weight">Please enter weight!</string>
+    <string name="error_weight_zero">The weight must be greater than zero!</string>
+    <string name="action_logout">Logout</string>
+    <string name="action_login">Login</string>
+    <string name="arg_seller_name">seller_name</string>
+    <string name="arg_total_weight">total_weight</string>
+    <string name="arg_total_amount">total_amount</string>
+    <string name="label_tonnes">Tonnes</string>
+    <string name="sell_confirmation">Are you sure do you want to sell your product?</string>
+    <string name="exitMessage">Press back again to exit.</string>
     <!-- END Product Sell -->
 
     <!-- Product Sold -->
     <string name="product_sold_title">Product Sold Details</string>
-    <string name="product_sold_msg">Thank you Dhaval Jivani for selling your quality product.</string>
-    <string name="product_sold_price_msg">Please ensure you received 20003.25 INR for 23 tonnes of your product.</string>
+    <string name="product_sold_msg"><![CDATA[Thank you <font color="#1BB273"><b>%s</b></font> for selling your quality product.]]></string>
+    <string name="product_sold_price_msg"><![CDATA[Please ensure you received <font color="#1BB273"><b>%s INR</b></font>  for <font color="#1BB273"><b>%s</b></b></font> tonnes of your product.]]></string>
     <string name="btn_sell_more">Sell More</string>
-    <!-- TODO: Remove or change this placeholder text -->
-    <string name="hello_blank_fragment">Hello blank fragment</string>
     <!-- END Product Sold -->
 
     <!-- Dashboard -->

@@ -1,112 +1,45 @@
-/*
- *  Copyright (C) 2017 MINDORKS NEXTGEN PRIVATE LIMITED
- *
- *  Licensed under the Apache License, Version 2.0 (the "License");
- *  you may not use this file except in compliance with the License.
- *  You may obtain a copy of the License at
- *
- *      https://mindorks.com/license/apache-v2
- *
- *  Unless required by applicable law or agreed to in writing, software
- *  distributed under the License is distributed on an "AS IS" BASIS,
- *  WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
- *  See the License for the specific language governing permissions and
- *  limitations under the License
- */
-
 package com.jiva.mandi.ui.login;
 
-import android.text.TextUtils;
-
+import com.google.gson.Gson;
 import com.jiva.mandi.data.datamagager.DataManager;
 import com.jiva.mandi.data.model.LoginRequest;
-import com.jiva.mandi.data.model.db.User;
-import com.jiva.mandi.data.model.db.Village;
+import com.jiva.mandi.data.model.LoginResponse;
 import com.jiva.mandi.ui.base.BaseViewModel;
-import com.jiva.mandi.utils.AppUtils;
-
-import java.util.ArrayList;
 
 import io.reactivex.android.schedulers.AndroidSchedulers;
+import io.reactivex.disposables.Disposable;
 import io.reactivex.schedulers.Schedulers;
 
 public class LoginViewModel extends BaseViewModel<LoginNavigator> {
 
     private LoginRequest loginRequest;
+    private final Gson mGson;
 
-    public LoginViewModel(DataManager dataManager) {
+    public LoginViewModel(DataManager dataManager, Gson gson) {
         super(dataManager);
-        loginRequest  = new LoginRequest("","");
+        mGson = gson;
+        loginRequest = new LoginRequest();
     }
 
-    public boolean isEmailAndPasswordValid(String email, String password) {
-        // validate email and password
-        if (TextUtils.isEmpty(email)) {
-            return false;
-        }
-        if (!AppUtils.isEmailValid(email)) {
-            return false;
-        }
-        if (TextUtils.isEmpty(password)) {
-            return false;
-        }
-        return true;
-    }
-
-
-    public void checkAndInsertVillages() {
-        getCompositeDisposable().add(
-                getDataManager().isVillageEmpty()
-                        .subscribeOn(Schedulers.io())
-                        .observeOn(AndroidSchedulers.mainThread())
-                        .subscribe(response -> {
-                            if (response == null || response == 0) {
-                                insertVillages();
-                            }
-
-                        }, throwable -> {
-                            setIsLoading(false);
-                            getNavigator().handleError(throwable);
-                        }));
-    }
-
-    private void insertVillages() {
-        ArrayList<Village> villages = new ArrayList<>();
-        villages.add(new Village("Ramgarh", 120.08));
-        villages.add(new Village("Champaner", 125.08));
-        villages.add(new Village("Pune", 130.00));
-        villages.add(new Village("Ahmedabad", 131.02));
-        villages.add(new Village("Rajkot", 135.09));
-
-        setIsLoading(true);
-        getCompositeDisposable().add(
-                getDataManager().insertVillages(villages)
-                        .subscribeOn(Schedulers.io())
-                        .observeOn(AndroidSchedulers.mainThread())
-                        .subscribe(response -> {
-                            setIsLoading(false);
-                            getNavigator().openMainActivity();
-                        }, throwable -> {
-                            setIsLoading(false);
-                            getNavigator().handleError(throwable);
-                        }));
-    }
 
     public void login() {
-
-        setIsLoading(true);
-        getCompositeDisposable().add(getDataManager().insertUser(new User("Dhaval Jivani", "S101",
-                        "9638083902", 2, "Test@123"))
+        Disposable disposable = getDataManager().findUser(loginRequest.getUsername(), loginRequest.getPassword())
                 .subscribeOn(Schedulers.io())
                 .observeOn(AndroidSchedulers.mainThread())
-                .subscribe(response -> {
-                    setIsLoading(false);
-                    getNavigator().openMainActivity();
-                }, throwable -> {
-                    setIsLoading(false);
-                    getNavigator().handleError(throwable);
-                }));
+                .subscribe(user -> {
+                    if (user.getUserId() != 0) {
+                        String json = mGson.toJson(user, LoginResponse.class);
+                        getDataManager().setLoggedInUser(json);
+                        getNavigator().onLoginSuccess();
+                    }
+                }, throwable -> getNavigator().handleError(throwable));
+
+        getCompositeDisposable().add(disposable);
+
     }
+
+
+
 
     public LoginRequest getLoginRequest() {
         return loginRequest;

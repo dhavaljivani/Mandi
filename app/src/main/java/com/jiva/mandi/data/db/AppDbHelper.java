@@ -1,10 +1,11 @@
 package com.jiva.mandi.data.db;
 
+import com.jiva.mandi.data.model.LoginResponse;
+import com.jiva.mandi.data.model.UserResponse;
 import com.jiva.mandi.data.model.db.User;
 import com.jiva.mandi.data.model.db.Village;
 
 import java.util.List;
-import java.util.concurrent.Callable;
 
 import javax.inject.Inject;
 import javax.inject.Singleton;
@@ -12,6 +13,7 @@ import javax.inject.Singleton;
 import io.reactivex.Observable;
 
 
+@SuppressWarnings("ALL")
 @Singleton
 public class AppDbHelper implements DbHelper {
 
@@ -24,29 +26,35 @@ public class AppDbHelper implements DbHelper {
 
 
     @Override
-    public Observable<Boolean> insertUser(final User user) {
-        return Observable.fromCallable(new Callable<Boolean>() {
-            @Override
-            public Boolean call() throws Exception {
-                mAppDatabase.userDao().insert(user);
-                return true;
-            }
-        });
+    public Observable<LoginResponse> findUser(String mobileNumber, String password) {
+        return mAppDatabase.userDao().findUser(mobileNumber, password).toObservable();
     }
 
     @Override
-    public Observable<User> getUserByName(String name) {
-        return mAppDatabase.userDao().findByName(name).toObservable();
+    public Observable<LoginResponse> findUserById(int userId) {
+        return mAppDatabase.userDao().findUserById(userId).toObservable();
+    }
+
+    @Override
+    public Observable<List<UserResponse>> getAllUser() {
+        return mAppDatabase.userDao().getAllUser().toObservable();
+    }
+
+    @Override
+    public Observable<Long> insertUser(final User user) {
+        return mAppDatabase.userDao().insert(user).toObservable();
+    }
+
+    @Override
+    public Observable<Boolean> isUserExist(String phoneNumber) {
+        return mAppDatabase.userDao().isUserExist(phoneNumber).toObservable();
     }
 
     @Override
     public Observable<Boolean> insertVillages(List<Village> villages) {
-        return Observable.fromCallable(new Callable<Boolean>() {
-            @Override
-            public Boolean call() throws Exception {
-                mAppDatabase.villageDao().insertAll(villages);
-                return true;
-            }
+        return Observable.fromCallable(() -> {
+            mAppDatabase.villageDao().insertAll(villages);
+            return true;
         });
 
     }
@@ -59,5 +67,10 @@ public class AppDbHelper implements DbHelper {
     @Override
     public Observable<Integer> isVillageEmpty() {
         return mAppDatabase.villageDao().isVillageIsEmpty().toObservable();
+    }
+
+    @Override
+    public Observable<String> getLastInsertedUser() {
+        return mAppDatabase.userDao().getLastInsertedUser().toObservable();
     }
 }

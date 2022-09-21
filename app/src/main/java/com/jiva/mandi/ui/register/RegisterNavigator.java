@@ -1,10 +1,16 @@
 package com.jiva.mandi.ui.register;
 
-public interface RegisterNavigator {
+import com.jiva.mandi.ui.base.BaseNavigator;
 
-    void handleError(Throwable throwable);
+@SuppressWarnings("ALL")
+public interface RegisterNavigator extends BaseNavigator {
+    /**
+     * This will call after signup sucess.
+     */
+    void SignUpSuccess();
 
-    void login();
-
-    void openMainActivity();
+    /**
+     * This will call if user is already exist.
+     */
+    void UserAlreadyExist();
 }

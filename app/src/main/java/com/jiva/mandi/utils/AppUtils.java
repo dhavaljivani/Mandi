@@ -1,80 +1,64 @@
-/*
- *  Copyright (C) 2017 MINDORKS NEXTGEN PRIVATE LIMITED
- *
- *  Licensed under the Apache License, Version 2.0 (the "License");
- *  you may not use this file except in compliance with the License.
- *  You may obtain a copy of the License at
- *
- *      https://mindorks.com/license/apache-v2
- *
- *  Unless required by applicable law or agreed to in writing, software
- *  distributed under the License is distributed on an "AS IS" BASIS,
- *  WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
- *  See the License for the specific language governing permissions and
- *  limitations under the License
- */
-
 package com.jiva.mandi.utils;
 
-import android.annotation.SuppressLint;
-import android.app.ProgressDialog;
 import android.content.Context;
 import android.content.res.AssetManager;
-import android.graphics.Color;
-import android.graphics.drawable.ColorDrawable;
-import android.provider.Settings;
-import android.util.Patterns;
-
-import com.jiva.mandi.R;
+import android.text.TextUtils;
+import android.util.Log;
 
 import java.io.IOException;
 import java.io.InputStream;
-import java.text.SimpleDateFormat;
-import java.util.Date;
-import java.util.Locale;
+import java.nio.charset.StandardCharsets;
 
 
 public final class AppUtils {
+    private static final String TAG = "AppUtils";
 
-    private AppUtils() {
-        // This utility class is not publicly instantiable
+    /**
+     * @param e exception that will be recorded in crash analytics
+     */
+    public static void handleException(Throwable e) {
+        Log.e(TAG, e.getMessage());
     }
 
-    @SuppressLint("all")
-    public static String getDeviceId(Context context) {
-        return Settings.Secure.getString(context.getContentResolver(), Settings.Secure.ANDROID_ID);
-    }
+    /**
+     * @param context      View context.
+     * @param jsonFileName json file name.
+     * @return Json string from json file which is stored in asset folder.
+     */
+    @SuppressWarnings("ResultOfMethodCallIgnored")
+    public static String loadJSONFromAsset(Context context, String jsonFileName) {
+        if (context == null) return "";
+        if (TextUtils.isEmpty(jsonFileName)) return "";
 
-    public static String getTimestamp() {
-        return new SimpleDateFormat(AppConstants.TIMESTAMP_FORMAT, Locale.US).format(new Date());
-    }
+        try {
+            AssetManager manager = context.getAssets();
+            InputStream is = manager.open(jsonFileName);
 
-    public static boolean isEmailValid(String email) {
-        return Patterns.EMAIL_ADDRESS.matcher(email).matches();
-    }
-
-    public static String loadJSONFromAsset(Context context, String jsonFileName) throws IOException {
-        AssetManager manager = context.getAssets();
-        InputStream is = manager.open(jsonFileName);
-
-        int size = is.available();
-        byte[] buffer = new byte[size];
-        is.read(buffer);
-        is.close();
-
-        return new String(buffer, "UTF-8");
-    }
-
-    public static ProgressDialog showLoadingDialog(Context context) {
-        ProgressDialog progressDialog = new ProgressDialog(context);
-        progressDialog.show();
-        if (progressDialog.getWindow() != null) {
-            progressDialog.getWindow().setBackgroundDrawable(new ColorDrawable(Color.TRANSPARENT));
+            int size = is.available();
+            byte[] buffer = new byte[size];
+            is.read(buffer);
+            is.close();
+            return new String(buffer, StandardCharsets.UTF_8);
+        } catch (IOException exception) {
+            Log.e(TAG, "loadJSONFromAsset: " + exception.getMessage());
         }
-        progressDialog.setContentView(R.layout.progress_dialog);
-        progressDialog.setIndeterminate(true);
-        progressDialog.setCancelable(false);
-        progressDialog.setCanceledOnTouchOutside(false);
-        return progressDialog;
+        return "";
+
+    }
+
+    /**
+     * @param loyaltyId last loyalty id from db.
+     * @return return new unique loyaltyId
+     */
+    public static String getNewLoyaltyId(String loyaltyId) {
+        String newLoyaltyId = "S100";
+        if (!TextUtils.isEmpty(loyaltyId)) {
+            String indexNumber = loyaltyId.substring(1);
+            if (TextUtils.isDigitsOnly(indexNumber)) {
+                int newIndexNumber = Integer.parseInt(indexNumber) + 1;
+                newLoyaltyId = "S" + newIndexNumber;
+            }
+        }
+        return newLoyaltyId;
     }
 }

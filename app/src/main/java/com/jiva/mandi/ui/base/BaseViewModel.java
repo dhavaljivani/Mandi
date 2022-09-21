@@ -1,40 +1,29 @@
-/*
- *  Copyright (C) 2017 MINDORKS NEXTGEN PRIVATE LIMITED
- *
- *  Licensed under the Apache License, Version 2.0 (the "License");
- *  you may not use this file except in compliance with the License.
- *  You may obtain a copy of the License at
- *
- *      https://mindorks.com/license/apache-v2
- *
- *  Unless required by applicable law or agreed to in writing, software
- *  distributed under the License is distributed on an "AS IS" BASIS,
- *  WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
- *  See the License for the specific language governing permissions and
- *  limitations under the License
- */
-
 package com.jiva.mandi.ui.base;
 
-import androidx.databinding.ObservableBoolean;
+import androidx.lifecycle.MutableLiveData;
 import androidx.lifecycle.ViewModel;
 
 import com.jiva.mandi.data.datamagager.DataManager;
+import com.jiva.mandi.data.model.db.Village;
 
 import java.lang.ref.WeakReference;
+import java.util.List;
 
+import io.reactivex.android.schedulers.AndroidSchedulers;
 import io.reactivex.disposables.CompositeDisposable;
+import io.reactivex.disposables.Disposable;
+import io.reactivex.schedulers.Schedulers;
 
 public abstract class BaseViewModel<N> extends ViewModel {
 
     private final DataManager mDataManager;
 
-    private final ObservableBoolean mIsLoading = new ObservableBoolean();
 
-
-    private CompositeDisposable mCompositeDisposable;
+    private final CompositeDisposable mCompositeDisposable;
 
     private WeakReference<N> mNavigator;
+
+    private MutableLiveData<List<Village>> villageList;
 
 
     public BaseViewModel(DataManager dataManager) {
@@ -56,20 +45,29 @@ public abstract class BaseViewModel<N> extends ViewModel {
         return mDataManager;
     }
 
-    public ObservableBoolean getIsLoading() {
-        return mIsLoading;
-    }
-
-    public void setIsLoading(boolean isLoading) {
-        mIsLoading.set(isLoading);
-    }
-
     public N getNavigator() {
         return mNavigator.get();
     }
 
     public void setNavigator(N navigator) {
         this.mNavigator = new WeakReference<>(navigator);
+    }
+
+    public void getAllVillages() {
+        Disposable disposable = getDataManager().getAllVillages()
+                .subscribeOn(Schedulers.io())
+                .observeOn(AndroidSchedulers.mainThread())
+                .subscribe(response -> villageList.setValue(response), throwable -> {
+                    //getNavigator().handleError(throwable);
+                });
+        getCompositeDisposable().add(disposable);
+    }
+
+    public MutableLiveData<List<Village>> getVillageList() {
+        if (villageList == null) {
+            villageList = new MutableLiveData<>();
+        }
+        return villageList;
     }
 
 }

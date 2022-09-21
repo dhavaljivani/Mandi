@@ -1,0 +1,254 @@
+<?xml version="1.0" encoding="utf-8"?>
+<layout xmlns:android="http://schemas.android.com/apk/res/android">
+
+    <data>
+
+        <variable
+            name="productSellViewModel"
+            type="com.jiva.mandi.ui.productsell.ProductSellViewModel" />
+    </data>
+
+    <androidx.constraintlayout.widget.ConstraintLayout xmlns:app="http://schemas.android.com/apk/res-auto"
+        xmlns:tools="http://schemas.android.com/tools"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:background="?attr/background2"
+        tools:context=".ui.productsell.ProductSellActivity">
+
+        <androidx.core.widget.NestedScrollView
+            android:layout_width="match_parent"
+            android:layout_height="0dp"
+            app:layout_constraintBottom_toTopOf="@id/buttonPanel"
+            app:layout_constraintTop_toTopOf="parent">
+
+
+            <com.google.android.material.card.MaterialCardView
+                android:id="@+id/sellerDetailCard"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                app:cardBackgroundColor="?attr/cardColor"
+                app:cardCornerRadius="10dp"
+                app:cardElevation="8dp"
+                app:cardUseCompatPadding="true"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toTopOf="parent">
+
+                <androidx.constraintlayout.widget.ConstraintLayout
+                    style="@style/parentViewMediumPadding"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content">
+
+                    <androidx.appcompat.widget.AppCompatTextView
+                        android:id="@+id/tvTitle"
+                        style="@style/bold_font"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:contentDescription="@string/loginTitle"
+                        android:text="@string/app_name"
+                        android:textColor="?attr/editTextColor"
+                        android:textSize="@dimen/text_size_30sp"
+                        android:textStyle="bold"
+                        app:layout_constraintLeft_toLeftOf="parent"
+                        app:layout_constraintRight_toRightOf="parent"
+                        app:layout_constraintTop_toTopOf="parent" />
+
+                    <com.google.android.material.textfield.TextInputLayout
+                        android:id="@+id/sellerNameTextField"
+                        style="@style/TextInputLayoutStyle"
+                        android:layout_marginTop="@dimen/size_20dp"
+                        android:hint="@string/seller_name"
+                        android:textColorHint="@color/enable_text_layout_color_selector"
+                        app:boxStrokeColor="@color/enable_text_layout_color_selector"
+                        app:layout_constraintLeft_toLeftOf="parent"
+                        app:layout_constraintRight_toRightOf="parent"
+                        app:layout_constraintTop_toBottomOf="@id/tvTitle">
+
+                        <com.google.android.material.textfield.MaterialAutoCompleteTextView
+                            android:id="@+id/edtSellerName"
+                            style="@style/TextInputEditTextStyle"
+                            android:drawableStart="@drawable/ic_baseline_person_24"
+                            android:imeOptions="actionNext"
+                            android:inputType="text"
+                            android:maxLength="@integer/name_max_length"
+                            android:maxLines="1"
+                            android:text="@={productSellViewModel.productSellRequest.sellerName}"
+                            android:textColor="?attr/editTextColor" />
+
+                    </com.google.android.material.textfield.TextInputLayout>
+
+                    <com.google.android.material.textfield.TextInputLayout
+                        android:id="@+id/cardIdTextField"
+                        style="@style/TextInputLayoutStyle"
+                        android:layout_marginTop="@dimen/size_20dp"
+                        android:hint="@string/card_id"
+                        android:textColorHint="@color/enable_text_layout_color_selector"
+                        app:boxStrokeColor="@color/enable_text_layout_color_selector"
+                        app:layout_constraintLeft_toLeftOf="parent"
+                        app:layout_constraintRight_toRightOf="parent"
+                        app:layout_constraintTop_toBottomOf="@id/sellerNameTextField">
+
+                        <com.google.android.material.textfield.MaterialAutoCompleteTextView
+                            android:id="@+id/edtCardId"
+                            style="@style/TextInputEditTextStyle"
+                            android:drawableStart="@drawable/ic_baseline_credit_card_24"
+                            android:imeOptions="actionNext"
+                            android:inputType="text"
+                            android:maxLength="@integer/card_id_max_length"
+                            android:text="@={productSellViewModel.productSellRequest.loyaltyCardId}"
+                            android:textColor="?attr/editTextColor" />
+                    </com.google.android.material.textfield.TextInputLayout>
+
+                    <androidx.appcompat.widget.AppCompatSpinner
+                        android:id="@+id/spVillage"
+                        style="@style/SpinnerStyle"
+                        android:layout_marginTop="@dimen/size_20dp"
+                        android:background="@null"
+                        android:dropDownVerticalOffset="35dp"
+                        app:layout_constraintLeft_toLeftOf="parent"
+                        app:layout_constraintRight_toRightOf="parent"
+                        app:layout_constraintTop_toBottomOf="@id/cardIdTextField" />
+
+                    <androidx.appcompat.widget.AppCompatTextView
+                        android:id="@+id/tvSelectVillageError"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:layout_marginStart="@dimen/size_15dp"
+                        android:layout_marginTop="@dimen/size_2dp"
+                        android:text="@string/error_village"
+                        android:textColor="@color/design_error"
+                        android:textSize="@dimen/text_size_12sp"
+                        android:visibility="gone"
+                        app:layout_constraintRight_toRightOf="parent"
+                        app:layout_constraintTop_toBottomOf="@id/spVillage" />
+
+                    <androidx.constraintlayout.widget.ConstraintLayout
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:layout_marginTop="@dimen/size_20dp"
+                        app:layout_constraintLeft_toLeftOf="parent"
+                        app:layout_constraintRight_toRightOf="parent"
+                        app:layout_constraintTop_toBottomOf="@id/tvSelectVillageError">
+
+                        <com.google.android.material.textfield.TextInputLayout
+                            android:id="@+id/weightTextField"
+                            style="@style/TextInputLayoutStyle"
+                            android:hint="@string/weight"
+                            android:textColorHint="@color/enable_text_layout_color_selector"
+                            app:boxStrokeColor="@color/enable_text_layout_color_selector"
+                            app:layout_constraintLeft_toLeftOf="parent"
+                            app:layout_constraintRight_toRightOf="parent"
+                            app:layout_constraintTop_toBottomOf="parent"
+                            app:layout_constraintTop_toTopOf="parent">
+
+                            <com.google.android.material.textfield.TextInputEditText
+                                android:id="@+id/edtWeight"
+                                style="@style/TextInputEditTextStyle"
+                                android:contentDescription="@string/loginUsername"
+                                android:drawableStart="@drawable/ic_baseline_balance_24"
+                                android:inputType="numberDecimal"
+                                android:maxLength="@integer/weight_max_length"
+                                android:maxLines="1"
+                                android:text="@={productSellViewModel.productSellRequest.weight}"
+                                android:textColor="?attr/editTextColor" />
+                        </com.google.android.material.textfield.TextInputLayout>
+
+                        <androidx.appcompat.widget.AppCompatTextView
+                            style="@style/medium_bold_font"
+                            android:layout_alignParentEnd="true"
+                            android:layout_centerVertical="true"
+                            android:layout_marginTop="@dimen/size_20dp"
+                            android:layout_marginEnd="@dimen/size_10dp"
+                            android:text="@string/label_tonnes"
+                            android:textColor="?attr/editTextColor"
+                            app:layout_constraintRight_toRightOf="parent"
+                            app:layout_constraintTop_toTopOf="parent" />
+
+                    </androidx.constraintlayout.widget.ConstraintLayout>
+
+
+                </androidx.constraintlayout.widget.ConstraintLayout>
+
+            </com.google.android.material.card.MaterialCardView>
+
+        </androidx.core.widget.NestedScrollView>
+
+
+        <com.google.android.material.card.MaterialCardView
+            android:id="@+id/buttonPanel"
+            style="@style/topCornerView"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            app:cardBackgroundColor="?attr/cardColor"
+            app:cardElevation="8dp"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+
+            >
+
+            <androidx.constraintlayout.widget.ConstraintLayout
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:padding="@dimen/size_5dp">
+
+                <TextView
+                    android:id="@+id/tvPriceTitle"
+                    style="@style/medium_bold_font"
+                    android:layout_width="0dp"
+                    android:layout_height="0dp"
+                    android:gravity="center_vertical"
+                    android:text="@string/gross_price"
+                    android:textColor="?attr/editTextColor"
+                    app:layout_constraintBottom_toBottomOf="@id/tvTotalPrice"
+                    app:layout_constraintEnd_toStartOf="@id/tvTotalPrice"
+                    app:layout_constraintHorizontal_weight="0.4"
+                    app:layout_constraintStart_toStartOf="parent"
+                    app:layout_constraintTop_toTopOf="@id/tvTotalPrice" />
+
+                <TextView
+                    android:id="@+id/tvTotalPrice"
+                    style="@style/medium_bold_font"
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:layout_marginStart="@dimen/size_5dp"
+                    android:gravity="end|center_vertical"
+                    android:paddingHorizontal="@dimen/size_20dp"
+                    android:text="@{String.format(@string/final_price_value, productSellViewModel.productSellRequest.finalPrice)}"
+                    android:textColor="?attr/editTextColor"
+                    app:layout_constraintEnd_toEndOf="parent"
+                    app:layout_constraintHorizontal_weight="0.6"
+                    app:layout_constraintStart_toEndOf="@id/tvPriceTitle"
+                    app:layout_constraintTop_toTopOf="parent" />
+
+
+                <TextView
+                    android:id="@+id/tvLoyaltyIndex"
+                    style="@style/semibold_font"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="@dimen/size_10dp"
+                    android:text="@{String.format(@string/applied_loyalty_index, productSellViewModel.productSellRequest.loyaltyIndex)}"
+                    android:textColor="?attr/colorPrimary"
+                    app:layout_constraintStart_toStartOf="parent"
+                    app:layout_constraintTop_toBottomOf="@+id/tvPriceTitle" />
+
+
+                <com.google.android.material.button.MaterialButton
+                    android:id="@+id/btnSell"
+                    style="@style/primaryButtonStyle"
+                    android:layout_marginTop="@dimen/size_20dp"
+                    android:contentDescription="@string/loginButton"
+                    android:text="@string/sell_my_product"
+                    app:cornerRadius="@dimen/size_7dp"
+                    app:layout_constraintLeft_toLeftOf="parent"
+                    app:layout_constraintRight_toRightOf="parent"
+                    app:layout_constraintTop_toBottomOf="@id/tvLoyaltyIndex" />
+
+            </androidx.constraintlayout.widget.ConstraintLayout>
+
+        </com.google.android.material.card.MaterialCardView>
+
+
+    </androidx.constraintlayout.widget.ConstraintLayout>
+</layout>

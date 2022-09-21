@@ -1,11 +1,11 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources xmlns:tools="http://schemas.android.com/tools">
 
-    <style name="parentViewSmallPadding" tools:keep="@style/parentViewSmallPadding">
+    <style name="parentViewSmallPadding">
         <item name="android:padding">@dimen/size_10dp</item>
     </style>
 
-    <style name="parentViewMediumPadding" tools:keep="@style/parentViewMediumPadding">
+    <style name="parentViewMediumPadding" >
         <item name="android:padding">@dimen/size_16dp</item>
     </style>
 
@@ -17,70 +17,68 @@
         <item name="android:textSize">@dimen/size_20dp</item>
     </style>
 
-
-    <style name="largeFont" tools:keep="@style/largeFont">
+    <style name="largeFont" >
         <item name="android:textSize">@dimen/text_size_17sp</item>
     </style>
 
-    <style name="largeMediumFont" tools:keep="@style/largeMediumFont">
+    <style name="largeMediumFont" >
         <item name="android:textSize">@dimen/text_size_16sp</item>
     </style>
 
-    <style name="mediumFont" tools:keep="@style/mediumFont">
+    <style name="mediumFont">
         <item name="android:textSize">@dimen/text_size_14sp</item>
     </style>
 
-    <style name="smallFont" tools:keep="@style/smallFont">
+    <style name="smallFont" >
         <item name="android:textSize">@dimen/text_size_10sp</item>
     </style>
 
-    <style name="verySmallFontStyle" tools:keep="@style/verySmallFontStyle">
+    <style name="verySmallFontStyle" >
         <item name="android:textSize">@dimen/text_size_8sp</item>
     </style>
 
-    <style name="extraLargeTextViewStyle" parent="extraLargeFont" tools:keep="@style/extraLargeTextViewStyle">
+    <style name="extraLargeTextViewStyle" parent="extraLargeFont">
         <item name="android:layout_width">wrap_content</item>
         <item name="android:layout_height">wrap_content</item>
     </style>
 
-    <style name="largeTextViewStyle" parent="largeFont" tools:keep="@style/largeTextViewStyle">
+    <style name="largeTextViewStyle" parent="largeFont" >
         <item name="android:layout_width">wrap_content</item>
         <item name="android:layout_height">wrap_content</item>
     </style>
 
-    <style name="largeMediumFontTextViewStyle" parent="largeMediumFont" tools:keep="@style/largeMediumFontTextViewStyle">
+    <style name="largeMediumFontTextViewStyle" parent="largeMediumFont">
         <item name="android:layout_width">wrap_content</item>
         <item name="android:layout_height">wrap_content</item>
     </style>
 
-    <style name="mediumFontTextViewStyle" parent="mediumFont" tools:keep="@style/mediumFontTextViewStyle">
+    <style name="mediumFontTextViewStyle" parent="mediumFont">
         <item name="android:layout_width">wrap_content</item>
         <item name="android:layout_height">wrap_content</item>
     </style>
 
-    <style name="smallFontTextViewStyle" parent="smallFont" tools:keep="@style/smallFontTextViewStyle">
+    <style name="smallFontTextViewStyle" parent="smallFont" >
         <item name="android:layout_width">wrap_content</item>
         <item name="android:layout_height">wrap_content</item>
     </style>
 
-    <style name="verySmallFontTextViewStyle" parent="verySmallFontStyle" tools:keep="@style/verySmallFontTextViewStyle">
+    <style name="verySmallFontTextViewStyle" parent="verySmallFontStyle">
         <item name="android:layout_width">wrap_content</item>
         <item name="android:layout_height">wrap_content</item>
     </style>
 
 
-    <style name="textInputLayoutStyle" parent="Widget.MaterialComponents.TextInputLayout.OutlinedBox" tools:keep="@style/textInputLayoutStyle">
+    <style name="textInputLayoutStyle" parent="Widget.MaterialComponents.TextInputLayout.OutlinedBox">
         <item name="android:layout_width">match_parent</item>
         <item name="android:layout_height">wrap_content</item>
     </style>
 
-    <style name="textInputEditTextStyle" parent="mediumFont" tools:keep="@style/textInputEditTextStyle">
+    <style name="textInputEditTextStyle" parent="mediumFont">
         <item name="android:layout_width">match_parent</item>
         <item name="android:layout_height">wrap_content</item>
     </style>
 
     <style name="regular_font">
-        <item name="fontFamily">@font/worksans_regular</item>
         <item name="fontStyle">normal</item>
         <item name="fontWeight">400</item>
     </style>
@@ -127,7 +125,7 @@
         <item name="android:layout_width">wrap_content</item>
     </style>
 
-    <style name="medium_semibold_font" parent="semibold_font" tools:ignore="UnusedResources">
+    <style name="medium_semibold_font" parent="semibold_font">
         <item name="android:textSize">@dimen/text_size_17sp</item>
         <item name="android:layout_height">wrap_content</item>
         <item name="android:layout_width">wrap_content</item>
@@ -193,7 +191,7 @@
     </style>
 
 
-    <style name="dropDownStyle" parent="Widget.MaterialComponents.TextInputLayout.OutlinedBox.ExposedDropdownMenu" tools:keep="@style/dropDownStyle">
+    <style name="dropDownStyle" parent="Widget.MaterialComponents.TextInputLayout.OutlinedBox.ExposedDropdownMenu">
         <item name="android:layout_height">wrap_content</item>
         <item name="android:layout_width">match_parent</item>
         <item name="android:layout_marginTop">@dimen/size_16dp</item>
@@ -227,6 +225,5 @@
         <item name="cornerSizeBottomLeft">@dimen/size_0dp</item>
         <item name="cornerSizeBottomRight">@dimen/size_0dp</item>
     </style>
-
 
 </resources>
